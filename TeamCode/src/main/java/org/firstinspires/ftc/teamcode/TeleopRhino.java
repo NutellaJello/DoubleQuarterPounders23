@@ -2,18 +2,16 @@
 package org.firstinspires.ftc.teamcode;
 
 //importing needed things
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 //@Disabled
 //beginning of class
-public class teleoprhino extends LinearOpMode {
+public class TeleopRhino extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
