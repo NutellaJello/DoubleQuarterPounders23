@@ -56,6 +56,12 @@ public class TeleopRhino extends LinearOpMode {
                 motorFrontRight.setPower(0);
                 motorBackRight.setPower(0);
             }
+            if (gamepad1.right_stick_y == 0 && gamepad1.right_stick_x ==0){
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+            }
             if (gamepad1.left_stick_y > 0.2){
                 motorFrontLeft.setPower(0.5);
                 motorBackLeft.setPower(0.5);
@@ -81,13 +87,13 @@ public class TeleopRhino extends LinearOpMode {
                 motorBackRight.setPower(0.5);
 
             }
-            if (gamepad1.right_stick_x > 0){
+            if (gamepad1.right_stick_x > 0 && gamepad1.right_stick_x != 0){
                 motorFrontLeft.setPower(-0.5);
                 motorBackLeft.setPower(-0.5);
                 motorFrontRight.setPower(0.5);
                 motorBackRight.setPower(0.5);
             }
-            if (gamepad1.right_stick_x < 0){
+            if (gamepad1.right_stick_x < 0  && gamepad1.right_stick_x != 0){
                 motorFrontLeft.setPower(0.5);
                 motorBackLeft.setPower(0.5);
                 motorFrontRight.setPower(-0.5);
