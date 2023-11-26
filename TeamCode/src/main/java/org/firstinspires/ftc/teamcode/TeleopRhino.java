@@ -18,8 +18,8 @@ public class TeleopRhino extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //motors
         //test 10/29/22
-        final double dampSpeedRatio = 0.85;
-        final double dampTurnRatio = 0.8;
+        final double dampSpeedRatio = 0.5;
+        final double dampTurnRatio = 0.5;
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
@@ -65,9 +65,9 @@ public class TeleopRhino extends LinearOpMode {
 
             slides.setPower(gamepad2.left_stick_y);
 
-            double y = Range.clip(-gamepad1.left_stick_y, -1, 1);
+            double y = Range.clip(gamepad1.left_stick_y, -1, 1);
             //left stick x value
-            double x = Range.clip(-gamepad1.left_stick_x, -1, 1);
+            double x = Range.clip(gamepad1.left_stick_x, -1, 1);
             //right stick x value
             double rx = Range.clip(-gamepad1.right_stick_x, -1, 1);
 
@@ -145,6 +145,7 @@ public class TeleopRhino extends LinearOpMode {
             }
             telemetry.update();
 */
+            telemetry.update();
 // not useful for now
             //            if (gamepad2.left_stick_y > 0){
 //                slides.setPower(gamepad2.left_stick_y);
