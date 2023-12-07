@@ -17,8 +17,8 @@ public class TeleopRhino extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         //motors
-        final double dampSpeedRatio = 0.85;
-        final double dampTurnRatio = 0.8;
+        final double dampSpeedRatio = 0.58;
+        final double dampTurnRatio = 0.4;
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
@@ -32,14 +32,16 @@ public class TeleopRhino extends LinearOpMode {
         Servo rightarm = hardwareMap.servo.get("rightarm"); //port 1 rswing
         //imma make a double that updates the servo posi
         rightarm.setDirection(Servo.Direction.REVERSE);
-        double sPosiL = 0.0;
+        double sPosiL = 0.8;
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
+        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 
@@ -54,38 +56,73 @@ public class TeleopRhino extends LinearOpMode {
             telemetry.addData("rightarm", Double.toString(rightarm.getPosition()));
             telemetry.addData("claw", Double.toString(claw.getPosition()));
             telemetry.addData("flopper", Double.toString(flopper.getPosition()));
+            telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
 
+
+
+
+            ////////////////arm
             leftarm.setPosition(sPosiL);
             rightarm.setPosition(sPosiL);
 
-            if(sPosiL >1){
-
+            if(sPosiL > 0.95){
+                sPosiL = 0.95;//setting minimmum so it dont go below the ground
             }
 
             if (gamepad2.a){
-                sPosiL = 0.99;
+                sPosiL = 0.95;//up
 
             }
             if (gamepad2.b){
-                sPosiL = 0.02;
+                sPosiL = 0.023;//down
 
             }
+            if (gamepad2.dpad_right){
+                sPosiL = 0.1;//tweaker
+            }
+            if (gamepad2.dpad_left){
+                sPosiL = 0.6;//tweaker
+            }
 
-            if (gamepad2.left_bumper){
-                claw.setPosition(0.045);
+            ////////////////claww
+            if(gamepad2.right_bumper){
+                claw.setPosition(0.095);//close
+            }else{
+                claw.setPosition(0);//open
             }
-            else if (gamepad2.right_bumper) {
-                claw.setPosition(0.07);
-            }
+
+
+
+            ///////////////////////flopper
             if (gamepad2.x){
-                flopper.setPosition(1);
+                flopper.setPosition(.95);//resting0.922
             }
             else if (gamepad2.y) {
-                flopper.setPosition(0.8);
+                flopper.setPosition(0.638);//dumped 0.6
             }
 
+            if (gamepad2.left_stick_y > 0 ){
+                if (slides.getCurrentPosition() != -1640) {
+                    slides.setTargetPosition(slides.getCurrentPosition() + 50);
+                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slides.setPower(0.5);
+                }
+            }
+            else if (gamepad2.left_stick_y < 0){
+                if (!(slides.getCurrentPosition() < 50)) {
+                    slides.setTargetPosition(slides.getCurrentPosition() - 50);
+                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slides.setPower(0.5);
+                }
+            }
+            else if (gamepad2.left_stick_y == 0){
+                slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+            // slides.setPower(gamepad2.left_stick_y * 0.4);
 
-            slides.setPower(gamepad2.left_stick_y* 0.5);
+            //9.0
+            //-1750
+
 
             double y = Range.clip(gamepad1.left_stick_y, -1, 1);
             //left stick x value
@@ -93,6 +130,7 @@ public class TeleopRhino extends LinearOpMode {
             //right stick x value
             double rx = Range.clip(-gamepad1.right_stick_x, -1, 1);
 
+        //    double arct = 0;
 
             double flPower = (y - x) * dampSpeedRatio + dampTurnRatio * rx;
             double frPower = (y + x) * dampSpeedRatio - dampTurnRatio * rx;
@@ -116,16 +154,7 @@ public class TeleopRhino extends LinearOpMode {
             motorBackRight.setPower(brPower);
 
             telemetry.update();
-// not useful for now
 
-
-//
-//            if (gamepad2.left_bumper){
-//                claw.setPosition(cone.getPosition()+1);
-//            }
-//            else if (gamepad2.right_bumper){
-//                claw.setPosition(cone.getPosition()-1);
-//            }
         }
     }
 }
