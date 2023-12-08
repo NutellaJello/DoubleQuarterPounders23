@@ -101,27 +101,45 @@ public class TeleopRhino extends LinearOpMode {
                 flopper.setPosition(0.638);//dumped 0.6
             }
 
-            if (gamepad2.left_stick_y > 0 ){
-                if (slides.getCurrentPosition() != -1640) {
-                    slides.setTargetPosition(slides.getCurrentPosition() + 50);
-                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slides.setPower(0.5);
-                }
-            }
-            else if (gamepad2.left_stick_y < 0){
-                if (!(slides.getCurrentPosition() < 50)) {
-                    slides.setTargetPosition(slides.getCurrentPosition() - 50);
-                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slides.setPower(0.5);
-                }
-            }
+//            if (gamepad2.left_stick_y > 0 ){
+//                if (slides.getCurrentPosition() != -1640) {
+//                    slides.setTargetPosition(slides.getCurrentPosition() + 50);
+//                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    slides.setPower(0.5);
+//                }
+//            }
+//            else if (gamepad2.left_stick_y < 0){
+//                if (!(slides.getCurrentPosition() < 50)) {
+//                    slides.setTargetPosition(slides.getCurrentPosition() - 50);
+//                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    slides.setPower(0.5);
+//                }
+//            }
             else if (gamepad2.left_stick_y == 0){
                 slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-            // slides.setPower(gamepad2.left_stick_y * 0.4);
+             slides.setPower(gamepad2.left_stick_y * 0.4);
 
             //9.0
             //-1750
+//            int spee
+//            if (gamepad1.left_trigger >0){
+//                motorBackLeft.setTargetPosition(BackLeft.getCurrentPosition() + move);
+//                motorFrontLeft.setTargetPosition(FrontLeft.getCurrentPosition() + move);
+//                motorBackRight.setTargetPosition(BackRight.getCurrentPosition() + move);
+//                motorFrontRight.setTargetPosition(FrontRight.getCurrentPosition() + move);
+//                //
+//                motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                //
+//                motorFrontLeft.setPower(speed);
+//                motorBackLeft.setPower(speed);
+//                motorFrontRight.setVelocity(speed);
+//                motorBackRight.setVelocity(speed);
+//
+//            }
 
 
             double y = Range.clip(gamepad1.left_stick_y, -1, 1);

@@ -147,14 +147,14 @@ public class Autotest extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // They can/should be tweaked to suit the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
-    static final double     TURN_SPEED              = 0.1;     // Max Turn speed to limit turn rate original = 0.2
+    static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate 0.2
     static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
     // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
-    // Define the Proportional control coefficient (or GAIN) for "heading control".
+    // Define the Pro portional control coefficient (or GAIN) for "heading control".
     // We define one value when Turning (larger errors), and the other is used when Driving straight (smaller errors).
     // Increase these numbers if the heading does not corrects strongly enough (eg: a heavy robot or using tracks)
     // Decrease these numbers if the heading does not settle on the correct value (eg: very agile robot with omni wheels)
-    static final double     P_TURN_GAIN            = 0.01;     // Larger is more responsive, but also less stable
+    static final double     P_TURN_GAIN            = 0.02;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable
 
 
@@ -214,6 +214,7 @@ public class Autotest extends LinearOpMode {
         // Wait for the game to start (Display Gyro value while waiting)
         while (opModeInInit()) {
             telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
+            telemetry.addData("","");
             telemetry.update();
         }
 
@@ -234,13 +235,12 @@ public class Autotest extends LinearOpMode {
         //          holdHeading() is used after turns to let the heading stabilize
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
-        driveStraight(DRIVE_SPEED, 23.0, 0.0);    // Drive Forward 24"
-        sleep(1500);
+       driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
+        sleep(1000);
         turnToHeading( TURN_SPEED, 90.0);               // Turn  CW to -45 Degrees
-        sleep (1500);
-     ///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
-        driveStraight(DRIVE_SPEED, 40.0,0.0);
-
+        sleep (1000);
+        driveStraight(DRIVE_SPEED, 48.0, 0.0);
+///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
 //        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
 //        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
 //        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
@@ -252,6 +252,7 @@ public class Autotest extends LinearOpMode {
 //        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
 
         telemetry.addData("Path", "Complete");
+
         telemetry.update();
         sleep(1000);  // Pause to display last telemetry message.
     }
@@ -318,8 +319,7 @@ public class Autotest extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-
-                    (FrontLeft.isBusy() && BackRight.isBusy()) && FrontRight.isBusy() && BackLeft.isBusy()) {
+                    (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy())) {
 
                 // Determine required steering to keep on heading
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
@@ -459,28 +459,22 @@ public class Autotest extends LinearOpMode {
 //        leftSpeed  = drive - turn;
 //        rightSpeed = drive + turn;
 
+
         flspeed = drive - turn;
         frspeed = drive + turn;
-        blspeed = drive - turn;
-        brspeed = drive + turn;
+//        blspeed = drive - turn;
+//        brspeed = drive + turn;
 
 
         // Scale speeds down if either one exceeds +/- 1.0;
-        double max = Math.max(Math.abs(flspeed), Math.abs(blspeed));
-        double max1 = Math.max(Math.abs(frspeed), Math.abs(brspeed));
+        double max = Math.max(Math.abs(flspeed), Math.abs(frspeed));
+
         if (max > 1.0)
         {
             flspeed /= max;
             frspeed /= max;
             blspeed /= max;
             brspeed /= max;
-        }
-        if (max1 > 1.0)
-        {
-            flspeed /= max1;
-            frspeed /= max1;
-            blspeed /= max1;
-            brspeed /= max1;
         }
 
 //        leftDrive.setPower(leftSpeed);
