@@ -238,9 +238,10 @@ public class Autotest extends LinearOpMode {
        driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
         sleep(1000);
         turnToHeading( TURN_SPEED, 90.0);               // Turn  CW to -45 Degrees
+        holdHeading( TURN_SPEED, 90.0, 2);
         sleep (1000);
         driveStraight(DRIVE_SPEED, 48.0, 0.0);
-///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
+ // holdHeading( TURN_SPEED, 90.0, 2);   // Hold -45 Deg heading for a 1/2 second
 //        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
 //        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
 //        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
@@ -462,8 +463,8 @@ public class Autotest extends LinearOpMode {
 
         flspeed = drive - turn;
         frspeed = drive + turn;
-//        blspeed = drive - turn;
-//        brspeed = drive + turn;
+        blspeed = drive - turn;
+        brspeed = drive + turn;
 
 
         // Scale speeds down if either one exceeds +/- 1.0;
