@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -89,13 +90,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Robot: Auto Drive By Gyro", group="Robot")
+@Autonomous(name="redsideclose")
 
 public class Autotest extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor         leftDrive   = null;
     private DcMotor         rightDrive  = null;
+
+    private Servo airplane = null;
 
     private DcMotor         FrontLeft = null;
     private DcMotor         FrontRight = null;
@@ -170,6 +173,7 @@ public class Autotest extends LinearOpMode {
         BackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
         BackRight = hardwareMap.dcMotor.get("BackRight"); //3
+        airplane = hardwareMap.servo.get("airplane");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -180,6 +184,7 @@ public class Autotest extends LinearOpMode {
         // reversing our motors
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        airplane.setPosition(0.63); // locks airplane
 
         /* The next two lines define Hub orientation.
          * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
@@ -235,12 +240,12 @@ public class Autotest extends LinearOpMode {
         //          holdHeading() is used after turns to let the heading stabilize
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
-       driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
-        sleep(1000);
+       driveStraight(DRIVE_SPEED, 25.0, 0.0);    // Drive Forward 24"
+        sleep(500);
         turnToHeading( TURN_SPEED, 90.0);               // Turn  CW to -45 Degrees
-        holdHeading( TURN_SPEED, 90.0, 2);
-        sleep (1000);
-        driveStraight(DRIVE_SPEED, 48.0, 0.0);
+        holdHeading( TURN_SPEED, 90.0, 1.0);
+        //sleep (1000);
+        driveStraight(DRIVE_SPEED, 82.0, 90.0);
  // holdHeading( TURN_SPEED, 90.0, 2);   // Hold -45 Deg heading for a 1/2 second
 //        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
 //        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees

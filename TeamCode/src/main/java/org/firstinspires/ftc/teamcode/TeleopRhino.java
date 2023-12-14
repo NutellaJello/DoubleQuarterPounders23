@@ -17,8 +17,8 @@ public class TeleopRhino extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         //motors
-        final double dampSpeedRatio = 0.58;
-        final double dampTurnRatio = 0.4;
+        double dampSpeedRatio = 0.58;
+        double dampTurnRatio = 0.4;
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
@@ -26,6 +26,7 @@ public class TeleopRhino extends LinearOpMode {
 
         Servo flopper = hardwareMap.servo.get("flopper"); //0
         Servo claw = hardwareMap.servo.get("claw"); //1
+        Servo airplane = hardwareMap.servo.get("airplane");
         //flopper.setDirection(Servo.Direction.REVERSE);
 //        //expansion
         Servo leftarm = hardwareMap.servo.get("leftarm"); //port 0 lswing
@@ -44,7 +45,7 @@ public class TeleopRhino extends LinearOpMode {
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-
+        airplane.setPosition (0.63);
         //wait for button click
         waitForStart();
         // stop the program if button click
@@ -57,6 +58,7 @@ public class TeleopRhino extends LinearOpMode {
             telemetry.addData("claw", Double.toString(claw.getPosition()));
             telemetry.addData("flopper", Double.toString(flopper.getPosition()));
             telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
+            telemetry.addData("airplane", Double.toString(airplane.getPosition()));
 
 
 
@@ -64,6 +66,9 @@ public class TeleopRhino extends LinearOpMode {
             ////////////////arm
             leftarm.setPosition(sPosiL);
             rightarm.setPosition(sPosiL);
+
+            // airplane
+
 
             if(sPosiL > 0.95){
                 sPosiL = 0.95;//setting minimmum so it dont go below the ground
@@ -101,6 +106,14 @@ public class TeleopRhino extends LinearOpMode {
                 flopper.setPosition(0.638);//dumped 0.6
             }
 
+            /// airplane
+            if (gamepad1.dpad_left){
+                airplane.setPosition (0.3);
+            }
+            else {
+                airplane.setPosition(0.63);
+            }
+
 //            if (gamepad2.left_stick_y > 0 ){
 //                if (slides.getCurrentPosition() != -1640) {
 //                    slides.setTargetPosition(slides.getCurrentPosition() + 50);
@@ -115,10 +128,10 @@ public class TeleopRhino extends LinearOpMode {
 //                    slides.setPower(0.5);
 //                }
 //            }
-            else if (gamepad2.left_stick_y == 0){
-                slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-             slides.setPower(gamepad2.left_stick_y * 0.4);
+//            else if (gamepad2.left_stick_y == 0){
+//                slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            }
+            slides.setPower(gamepad2.left_stick_y * 0.4);
 
             //9.0
             //-1750
@@ -148,7 +161,7 @@ public class TeleopRhino extends LinearOpMode {
             //right stick x value
             double rx = Range.clip(-gamepad1.right_stick_x, -1, 1);
 
-        //    double arct = 0;
+            //    double arct = 0;
 
             double flPower = (y - x) * dampSpeedRatio + dampTurnRatio * rx;
             double frPower = (y + x) * dampSpeedRatio - dampTurnRatio * rx;
@@ -170,6 +183,19 @@ public class TeleopRhino extends LinearOpMode {
             motorBackLeft.setPower(blPower);
             motorFrontRight.setPower(frPower);
             motorBackRight.setPower(brPower);
+
+            //sprint
+
+
+            if(gamepad1.right_bumper){
+                dampSpeedRatio = 0.18;
+                dampTurnRatio = 0.12;
+            }else if(gamepad1.a ){
+                dampSpeedRatio = 0.9;
+            }else{
+                dampSpeedRatio = 0.58;
+                dampTurnRatio = 0.4;
+            }
 
             telemetry.update();
 

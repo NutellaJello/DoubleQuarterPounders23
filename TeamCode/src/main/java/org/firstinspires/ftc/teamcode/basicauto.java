@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,7 +21,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "basicauto") //bluered
+@Autonomous //bluered
+@Disabled
 public class basicauto extends LinearOpMode {
 //    private DcMotorEx FrontLeft;
 //    private DcMotorEx BackLeft;
@@ -94,8 +96,8 @@ public class basicauto extends LinearOpMode {
 
         // ColorRangeSensor conesensor = hardwareMap.get(ColorRangeSensor.class, "conesensor");
 
-        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -130,9 +132,9 @@ public class basicauto extends LinearOpMode {
          //   slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-            int runspeed = 1000;
-            moveToPosition(24,runspeed);
-            strafe(24,runspeed);
+            int runspeed = 500;
+            moveToPosition(25,runspeed);
+            strafedub(80,runspeed);
 
 
             // telemetry.update();
@@ -287,7 +289,8 @@ public class basicauto extends LinearOpMode {
         BackLeft.setPower(0);
         return;
     }
-    public void strafedub (int move, int speed) {
+    public void strafedub (int inches, int speed) {
+        int move = (int)(Math.round(inches*conversion));
         //
         BackLeft.setTargetPosition(BackLeft.getCurrentPosition() - move);
         FrontLeft.setTargetPosition((int) (FrontLeft.getCurrentPosition() + move));
