@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.auto;
 /*
 FTC team 23928
 2023-2024 Autonoumous Java Code
