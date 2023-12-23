@@ -14,7 +14,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class ColorPipeline extends OpenCvPipeline {
     boolean viewportPaused;
     public String ColorValue = "";
-    private String AOECode = "";
     private OpenCvWebcam webcam;
     private int TopLeftX = 0;
     private int TopLeftY = 0;
@@ -62,6 +61,7 @@ public class ColorPipeline extends OpenCvPipeline {
 
         return input;
     }
+
 
     public void onViewportTapped() {
         this.viewportPaused = !this.viewportPaused;
