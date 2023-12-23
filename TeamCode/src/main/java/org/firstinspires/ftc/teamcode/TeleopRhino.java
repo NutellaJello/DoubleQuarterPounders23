@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 //@Disabled
@@ -16,90 +17,188 @@ public class TeleopRhino extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         //motors
-        //test 10/29/22
+        double dampSpeedRatio = 0.58;
+        double dampTurnRatio = 0.4;
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
         DcMotor motorBackRight = hardwareMap.dcMotor.get("BackRight"); //3
-        Servo cone = hardwareMap.servo.get("cone"); //0
-        Servo knocker = hardwareMap.servo.get("knocker"); //1
-        //expansion
-        Servo lswing = hardwareMap.servo.get("lswing"); //port 0 lswing
-        Servo rswing = hardwareMap.servo.get("rswing"); //port 1 rswing
-        Servo claw = hardwareMap.servo.get("claw"); //port 2 claw
+
+        Servo flopper = hardwareMap.servo.get("flopper"); //0
+        Servo claw = hardwareMap.servo.get("claw"); //1
+        Servo airplane = hardwareMap.servo.get("airplane");
+        //flopper.setDirection(Servo.Direction.REVERSE);
+//        //expansion
+        Servo leftarm = hardwareMap.servo.get("leftarm"); //port 0 lswing
+        Servo rightarm = hardwareMap.servo.get("rightarm"); //port 1 rswing
+        //imma make a double that updates the servo posi
+        rightarm.setDirection(Servo.Direction.REVERSE);
+        double sPosiL = 0.8;
+
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
+        airplane.setPosition (0.63);
         //wait for button click
         waitForStart();
         // stop the program if button click
         if (isStopRequested()) return;
         boolean slowMode = false;
+
         while (opModeIsActive()) {
+            telemetry.addData("leftarm", Double.toString(leftarm.getPosition()));
+            telemetry.addData("rightarm", Double.toString(rightarm.getPosition()));
+            telemetry.addData("claw", Double.toString(claw.getPosition()));
+            telemetry.addData("flopper", Double.toString(flopper.getPosition()));
+            telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
+            telemetry.addData("airplane", Double.toString(airplane.getPosition()));
+
+
+
+
+            ////////////////arm
+            leftarm.setPosition(sPosiL);
+            rightarm.setPosition(sPosiL);
+
+            // airplane
+
+
+            if(sPosiL > 0.95){
+                sPosiL = 0.95;//setting minimmum so it dont go below the ground
+            }
+
+            if (gamepad2.a){
+                sPosiL = 0.95;//up
+
+            }
+            if (gamepad2.b){
+                sPosiL = 0.023;//down
+
+            }
+            if (gamepad2.dpad_right){
+                sPosiL = 0.1;//tweaker
+            }
+            if (gamepad2.dpad_left){
+                sPosiL = 0.6;//tweaker
+            }
+
+            ////////////////claww
+            if(gamepad2.right_bumper){
+                claw.setPosition(0.095);//close
+            }else{
+                claw.setPosition(0);//open
+            }
+
+
+
+            ///////////////////////flopper
+            if (gamepad2.x){
+                flopper.setPosition(.95);//resting0.922
+            }
+            else if (gamepad2.y) {
+                flopper.setPosition(0.638);//dumped 0.6
+            }
+
+            /// airplane
+            if (gamepad1.dpad_left){
+                airplane.setPosition (0.3);
+            }
+            else {
+                airplane.setPosition(0.63);
+            }
+
+//            if (gamepad2.left_stick_y > 0 ){
+//                if (slides.getCurrentPosition() != -1640) {
+//                    slides.setTargetPosition(slides.getCurrentPosition() + 50);
+//                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    slides.setPower(0.5);
+//                }
+//            }
+//            else if (gamepad2.left_stick_y < 0){
+//                if (!(slides.getCurrentPosition() < 50)) {
+//                    slides.setTargetPosition(slides.getCurrentPosition() - 50);
+//                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    slides.setPower(0.5);
+//                }
+//            }
+//            else if (gamepad2.left_stick_y == 0){
+//                slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            }
+            slides.setPower(gamepad2.left_stick_y * 0.4);
+
+            //9.0
+            //-1750
+//            int spee
+//            if (gamepad1.left_trigger >0){
+//                motorBackLeft.setTargetPosition(BackLeft.getCurrentPosition() + move);
+//                motorFrontLeft.setTargetPosition(FrontLeft.getCurrentPosition() + move);
+//                motorBackRight.setTargetPosition(BackRight.getCurrentPosition() + move);
+//                motorFrontRight.setTargetPosition(FrontRight.getCurrentPosition() + move);
+//                //
+//                motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                //
+//                motorFrontLeft.setPower(speed);
+//                motorBackLeft.setPower(speed);
+//                motorFrontRight.setVelocity(speed);
+//                motorBackRight.setVelocity(speed);
+//
+//            }
+
+
+            double y = Range.clip(gamepad1.left_stick_y, -1, 1);
+            //left stick x value
+            double x = Range.clip(gamepad1.left_stick_x, -1, 1);
+            //right stick x value
+            double rx = Range.clip(-gamepad1.right_stick_x, -1, 1);
+
+            //    double arct = 0;
+
+            double flPower = (y - x) * dampSpeedRatio + dampTurnRatio * rx;
+            double frPower = (y + x) * dampSpeedRatio - dampTurnRatio * rx;
+            double blPower = (y + x) * dampSpeedRatio + dampTurnRatio * rx;
+            double brPower = (y - x) * dampSpeedRatio - dampTurnRatio * rx;
+
+            double maxFront = Math.max(flPower, frPower);
+            double maxBack = Math.max(blPower, brPower);
+            double maxPower = Math.max(maxFront, maxBack);
+
+            if (maxPower > 1.0) {
+                flPower /= maxPower;
+                frPower /= maxPower;
+                blPower /= maxPower;
+                brPower /= maxPower;
+            }
             //finally moving the motors
-            if (gamepad1.left_stick_y == 0 && gamepad1.left_stick_x ==0){
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                motorBackRight.setPower(0);
-            }
-            if (gamepad1.left_stick_y > 0.2){
-                motorFrontLeft.setPower(1);
-                motorBackLeft.setPower(1);
-                motorFrontRight.setPower(1);
-                motorBackRight.setPower(1);
-            }
-            else if (gamepad1.left_stick_y < -0.2){
-                motorFrontLeft.setPower(-1);
-                motorBackLeft.setPower(-1);
-                motorFrontRight.setPower(-1);
-                motorBackRight.setPower(-1);
-            }
-            if (gamepad1.left_stick_x != 0 && gamepad1.left_stick_x < 0){
-                motorFrontLeft.setPower(-1);
-                motorBackRight.setPower(-1);
-                motorFrontRight.setPower(-1);
-                motorBackLeft.setPower(-1);
-            }
-            else if (gamepad1.left_stick_x != 0 && gamepad1.left_stick_x > 0){
-                motorBackLeft.setPower(1);
-                motorFrontRight.setPower(1);
-                motorBackRight.setPower(1);
-                motorFrontLeft.setPower(1);
+            motorFrontLeft.setPower(flPower);
+            motorBackLeft.setPower(blPower);
+            motorFrontRight.setPower(frPower);
+            motorBackRight.setPower(brPower);
 
-            }
-            if (gamepad2.left_stick_y > 0){
-                slides.setPower(gamepad2.left_stick_y);
-            }
-            else if (gamepad2.left_stick_y < 0){
-                slides.setPower(gamepad2.left_stick_y);
-            }
-            slides.setPower(0);
-            if (gamepad2.dpad_up){
-                lswing.setPosition(lswing.getPosition()+0.1);
-                rswing.setPosition(lswing.getPosition()-0.1);
-            }
-            else if (gamepad2.dpad_down){
-                lswing.setPosition(lswing.getPosition()-20);
-                rswing.setPosition(lswing.getPosition()-20);
-            }
-            if (gamepad2.left_trigger > 0){
-                cone.setPosition(cone.getPosition()+0.1);
-            }
-            else{
-                cone.setPosition(cone.getPosition()-0.1);
+            //sprint
+
+
+            if(gamepad1.right_bumper){
+                dampSpeedRatio = 0.18;
+                dampTurnRatio = 0.12;
+            }else if(gamepad1.a ){
+                dampSpeedRatio = 0.9;
+            }else{
+                dampSpeedRatio = 0.58;
+                dampTurnRatio = 0.4;
             }
 
-            if (gamepad2.left_bumper){
-                claw.setPosition(cone.getPosition()+1);
-            }
-            else if (gamepad2.right_bumper){
-                claw.setPosition(cone.getPosition()-1);
-            }
+            telemetry.update();
+
         }
     }
 }

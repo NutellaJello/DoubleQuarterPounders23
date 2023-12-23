@@ -6,6 +6,7 @@ Keep Confidential
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,6 +20,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous(name = "autorun")
+@Disabled
 public class AutoRun extends LinearOpMode {
     private static double ServoLeft = 0.65;
     private static double ServoMiddle = 0.45;
