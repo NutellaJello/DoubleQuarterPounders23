@@ -268,7 +268,7 @@ public class AutoRun extends LinearOpMode {
             telemetry.addData("Count", count);
             telemetry.update();
 
-            robotMove(position);
+            //robotMove(position);
 
 
         }
