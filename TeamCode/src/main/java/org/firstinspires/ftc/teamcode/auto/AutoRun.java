@@ -221,7 +221,7 @@ public class AutoRun extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         ColorPipeline centerColor = new ColorPipeline(webcam, 120, 35, 50, 40);
-        ColorPipeline right = new ColorPipeline(webcam, 0, 35, 50, 40);
+        //ColorPipeline right = new ColorPipeline(webcam, 0, 35, 50, 40);
         //webcam code
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -261,23 +261,41 @@ public class AutoRun extends LinearOpMode {
         this.linearSlide2.setDirection(DcMotor.Direction.REVERSE);
 
 */
+        sleep(1000);
+        int count = 0;
         String position = "l";
         if (centerColor.getRed()> 200) {
             position = "c";
-        }else if( right.getRed() > 200){
-            position = "r";
-        }
-        int count = 0;
+            webcam.stopStreaming();
+        } else {
+            while (count < 30) {
+                if (centerColor.getRed() > 200) {
+                    position = "c";
+                    webcam.stopStreaming();
+                    break;
+                }
+                count++;
+                sleep(100);
+            }
 
-        sleep(1000);
+        }
+
+
+
         // detect camera colornt
 
         while (opModeIsActive()) {
+            telemetry.addData("Realtime analysis", centerColor.get());
+
             telemetry.addData("postion", position);
             telemetry.addData("Count", count);
             telemetry.addData("center", centerColor.getRed());
-            telemetry.addData("right", right.getRed());
             telemetry.update();
+            telemetry.update();
+
+            // Don't burn CPU cycles busy-looping in this sample
+            sleep(50);
+
 
             //robotMove(position);
 
