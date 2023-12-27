@@ -20,8 +20,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous(name = "autorun")
-@Disabled
 public class AutoRun extends LinearOpMode {
+    /*
     private static double ServoLeft = 0.65;
     private static double ServoMiddle = 0.45;
     private static double ServoRight = 0.3;
@@ -62,7 +62,7 @@ public class AutoRun extends LinearOpMode {
     private static double LINEAR_SLIDE_MIDDLE_POWER = 0.6;
     private static double LINEAR_SLIDE_LOW_POWER = 0.6;
 
-
+*/
     OpenCvWebcam webcam;
     String what = "";
 
@@ -72,93 +72,7 @@ public class AutoRun extends LinearOpMode {
 //        linearSlide1.setTargetPosition(cycle);
 //        linearSlide1.setVelocity(velocity);
 //    }
-
-
-    @Override
-    public void runOpMode() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        ColorPipeline aoepipeline = new ColorPipeline(webcam, 120, 35, 50, 40);
-        webcam.setPipeline(aoepipeline);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-
-            }
-
-        });
-
-        waitForStart();
-        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        bottomLeft = hardwareMap.get(DcMotorEx.class, "bottomLeft");
-        bottomRight = hardwareMap.get(DcMotorEx.class, "bottomRight");
-        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
-        linearSlide2 = hardwareMap.get(DcMotorEx.class, "linearSlide2");
-        claw = hardwareMap.servo.get("claw");
-        clawSpin = hardwareMap.servo.get("clawSpin");
-
-        motorsDrive = new DcMotorEx[]{this.frontLeft, this.frontRight, this.bottomLeft, this.bottomRight};
-        motorsLeft = new DcMotorEx[]{this.frontLeft, this.bottomLeft};
-        motorsRight = new DcMotorEx[]{this.frontRight, this.bottomRight};
-        frontRbottomL = new DcMotorEx[]{this.frontRight, this.bottomLeft};
-        frontLbottomR = new DcMotorEx[]{this.frontLeft, this.bottomRight};
-
-        this.frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        this.frontRight.setDirection(DcMotor.Direction.REVERSE);
-        this.bottomLeft.setDirection(DcMotor.Direction.FORWARD);
-        this.bottomRight.setDirection(DcMotor.Direction.REVERSE);
-        this.linearSlide2.setDirection(DcMotor.Direction.REVERSE);
-        String position = "";
-        int count = 0;
-
-        sleep(1000);
-
-        if (aoepipeline.ColorValue.equalsIgnoreCase("red") ||
-                aoepipeline.ColorValue.equalsIgnoreCase("green" )
-                || aoepipeline.ColorValue.equalsIgnoreCase("blue") ){
-            position = aoepipeline.ColorValue;
-            webcam.stopStreaming();
-        } else {
-            while (count < 30) {
-                if (aoepipeline.ColorValue.equalsIgnoreCase("red") ||
-                        aoepipeline.ColorValue.equalsIgnoreCase("green" )
-                        || aoepipeline.ColorValue.equalsIgnoreCase("blue") ) {
-                    position = aoepipeline.ColorValue;
-                    webcam.stopStreaming();
-                    break;
-                }
-                count ++;
-                sleep(100);
-            }
-        }// detect camera colornt
-
-        while (opModeIsActive()) { // put auto here
-            telemetry.addData("What", position);
-            telemetry.addData("Count", count);
-            telemetry.update();
-
-            moveForward1(POSITION_FORWARD_ONE_BLOCK + 150, VELOCITY);
-            sleep(2000);
-            parking(position);
-
-
-            // actual
-            // movement
-            // code
-            // start
-            // here
-            // lol
-
-            sleep(42069);
-
-        }
-    }
-
+/*
     private void robotMove(String packingPosition) {
         robotMoveMiddle();
         sleep(3000);
@@ -286,12 +200,91 @@ public class AutoRun extends LinearOpMode {
         moveBackward1(POSITION_RIGHT_ONE_BLOCK, VELOCITY);
         sleep(1000);
 
+        putLeftCone();
 
         sleep(500);
 
     }
 
+    private void putLeftCone() {
+        clawSpin.setPosition(0);
+        sleep(2000);
+        clawOpen();
+        sleep(1000);
+        clawSpin.setPosition(0.5);
+        sleep(1000);
+        clawClose();
+    }
+*/
+    @Override
+    public void runOpMode() {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        ColorPipeline centerColor = new ColorPipeline(webcam, 120, 35, 50, 40);
+        ColorPipeline right = new ColorPipeline(webcam, 0, 35, 50, 40);
+        //webcam code
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
 
+            @Override
+            public void onError(int errorCode) {
+
+            }
+
+        });
+
+        waitForStart();
+        /*
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        bottomLeft = hardwareMap.get(DcMotorEx.class, "bottomLeft");
+        bottomRight = hardwareMap.get(DcMotorEx.class, "bottomRight");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        linearSlide1 = hardwareMap.get(DcMotorEx.class, "linearSlide");
+        linearSlide2 = hardwareMap.get(DcMotorEx.class, "linearSlide2");
+        claw = hardwareMap.servo.get("claw");
+        clawSpin = hardwareMap.servo.get("clawSpin");
+
+        motorsDrive = new DcMotorEx[]{this.frontLeft, this.frontRight, this.bottomLeft, this.bottomRight};
+        motorsLeft = new DcMotorEx[]{this.frontLeft, this.bottomLeft};
+        motorsRight = new DcMotorEx[]{this.frontRight, this.bottomRight};
+        frontRbottomL = new DcMotorEx[]{this.frontRight, this.bottomLeft};
+        frontLbottomR = new DcMotorEx[]{this.frontLeft, this.bottomRight};
+        linearSlides = new DcMotorEx[]{this.linearSlide1, this.linearSlide2};
+
+        this.frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        this.frontRight.setDirection(DcMotor.Direction.REVERSE);
+        this.bottomLeft.setDirection(DcMotor.Direction.FORWARD);
+        this.bottomRight.setDirection(DcMotor.Direction.REVERSE);
+        this.linearSlide2.setDirection(DcMotor.Direction.REVERSE);
+
+*/
+        String position = "l";
+        if (centerColor.getRed()> 200) {
+            position = "c";
+        }else if( right.getRed() > 200){
+            position = "r";
+        }
+        int count = 0;
+
+        sleep(1000);
+        // detect camera colornt
+
+        while (opModeIsActive()) {
+            telemetry.addData("postion", position);
+            telemetry.addData("Count", count);
+            telemetry.addData("center", centerColor.getRed());
+            telemetry.addData("right", right.getRed());
+            telemetry.update();
+
+            //robotMove(position);
+
+
+        }
+    }
+/*
     private void moveFrontLeft(int cycle, double velocity) {
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeft.setTargetPosition(cycle);
@@ -578,5 +571,5 @@ public class AutoRun extends LinearOpMode {
         moveForward1(toMiddlePole, VELOCITY);
         frontRight.setVelocity(1000);
     }
-
+*/
 }
