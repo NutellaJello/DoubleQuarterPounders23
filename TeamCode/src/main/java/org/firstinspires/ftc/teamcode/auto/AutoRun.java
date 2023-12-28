@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 
-@Autonomous(name = "autorun")
+@Autonomous(name = "autorunL")
 public class AutoRun extends LinearOpMode {
     /*
     private static double ServoLeft = 0.65;
@@ -220,7 +220,7 @@ public class AutoRun extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        ColorPipeline centerColor = new ColorPipeline(webcam, 120, 35, 50, 40);
+        ColorPipeline centerColor = new ColorPipeline(webcam, 120, 35, 50, 40, telemetry);
         //ColorPipeline right = new ColorPipeline(webcam, 0, 35, 50, 40);
         //webcam code
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -285,12 +285,10 @@ public class AutoRun extends LinearOpMode {
         // detect camera colornt
 
         while (opModeIsActive()) {
-            telemetry.addData("Realtime analysis", centerColor.get());
-
             telemetry.addData("postion", position);
             telemetry.addData("Count", count);
             telemetry.addData("center", centerColor.getRed());
-            telemetry.update();
+            telemetry.addData("center", centerColor);
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
