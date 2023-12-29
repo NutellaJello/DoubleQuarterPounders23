@@ -91,13 +91,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="autocenter")
+@Autonomous(name="autoleft")
 
-public class AutoCenter extends LinearOpMode {
+public class AutoLeft extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private DcMotorEx         leftDrive   = null;
-    private DcMotorEx         rightDrive  = null;
+    private DcMotor         leftDrive   = null;
+    private DcMotor         rightDrive  = null;
 
     private Servo airplane = null;
     private Servo claw = null;
@@ -105,8 +105,8 @@ public class AutoCenter extends LinearOpMode {
     private Servo rightarm = null;
     private Servo leftarm = null;
 
-    private DcMotor           slides = null;
-    private DcMotorEx         FrontLeft = null;
+    private DcMotor         slides = null;
+    private DcMotorEx FrontLeft = null;
     private DcMotorEx         FrontRight = null;
     private DcMotorEx         BackLeft = null;
     private DcMotorEx         BackRight = null;
@@ -258,6 +258,13 @@ public class AutoCenter extends LinearOpMode {
         sleep(500);
         driveStraight(DRIVE_SPEED, -27.0, 0.0);    // Drive Forward 27"
         sleep(500);
+
+        //turnNinety(2);
+        turnRight(1770, -1770, 900);
+        //turnToHeading(TURN_SPEED, 90.0);
+        //holdHeading( TURN_SPEED, 90.0, 1.0);
+
+        sleep(500);
         armDown();
         sleep(500);
         clawOpen();
@@ -268,13 +275,18 @@ public class AutoCenter extends LinearOpMode {
         sleep(500);
 
 
-        //turnNinety(1);
-        turnLeft(-1770, 1770, 500);
-        //turnToHeading(TURN_SPEED, -90);
-        //holdHeading( TURN_SPEED, -90, 1.0);
+        turnRight(-1770, 1770, 900);
+        sleep(100);
+        turnRight(-1770, 1770, 900);
+        //turnNinety(2);
+        //turnNinety(2);
+        //turnToHeading(TURN_SPEED, 180);
+        //holdHeading( TURN_SPEED, 180, 1.0);
 
-        sleep (1000);
+        sleep(500);
+
         driveStraight(DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
+        driveStraight(DRIVE_SPEED, 6, 0.0);     // Drive Left 6" ish
         armDown();
         sleep(500);
         //slidesUp();
@@ -287,7 +299,7 @@ public class AutoCenter extends LinearOpMode {
         sleep(500);
         armUp();
         sleep(500);
-        driveStraight(DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+        driveStraight(DRIVE_SPEED, 18, 0.0);     // Drive Left 18" to park!
 
         telemetry.addData("Path", "Complete");
 
@@ -385,6 +397,27 @@ public class AutoCenter extends LinearOpMode {
         }
     }
 
+    public void turnRight(int cycle, int acycle, double velocity){
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setTargetPosition(acycle);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setVelocity(velocity);
+
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setTargetPosition(acycle);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setVelocity(velocity);
+
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setTargetPosition(cycle);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setVelocity(velocity);
+
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setTargetPosition(cycle);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setVelocity(velocity);
+    }
 
     public void turnNinety(int direction){ // 1 = clockwise, 2 = c-clockwise
         if (direction == 1){
@@ -402,28 +435,6 @@ public class AutoCenter extends LinearOpMode {
             sleep(1000);
         }
 
-    }
-
-    public void turnLeft(int cycle, int acycle, double velocity){
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setTargetPosition(cycle);
-        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontLeft.setVelocity(velocity);
-
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setTargetPosition(cycle);
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackLeft.setVelocity(velocity);
-
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setTargetPosition(acycle);
-        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setVelocity(velocity);
-
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setTargetPosition(acycle);
-        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRight.setVelocity(velocity);
     }
 
 
