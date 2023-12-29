@@ -91,13 +91,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="autocenter")
+@Autonomous(name="autoright")
 
-public class AutoCenter extends LinearOpMode {
+public class AutoRight extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private DcMotorEx         leftDrive   = null;
-    private DcMotorEx         rightDrive  = null;
+    private DcMotor         leftDrive   = null;
+    private DcMotor         rightDrive  = null;
 
     private Servo airplane = null;
     private Servo claw = null;
@@ -105,9 +105,9 @@ public class AutoCenter extends LinearOpMode {
     private Servo rightarm = null;
     private Servo leftarm = null;
 
-    private DcMotor           slides = null;
+    private DcMotor         slides = null;
     private DcMotorEx         FrontLeft = null;
-    private DcMotorEx         FrontRight = null;
+    private DcMotorEx FrontRight = null;
     private DcMotorEx         BackLeft = null;
     private DcMotorEx         BackRight = null;
 
@@ -258,6 +258,13 @@ public class AutoCenter extends LinearOpMode {
         sleep(500);
         driveStraight(DRIVE_SPEED, -27.0, 0.0);    // Drive Forward 27"
         sleep(500);
+
+        //turnNinety(1);
+        turnLeft(50,500);
+        //turnToHeading(TURN_SPEED, -90);
+        //holdHeading( TURN_SPEED, -90, 1.0);
+
+        sleep(500);
         armDown();
         sleep(500);
         clawOpen();
@@ -267,14 +274,8 @@ public class AutoCenter extends LinearOpMode {
         clawClose();
         sleep(500);
 
-
-        //turnNinety(1);
-        turnLeft(50,500);
-        //turnToHeading(TURN_SPEED, -90);
-        //holdHeading( TURN_SPEED, -90, 1.0);
-
-        sleep (1000);
         driveStraight(DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
+        driveStraight(DRIVE_SPEED,  -6, 0.0);     // Drive Right 6" ish
         armDown();
         sleep(500);
         //slidesUp();
@@ -287,7 +288,7 @@ public class AutoCenter extends LinearOpMode {
         sleep(500);
         armUp();
         sleep(500);
-        driveStraight(DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+        driveStraight(DRIVE_SPEED, 30, 0.0);     // Drive Left 30" to park!
 
         telemetry.addData("Path", "Complete");
 
@@ -384,26 +385,6 @@ public class AutoCenter extends LinearOpMode {
             BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
-
-    public void turnNinety(int direction){ // 1 = clockwise, 2 = c-clockwise
-        if (direction == 1){
-            FrontLeft.setPower(0.4);
-            BackLeft.setPower(0.4);
-            FrontRight.setPower(-0.4);
-            BackRight.setPower(-0.4);
-            sleep(1000);
-        }
-        else if (direction == 2){
-            FrontLeft.setPower(-0.4);
-            BackLeft.setPower(-0.4);
-            FrontRight.setPower(0.4);
-            BackRight.setPower(0.4);
-            sleep(1000);
-        }
-
-    }
-
     public void turnLeft(int move, double velocity){
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLeft.setTargetPosition(FrontLeft.getCurrentPosition() + move);
@@ -424,6 +405,24 @@ public class AutoCenter extends LinearOpMode {
         BackRight.setTargetPosition(BackRight.getCurrentPosition() - move);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setVelocity(velocity);
+    }
+
+    public void turnNinety(int direction){ // 1 = clockwise, 2 = c-clockwise
+        if (direction == 1){
+            FrontLeft.setPower(0.4);
+            BackLeft.setPower(0.4);
+            FrontRight.setPower(-0.4);
+            BackRight.setPower(-0.4);
+            sleep(1000);
+        }
+        else if (direction == 2){
+            FrontLeft.setPower(-0.4);
+            BackLeft.setPower(-0.4);
+            FrontRight.setPower(0.4);
+            BackRight.setPower(0.4);
+            sleep(1000);
+        }
+
     }
 
 
