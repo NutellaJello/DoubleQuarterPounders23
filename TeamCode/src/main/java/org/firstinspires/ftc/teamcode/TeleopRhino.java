@@ -122,7 +122,8 @@ public class TeleopRhino extends LinearOpMode {
 //                }
 //            }
 //            else if (gamepad2.left_stick_y < 0){
-//                if (!(slides.getCurrentPosition() < 50)) {
+//                if (!(slides.getCurrentPo
+//                sition() < 50)) {
 //                    slides.setTargetPosition(slides.getCurrentPosition() - 50);
 //                    slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //                    slides.setPower(0.5);
