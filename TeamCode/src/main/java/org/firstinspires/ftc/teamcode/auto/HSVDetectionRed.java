@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,7 +11,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class HSVDetection extends OpenCvPipeline {
+public class HSVDetectionRed extends OpenCvPipeline {
     /*
     GREEN  = Parking Left
     ORANGE    = Parking Middle
@@ -35,10 +32,10 @@ public class HSVDetection extends OpenCvPipeline {
     // Width and height for the bounding box
 
     static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,98);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(150,98);
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,98);
     static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,98);
-    static final int REGION_WIDTH = 40;
-    static final int REGION_HEIGHT = 60;
+    static final int REGION_WIDTH = 20;
+    static final int REGION_HEIGHT = 40;
 
     // Lower and upper boundaries for colors
     private static final Scalar
@@ -107,7 +104,7 @@ public class HSVDetection extends OpenCvPipeline {
     private volatile ParkingPosition position = ParkingPosition.LEFT;
 
     private Telemetry telemetry;
-    public HSVDetection(OpenCvWebcam webcam, Telemetry telemetry) {
+    public HSVDetectionRed(OpenCvWebcam webcam, Telemetry telemetry) {
         this.webcam = webcam;
         this.telemetry = telemetry;
 
