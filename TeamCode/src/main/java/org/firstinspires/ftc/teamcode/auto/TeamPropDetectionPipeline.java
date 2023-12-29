@@ -8,6 +8,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 public class TeamPropDetectionPipeline extends OpenCvPipeline {
     /*
@@ -20,6 +21,8 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
         RIGHT
     }
 
+    boolean viewportPaused;
+    private OpenCvWebcam webcam;
     /*
      * Some color constants
      */
@@ -30,9 +33,9 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(109,98);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(181,98);
-    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(253,98);
+    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,98);
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(150,98);
+    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,98);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 20;
 
@@ -78,15 +81,17 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
     Mat leftMat, centerMat, rightMat;
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
-    int avg1, avg2, avg3;
+    int avgLeft, avgCenter, avgRight;
 
     // Volatile since accessed by OpMode thread w/o synchronization
     private volatile TeamPropPosition position = TeamPropPosition.LEFT;
 
     private Telemetry telemetry;
 
-    public TeamPropDetectionPipeline(Telemetry telemetry) {
+    public TeamPropDetectionPipeline(OpenCvWebcam webcam, Telemetry telemetry) {
+        this.webcam = webcam;
         this.telemetry = telemetry;
+
     }
 
     /*
@@ -100,7 +105,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
     }
 
     @Override
-    public void init(Mat firstFrame)
+    public void init(Mat input)
     {
         /*
          * We need to call this in order to make sure the 'Cb'
@@ -111,7 +116,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
          * buffer would be re-allocated the first time a real frame
          * was crunched)
          */
-        inputToCb(firstFrame);
+        inputToCb(input);
 
         /*
          * Submats are a persistent reference to a region of the parent
@@ -121,6 +126,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
         leftMat = Cb.submat(new Rect(left_region_pointA, left_region1_pointB));
         centerMat = Cb.submat(new Rect(center_region_pointA, center_region_pointB));
         rightMat = Cb.submat(new Rect(right_region_pointA, right_region_pointB));
+
     }
 
     @Override
@@ -167,17 +173,6 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
         inputToCb(input);
 
         /*
-         * Compute the average pixel value of each submat region. We're
-         * taking the average of a single channel buffer, so the value
-         * we need is at index 0. We could have also taken the average
-         * pixel value of the 3-channel image, and referenced the value
-         * at index 2 here.
-         */
-        avg1 = (int) Core.mean(leftMat).val[0];
-        avg2 = (int) Core.mean(centerMat).val[0];
-        avg3 = (int) Core.mean(rightMat).val[0];
-
-        /*
          * Draw a rectangle showing sample region 1 on the screen.
          * Simply a visual aid. Serves no functional purpose.
          */
@@ -208,20 +203,30 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
                 right_region_pointA, // First point which defines the rectangle
                 right_region_pointB, // Second point which defines the rectangle
                 BLUE, // The color the rectangle is drawn in
-                2); // Thickness of the rectangle lines
+                4); // Thickness of the rectangle lines
 
+        /*
+         * Compute the average pixel value of each submat region. We're
+         * taking the average of a single channel buffer, so the value
+         * we need is at index 0. We could have also taken the average
+         * pixel value of the 3-channel image, and referenced the value
+         * at index 2 here.
+         */
+        avgLeft = (int) Core.mean(leftMat).val[0];
+        avgCenter = (int) Core.mean(centerMat).val[0];
+        avgRight = (int) Core.mean(rightMat).val[0];
 
         /*
          * Find the max of the 3 averages
          */
-        int maxOneTwo = Math.max(avg1, avg2);
-        int max = Math.max(maxOneTwo, avg3);
+        int maxOneTwo = Math.max(avgLeft, avgCenter);
+        int max = Math.max(maxOneTwo, avgRight);
 
         /*
          * Now that we found the max, we actually need to go and
          * figure out which sample region that value was from
          */
-        if(max == avg1) // Was it from region 1?
+        if(max == avgLeft) // Was it from region 1?
         {
             position = TeamPropPosition.LEFT; // Record our analysis
 
@@ -236,7 +241,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avg2) // Was it from region 2?
+        else if(max == avgCenter) // Was it from region 2?
         {
             position = TeamPropPosition.CENTER; // Record our analysis
 
@@ -251,7 +256,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avg3) // Was it from region 3?
+        else if(max == avgRight) // Was it from region 3?
         {
             position = TeamPropPosition.RIGHT; // Record our analysis
 
@@ -268,6 +273,9 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
         }
 
         telemetry.addData("[Pattern]", position);
+        telemetry.addData("left", avgLeft);
+        telemetry.addData("center", avgCenter);
+        telemetry.addData("right", avgRight);
         telemetry.update();
 
         /*
@@ -281,8 +289,18 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
     /*
      * Call this from the OpMode thread to obtain the latest analysis
      */
-    public TeamPropPosition getAnalysis()
+    public TeamPropPosition getPosition()
     {
         return position;
+    }
+
+
+    public void onViewportTapped() {
+        this.viewportPaused = !this.viewportPaused;
+        if (this.viewportPaused) {
+            this.webcam.pauseViewport();
+        } else {
+            this.webcam.resumeViewport();
+        }
     }
 }
