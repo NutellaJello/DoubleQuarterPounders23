@@ -260,7 +260,7 @@ public class AutoLeft extends LinearOpMode {
         sleep(500);
 
         //turnNinety(2);
-        turnRight(1770, -1770, 900);
+        turnRight(50, 500);
         //turnToHeading(TURN_SPEED, 90.0);
         //holdHeading( TURN_SPEED, 90.0, 1.0);
 
@@ -275,9 +275,9 @@ public class AutoLeft extends LinearOpMode {
         sleep(500);
 
 
-        turnRight(-1770, 1770, 900);
+        turnRight(50, 500);
         sleep(100);
-        turnRight(-1770, 1770, 900);
+        turnRight(50, 500);
         //turnNinety(2);
         //turnNinety(2);
         //turnToHeading(TURN_SPEED, 180);
@@ -397,24 +397,24 @@ public class AutoLeft extends LinearOpMode {
         }
     }
 
-    public void turnRight(int cycle, int acycle, double velocity){
+    public void turnRight(int move, double velocity){
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setTargetPosition(acycle);
+        FrontLeft.setTargetPosition(FrontLeft.getCurrentPosition() - move);
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontLeft.setVelocity(velocity);
 
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setTargetPosition(acycle);
+        BackLeft.setTargetPosition(BackLeft.getCurrentPosition() - move);
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackLeft.setVelocity(velocity);
 
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setTargetPosition(cycle);
+        FrontRight.setTargetPosition(FrontRight.getCurrentPosition() + move);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setVelocity(velocity);
 
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setTargetPosition(cycle);
+        BackRight.setTargetPosition(BackRight.getCurrentPosition() + move);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setVelocity(velocity);
     }
