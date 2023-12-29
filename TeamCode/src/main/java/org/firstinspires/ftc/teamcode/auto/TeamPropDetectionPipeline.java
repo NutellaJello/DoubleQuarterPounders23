@@ -211,22 +211,24 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
          * we need is at index 0. We could have also taken the average
          * pixel value of the 3-channel image, and referenced the value
          * at index 2 here.
-         */
-        avgLeft = (int) Core.mean(leftMat).val[0];
+         avgLeft = (int) Core.mean(leftMat).val[0];
         avgCenter = (int) Core.mean(centerMat).val[0];
         avgRight = (int) Core.mean(rightMat).val[0];
-
+        */
+        avgLeft = getTotalGreen(input, left_region_pointA, REGION_WIDTH, REGION_HEIGHT);
+        avgCenter = getTotalGreen(input, center_region_pointA, REGION_WIDTH, REGION_HEIGHT);
+        avgRight = getTotalGreen(input, right_region_pointA, REGION_WIDTH, REGION_HEIGHT);
         /*
          * Find the max of the 3 averages
          */
-        int maxOneTwo = Math.max(avgLeft, avgCenter);
-        int max = Math.max(maxOneTwo, avgRight);
+        int minOneTwo = Math.min(avgLeft, avgCenter);
+        int min = Math.min(minOneTwo, avgRight);
 
         /*
          * Now that we found the max, we actually need to go and
          * figure out which sample region that value was from
          */
-        if(max == avgLeft) // Was it from region 1?
+        if(min == avgLeft) // Was it from region 1?
         {
             position = TeamPropPosition.LEFT; // Record our analysis
 
@@ -241,7 +243,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avgCenter) // Was it from region 2?
+        else if(min == avgCenter) // Was it from region 2?
         {
             position = TeamPropPosition.CENTER; // Record our analysis
 
@@ -256,7 +258,7 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avgRight) // Was it from region 3?
+        else if(min == avgRight) // Was it from region 3?
         {
             position = TeamPropPosition.RIGHT; // Record our analysis
 
@@ -302,5 +304,16 @@ public class TeamPropDetectionPipeline extends OpenCvPipeline {
         } else {
             this.webcam.resumeViewport();
         }
+    }
+
+    private int getTotalGreen(Mat input, Point topLeft, int width, int height) {
+        int green = 0; int count = 0;
+        for(double i = topLeft.x; i < topLeft.x + width; ++i) {
+            for(double j = topLeft.y; j < topLeft.y + height; ++j) {
+                green += input.get((int) i, (int) j)[0];
+                count ++;
+            }
+        }
+        return green/count;
     }
 }
