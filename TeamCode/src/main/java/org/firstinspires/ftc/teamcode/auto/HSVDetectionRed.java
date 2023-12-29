@@ -44,15 +44,7 @@ public class HSVDetectionRed extends OpenCvPipeline {
 
             lower_red_bounds = new Scalar(0,50,50),
 
-            upper_red_bounds = new Scalar(15,255,255),
-
-            lower_red_bounds_2 = new Scalar(170,50,50),
-
-            upper_red_bounds_2 = new Scalar(180,255,255),
-
-            lower_blue_bounds = new Scalar(100,50,50),
-
-            upper_blue_bounds = new Scalar(120,255,255);
+            upper_red_bounds = new Scalar(15,255,255);
 
 
             // old colors from 2021-2022s game
