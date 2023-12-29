@@ -254,40 +254,40 @@ public class AutoCenter extends LinearOpMode {
         //          holdHeading() is used after turns to let the heading stabilize
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
-        clawClose();
-        sleep(500);
-        driveStraight(DRIVE_SPEED, -27.0, 0.0);    // Drive Forward 27"
-        sleep(500);
-        armDown();
-        sleep(500);
-        clawOpen();
-        sleep(500);
-        armUp();
-        sleep(500);
-        clawClose();
-        sleep(500);
+        //clawClose();
+        //sleep(500);
+        //driveStraight(DRIVE_SPEED, -27.0, 0.0);    // Drive Forward 27"
+        //sleep(500);
+        //armDown();
+        //sleep(500);
+        //clawOpen();
+        //sleep(500);
+        //armUp();
+        //sleep(500);
+        //clawClose();
+        //sleep(500);
 
 
         //turnNinety(1);
-        turnLeft(50,500);
+        turnLeft(100,100);
         //turnToHeading(TURN_SPEED, -90);
         //holdHeading( TURN_SPEED, -90, 1.0);
 
         sleep (1000);
-        driveStraight(DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
-        armDown();
-        sleep(500);
+        //driveStraight(DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
+        //armDown();
+        //sleep(500);
         //slidesUp();
-        sleep(500);
-        flopperDump();
-        sleep(500);
-        flopperRest();
-        sleep(500);
+        //sleep(500);
+        //flopperDump();
+        //sleep(500);
+        //flopperRest();
+        //sleep(500);
         //slidesDown();
-        sleep(500);
-        armUp();
-        sleep(500);
-        driveStraight(DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+       // sleep(500);
+        //armUp();
+        //sleep(500);
+       // driveStraight(DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
 
         telemetry.addData("Path", "Complete");
 
@@ -406,22 +406,22 @@ public class AutoCenter extends LinearOpMode {
 
     public void turnLeft(int move, double velocity){
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setTargetPosition(FrontLeft.getCurrentPosition() + move);
+        FrontLeft.setTargetPosition(1770);
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontLeft.setVelocity(velocity);
 
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setTargetPosition(BackLeft.getCurrentPosition() + move);
+        BackLeft.setTargetPosition(1770);
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackLeft.setVelocity(velocity);
 
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setTargetPosition(FrontRight.getCurrentPosition() - move);
+        FrontRight.setTargetPosition(-1770);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setVelocity(velocity);
 
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setTargetPosition(BackRight.getCurrentPosition() - move);
+        BackRight.setTargetPosition(-1770);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setVelocity(velocity);
     }

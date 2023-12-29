@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,7 +11,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class HSVDetection extends OpenCvPipeline {
+public class HSVDetectionBlue extends OpenCvPipeline {
     /*
     GREEN  = Parking Left
     ORANGE    = Parking Middle
@@ -35,30 +32,21 @@ public class HSVDetection extends OpenCvPipeline {
     // Width and height for the bounding box
 
     static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,98);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(150,98);
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,98);
     static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,98);
-    static final int REGION_WIDTH = 40;
-    static final int REGION_HEIGHT = 60;
+    static final int REGION_WIDTH = 20;
+    static final int REGION_HEIGHT = 40;
 
     // Lower and upper boundaries for colors
     private static final Scalar
 
 
+    lower_blue_bounds = new Scalar(100,50,50),
 
-            lower_red_bounds = new Scalar(0,50,50),
-
-            upper_red_bounds = new Scalar(15,255,255),
-
-            lower_red_bounds_2 = new Scalar(170,50,50),
-
-            upper_red_bounds_2 = new Scalar(180,255,255),
-
-            lower_blue_bounds = new Scalar(100,50,50),
-
-            upper_blue_bounds = new Scalar(120,255,255);
+    upper_blue_bounds = new Scalar(130,255,255);
 
 
-            // old colors from 2021-2022s game
+    // old colors from 2021-2022s game
 //            lower_green_bounds  = new Scalar(42, 50, 50),
 //            upper_green_bounds  = new Scalar(76, 255, 255),
 //            lower_orange_bounds    = new Scalar(13, 50,50),
@@ -107,7 +95,7 @@ public class HSVDetection extends OpenCvPipeline {
     private volatile ParkingPosition position = ParkingPosition.LEFT;
 
     private Telemetry telemetry;
-    public HSVDetection(OpenCvWebcam webcam, Telemetry telemetry) {
+    public HSVDetectionBlue(OpenCvWebcam webcam, Telemetry telemetry) {
         this.webcam = webcam;
         this.telemetry = telemetry;
 
@@ -148,9 +136,9 @@ public class HSVDetection extends OpenCvPipeline {
 
 
         // Gets channels from given source mat
-        Core.inRange(leftBlurredMat, lower_red_bounds, upper_red_bounds, leftMat);
-        Core.inRange(centerBlurredMat, lower_red_bounds, upper_red_bounds, centerMat);
-        Core.inRange(rightBlurredMat, lower_red_bounds, upper_red_bounds, rightMat);
+        Core.inRange(leftBlurredMat, lower_blue_bounds, upper_blue_bounds, leftMat);
+        Core.inRange(centerBlurredMat, lower_blue_bounds, lower_blue_bounds, centerMat);
+        Core.inRange(rightBlurredMat, lower_blue_bounds, lower_blue_bounds, rightMat);
 
         // Gets color specific values
         int leftPercent = Core.countNonZero(leftMat);
