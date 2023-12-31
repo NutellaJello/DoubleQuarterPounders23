@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.sun.tools.javac.tree.DCTree;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -529,10 +530,8 @@ public class Autotest extends LinearOpMode {
 
 
         flspeed = drive - turn;
-        //flspeed = drive + turn;
         frspeed = drive + turn;
         blspeed = drive - turn;
-        //blspeed = drive + turn;
         brspeed = drive + turn;
 // was commented out i dont remember if the minus and plus are right
 
@@ -586,10 +585,67 @@ public class Autotest extends LinearOpMode {
         return orientation.getYaw(AngleUnit.DEGREES);
     }
 
+    public void turnByDegrees(double degrees, double speed)
+    {
+        double factor = 3.0;
+        // save old runmode and restore later
+        DcMotor.RunMode oldMode = FrontLeft.getMode();
+
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int turnCounts = (int)(degrees * factor);
+
+        flTarget = FrontLeft.getCurrentPosition() + turnCounts;
+        frTarget = FrontRight.getCurrentPosition() - turnCounts;
+        blTarget = BackLeft.getCurrentPosition() + turnCounts;
+        brTarget = BackRight.getCurrentPosition() - turnCounts;
 
 
+        FrontLeft.setTargetPosition(flTarget);
+        FrontRight.setTargetPosition(frTarget);
+        BackLeft.setTargetPosition(blTarget);
+        BackRight.setTargetPosition(brTarget);
 
+        FrontLeft.setPower(speed);
+        FrontRight.setPower(speed);
+        BackLeft.setPower(speed);
+        BackRight.setPower(speed);
 
+        while (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())
+        {
+            telemetry.addData("Left Front:", FrontLeft.getCurrentPosition());
+            telemetry.addData("Left Back:", BackLeft.getCurrentPosition());
+            telemetry.addData("Right Front:", FrontRight.getCurrentPosition());
+            telemetry.addData("Right Back:", BackRight.getCurrentPosition());
+
+            telemetry.update();
+
+        }
+
+        stopRobot();
+
+        // restore old mode
+        FrontLeft.setMode(oldMode);
+        BackLeft.setMode(oldMode);
+        FrontRight.setMode(oldMode);
+        BackLeft.setMode(oldMode);
+    }
+
+    public void stopRobot() {
+        FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
+
+    }
 
 }
 
