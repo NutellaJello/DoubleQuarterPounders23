@@ -42,7 +42,8 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.auto.HSVDetection;
+import org.firstinspires.ftc.teamcode.auto.HSVDetectionRed;
+import org.firstinspires.ftc.teamcode.utilities.PIDControl;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -119,6 +120,7 @@ public class Autotest extends LinearOpMode {
     private DcMotor         BackLeft = null;
     private DcMotor         BackRight = null;
 
+    private PIDControl pidControl = new PIDControl();
     private IMU             imu         = null;      // Control/Expansion Hub IMU
 
     private double          headingError  = 0;
@@ -164,8 +166,8 @@ public class Autotest extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // They can/should be tweaked to suit the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
-    static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate 0.2
-    static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
+    static final double     TURN_SPEED              = 0.25;     // Max Turn speed to limit turn rate 0.2
+    static final double     HEADING_THRESHOLD       = 2.0 ;    // How close must the heading get to the target before moving to next step.
     // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
     // Define the Pro portional control coefficient (or GAIN) for "heading control".
     // We define one value when Turning (larger errors), and the other is used when Driving straight (smaller errors).
@@ -188,6 +190,8 @@ public class Autotest extends LinearOpMode {
         FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
         BackRight = hardwareMap.dcMotor.get("BackRight"); //3
 
+
+
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -195,8 +199,8 @@ public class Autotest extends LinearOpMode {
 //        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // reversing our motors
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /* The next two lines define Hub orientation.
          * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
@@ -230,7 +234,7 @@ public class Autotest extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        HSVDetection pipeline = new HSVDetection(webcam, telemetry);
+        HSVDetectionRed pipeline = new HSVDetectionRed(webcam, telemetry);
         webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -272,28 +276,35 @@ public class Autotest extends LinearOpMode {
         //          holdHeading() is used after turns to let the heading stabilize
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
-       driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
+        driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
         sleep(1000);
+        turnToHeading(TURN_SPEED,90);
+        sleep(1000);
+        turnToHeading(TURN_SPEED,0);
 
-        if (pipeline.getPosition().equals(HSVDetection.ParkingPosition.LEFT)){
-            turnToHeading( TURN_SPEED, 45.0);
-            holdHeading(turnSpeed,45,1);
-        }
-        else if (pipeline.getPosition().equals(HSVDetection.ParkingPosition.RIGHT)){
-            turnToHeading(TURN_SPEED,-45.0);
-            holdHeading(turnSpeed,-45,1);
-        }
-        else {
-            turnToHeading(TURN_SPEED,45);
-            holdHeading(turnSpeed,45,1);
-            sleep(500);
-            turnToHeading(TURN_SPEED,-45);
-            holdHeading(turnSpeed,-45,1);
-        }
+        sleep(1000);
+        driveStraight(DRIVE_SPEED,24,0.0);
+// frontleft back left frontright backright
+
+//        if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.LEFT)){
+//            turnToHeading( TURN_SPEED, 45.0);
+//            holdHeading(turnSpeed,45,1);
+//        }
+//        else if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.RIGHT)){
+//            turnToHeading(TURN_SPEED,-45.0);
+//            holdHeading(turnSpeed,-45,1);
+//        }
+//        else {
+//            turnToHeading(TURN_SPEED,45);
+//            holdHeading(turnSpeed,45,1);
+//            sleep(500);
+//            turnToHeading(TURN_SPEED,-45);
+//            holdHeading(turnSpeed,-45,1);
+//        }
 
 
         sleep (1000);
- //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
+        //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
 ///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
 //        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
 //        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
@@ -496,8 +507,11 @@ public class Autotest extends LinearOpMode {
         while (headingError > 180)  headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
+        double controlsig = pidControl.PIDValue(desiredHeading,getHeading());
+
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        return Range.clip(headingError * proportionalGain, -1, 1);
+        //return Range.clip(headingError * proportionalGain, -1, 1);
+        return Range.clip(controlsig, -1, 1);
     }
 
     /**
@@ -515,14 +529,16 @@ public class Autotest extends LinearOpMode {
 
 
         flspeed = drive - turn;
+        //flspeed = drive + turn;
         frspeed = drive + turn;
-//        blspeed = drive - turn;
-//        brspeed = drive + turn;
-
+        blspeed = drive - turn;
+        //blspeed = drive + turn;
+        brspeed = drive + turn;
+// was commented out i dont remember if the minus and plus are right
 
         // Scale speeds down if either one exceeds +/- 1.0;
         double max = Math.max(Math.abs(flspeed), Math.abs(frspeed));
-
+// did not max both back motors
         if (max > 1.0)
         {
             flspeed /= max;
@@ -570,11 +586,10 @@ public class Autotest extends LinearOpMode {
         return orientation.getYaw(AngleUnit.DEGREES);
     }
 
-// camera detection methods
-
 
 
 
 
 
 }
+
