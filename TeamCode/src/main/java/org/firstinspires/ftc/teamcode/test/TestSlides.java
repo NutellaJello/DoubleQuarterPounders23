@@ -27,11 +27,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
@@ -84,27 +84,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="testflopper")
+@Autonomous(name="testslides")
 
-public class TestFlopper extends LinearOpMode {
+public class TestSlides extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private Servo flopper = null;
+    private DcMotor         slides = null;
 
     @Override
     public void runOpMode() {
 
-        flopper = hardwareMap.servo.get("flopper");
+        slides = hardwareMap.dcMotor.get("slides");
 
         while (opModeInInit()) {
-            telemetry.addData("flopper", Double.toString(flopper.getPosition()));
+            telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
             telemetry.update();
         }
 
-        flopperDump();
+        slidesUp();
         sleep(3000);
 
-        flopperRest();
+        slidesDown();
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
@@ -113,13 +113,19 @@ public class TestFlopper extends LinearOpMode {
         sleep(10000);  // Pause to display last telemetry message.
     }
 
-    private void flopperRest() {
-        flopper.setPosition(0.95);
-        sleep(1200);
+    private void slidesUp(){
+        slides.setTargetPosition(slides.getCurrentPosition() + 50);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.setPower(0.5);
+        slides.setPower(gamepad2.left_stick_y * 0.4);
+
     }
 
-    private void flopperDump() {
-        flopper.setPosition(0.638);
-        sleep(1200);
+    private void slidesDown(){
+        slides.setTargetPosition(slides.getCurrentPosition() - 50);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.setPower(0.5);
+        slides.setPower(gamepad2.left_stick_y * 0.4);
+
     }
 }

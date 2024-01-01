@@ -27,14 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 /*
  *  This OpMode illustrates the concept of driving an autonomous path based on Gyro (IMU) heading and encoder counts.
@@ -84,27 +85,78 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="testclaw")
+@Autonomous(name="testWheelBR")
 
-public class TestClaw extends LinearOpMode {
+public class TestWheelBackRight extends LinearOpMode {
+    private DcMotor slides = null;
+    private DcMotorEx         FrontLeft = null;
+    private DcMotorEx         FrontRight = null;
+    private DcMotorEx         BackLeft = null;
+    private DcMotorEx         BackRight = null;
+
+    private IMU imu         = null;      // Control/Expansion Hub IMU
+
+    private double          headingError  = 0;
+
+    // These variable are declared here (as class members) so they can be updated in various methods,
+    // but still be displayed by sendTelemetry()
+    private double  targetHeading = 0;
+    private double  driveSpeed    = 0;
+    private double  turnSpeed     = 0;
+    private double  leftSpeed     = 0;
+    private double  rightSpeed    = 0;
+    private int     leftTarget    = 0;
+    private int     rightTarget   = 0;
+
+    // Calculate the COUNTS_PER_INCH for your specific drive train.
+    // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
+    // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
+    // For example, use a value of 2.0 for a 12-tooth spur gear driving a 24-tooth spur gear.
+    // This is gearing DOWN for less speed and more torque.
+    // For gearing UP, use a gear ratio less than 1.0. Note this will affect the direction of wheel rotation.
+    static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;   // eg: GoBILDA 312 RPM Yellow Jacket
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+
+    // These constants define the desired driving/control characteristics
+    // They can/should be tweaked to suit the specific robot drive train.
+    static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
+    static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate 0.2
+    static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
+    // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
+    // Define the Pro portional control coefficient (or GAIN) for "heading control".
+    // We define one value when Turning (larger errors), and the other is used when Driving straight (smaller errors).
+    // Increase these numbers if the heading does not corrects strongly enough (eg: a heavy robot or using tracks)
+    // Decrease these numbers if the heading does not settle on the correct value (eg: very agile robot with omni wheels)
+    static final double     P_TURN_GAIN            = 0.02;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable
+//test
 
     /* Declare OpMode members. */
-    private Servo claw = null;
+
+    private Servo rightarm = null;
+    private Servo leftarm = null;
 
     @Override
     public void runOpMode() {
 
-        claw = hardwareMap.servo.get("claw");
+        FrontLeft = hardwareMap.get(DcMotorEx.class,"FrontLeft"); //0
+        BackLeft = hardwareMap.get(DcMotorEx.class,"BackLeft"); //1
+        FrontRight = hardwareMap.get(DcMotorEx.class,"FrontRight"); //2
+        BackRight = hardwareMap.get(DcMotorEx.class,"BackRight"); //3
+
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeInInit()) {
-            telemetry.addData("claw", Double.toString(claw.getPosition()));
+            telemetry.addData("FrontLeft", Double.toString(FrontLeft.getVelocity()));
+            telemetry.addData("BackLeft", Double.toString(BackLeft.getVelocity()));
             telemetry.update();
         }
 
-        clawClose();
-        sleep(3000);
-
-        clawOpen();
+        moveBackRight(1000, 900);
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
@@ -113,13 +165,34 @@ public class TestClaw extends LinearOpMode {
         sleep(10000);  // Pause to display last telemetry message.
     }
 
-    private void clawOpen() {
-        claw.setPosition(0);
-        sleep(1200);
+
+
+    private void moveFrontLeft(int cycle, double velocity) {
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setTargetPosition(cycle);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setVelocity(velocity);
     }
 
-    private void clawClose() {
-        claw.setPosition(0.095);
-        sleep(1200);
+    private void moveFrontRight(int cycle, double velocity) {
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setTargetPosition(cycle);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setVelocity(velocity);
     }
+
+    private void moveBackLeft(int cycle, double velocity) {
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setTargetPosition(cycle);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setVelocity(velocity);
+    }
+
+    private void moveBackRight(int cycle, double velocity) {
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setTargetPosition(cycle);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setVelocity(velocity);
+    }
+
 }

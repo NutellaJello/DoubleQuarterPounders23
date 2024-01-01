@@ -27,12 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -141,32 +142,45 @@ public class TestWheel extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        leftarm = hardwareMap.servo.get("leftarm");
-        rightarm = hardwareMap.servo.get("rightarm");
-        rightarm.setDirection(Servo.Direction.REVERSE);
+        FrontLeft = hardwareMap.get(DcMotorEx.class,"FrontLeft"); //0
+        BackLeft = hardwareMap.get(DcMotorEx.class,"BackLeft"); //1
+        FrontRight = hardwareMap.get(DcMotorEx.class,"FrontRight"); //2
+        BackRight = hardwareMap.get(DcMotorEx.class,"BackRight"); //3
+//
+//        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeInInit()) {
-            telemetry.addData("leftarm", Double.toString(leftarm.getPosition()));
-            telemetry.addData("rightarm", Double.toString(rightarm.getPosition()));
+            telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
+            telemetry.addData("BackLeft", Double.toString(BackLeft.getCurrentPosition()));
+            telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
+            telemetry.addData("BackRight", Double.toString(BackRight.getCurrentPosition()));
             telemetry.update();
         }
 
-        moveFrontLeft(1000, 10);
-        sleep(3000);
 
-        moveFrontRight(1000, 10);
-        sleep(3000);
+        moveFrontLeft(1000, 0.3);
+        sleep(10000);
 
-        moveBackLeft(1000, 10);
-        sleep(3000);
+        moveFrontRight(1000, 0.3);
+        sleep(10000);
 
-        moveBackRight(1000, 10);
-        sleep(3000);
+        moveBackLeft(1000, 0.3);
+        sleep(10000);
+
+        moveBackRight(1000, 0.3);
+        sleep(10000);
 
         telemetry.addData("Path", "Complete");
 
+        telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
+        telemetry.addData("BackLeft", Double.toString(BackLeft.getCurrentPosition()));
+        telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
+        telemetry.addData("BackRight", Double.toString(BackRight.getCurrentPosition()));
         telemetry.update();
+
         sleep(10000);  // Pause to display last telemetry message.
+
     }
 
 
@@ -175,28 +189,28 @@ public class TestWheel extends LinearOpMode {
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLeft.setTargetPosition(cycle);
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontLeft.setVelocity(velocity);
+        FrontLeft.setPower(velocity);
     }
 
     private void moveFrontRight(int cycle, double velocity) {
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontRight.setTargetPosition(cycle);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setVelocity(velocity);
+        FrontRight.setPower(velocity);
     }
 
     private void moveBackLeft(int cycle, double velocity) {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackLeft.setTargetPosition(cycle);
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackLeft.setVelocity(velocity);
+        BackLeft.setPower(velocity);
     }
 
     private void moveBackRight(int cycle, double velocity) {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setTargetPosition(cycle);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRight.setVelocity(velocity);
+        BackRight.setPower(velocity);
     }
 
 }

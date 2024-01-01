@@ -27,11 +27,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
@@ -84,27 +84,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="testslides")
+@Autonomous(name="testclaw")
 
-public class TestSlides extends LinearOpMode {
+public class TestClaw extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private DcMotor         slides = null;
+    private Servo claw = null;
 
     @Override
     public void runOpMode() {
 
-        slides = hardwareMap.dcMotor.get("slides");
+        claw = hardwareMap.servo.get("claw");
 
         while (opModeInInit()) {
-            telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
+            telemetry.addData("claw", Double.toString(claw.getPosition()));
             telemetry.update();
         }
 
-        slidesUp();
+        clawClose();
         sleep(3000);
 
-        slidesDown();
+        clawOpen();
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
@@ -113,19 +113,13 @@ public class TestSlides extends LinearOpMode {
         sleep(10000);  // Pause to display last telemetry message.
     }
 
-    private void slidesUp(){
-        slides.setTargetPosition(slides.getCurrentPosition() + 50);
-        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slides.setPower(0.5);
-        slides.setPower(gamepad2.left_stick_y * 0.4);
-
+    private void clawOpen() {
+        claw.setPosition(0);
+        sleep(1200);
     }
 
-    private void slidesDown(){
-        slides.setTargetPosition(slides.getCurrentPosition() - 50);
-        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slides.setPower(0.5);
-        slides.setPower(gamepad2.left_stick_y * 0.4);
-
+    private void clawClose() {
+        claw.setPosition(0.095);
+        sleep(1200);
     }
 }

@@ -38,13 +38,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.sun.tools.javac.tree.DCTree;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.auto.HSVDetectionRed;
-import org.firstinspires.ftc.teamcode.utilities.PIDControl;
+//import org.firstinspires.ftc.teamcode.auto.HSVDetection;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -111,6 +109,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 public class Autotest extends LinearOpMode {
 
+
     /* Declare OpMode members. */
     OpenCvWebcam webcam;
     private DcMotor         leftDrive   = null;
@@ -121,7 +120,6 @@ public class Autotest extends LinearOpMode {
     private DcMotor         BackLeft = null;
     private DcMotor         BackRight = null;
 
-    private PIDControl pidControl = new PIDControl();
     private IMU             imu         = null;      // Control/Expansion Hub IMU
 
     private double          headingError  = 0;
@@ -167,8 +165,8 @@ public class Autotest extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // They can/should be tweaked to suit the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
-    static final double     TURN_SPEED              = 0.25;     // Max Turn speed to limit turn rate 0.2
-    static final double     HEADING_THRESHOLD       = 2.0 ;    // How close must the heading get to the target before moving to next step.
+    static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate 0.2
+    static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
     // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
     // Define the Pro portional control coefficient (or GAIN) for "heading control".
     // We define one value when Turning (larger errors), and the other is used when Driving straight (smaller errors).
@@ -180,118 +178,109 @@ public class Autotest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-        // Initialize the drive system variables.
-//        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-//        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
-        // Our motors
-        FrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
-        BackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
-        FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
-        BackRight = hardwareMap.dcMotor.get("BackRight"); //3
-
-
-
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-//        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-
-        // reversing our motors
-        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-
-        // Now initialize the IMU with this mounting orientation
-        // This sample expects the IMU to be in a REV Hub and named "imu".
-        imu = hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
-
-        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-//        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        HSVDetectionRed pipeline = new HSVDetectionRed(webcam, telemetry);
-        webcam.setPipeline(pipeline);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-            }
-        });
-
-        // Wait for the game to start (Display Gyro value while waiting)
-        while (opModeInInit()) {
-
-            telemetry.addData("postion", pipeline.getPosition());
-
-
-
-            telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
-            telemetry.addData("","");
-            telemetry.update();
-        }
-
-        // Set the encoders for closed loop speed control, and reset the heading.
-
-//        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        imu.resetYaw();
-
-        // Step through each leg of the path,
-        // Notes:   Reverse movement is obtained by setting a negative distance (not speed)
-        //          holdHeading() is used after turns to let the heading stabilize
-        //          Add a sleep(2000) after any step to keep the telemetry data visible for review
-
-        driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
-        sleep(1000);
-        turnToHeading(TURN_SPEED,90);
-        sleep(1000);
-        turnToHeading(TURN_SPEED,0);
-
-        sleep(1000);
-        driveStraight(DRIVE_SPEED,24,0.0);
-// frontleft back left frontright backright
-
-//        if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.LEFT)){
+//
+//        // Initialize the drive system variables.
+////        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+////        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+//
+//        // Our motors
+//        FrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
+//        BackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
+//        FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
+//        BackRight = hardwareMap.dcMotor.get("BackRight"); //3
+//
+//        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+//        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+//        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+////        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+////        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+//
+//        // reversing our motors
+//        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        /* The next two lines define Hub orientation.
+//         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
+//         *
+//         * To Do:  EDIT these two lines to match YOUR mounting configuration.
+//         */
+//        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+//        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+//        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+//
+//        // Now initialize the IMU with this mounting orientation
+//        // This sample expects the IMU to be in a REV Hub and named "imu".
+//        imu = hardwareMap.get(IMU.class, "imu");
+//        imu.initialize(new IMU.Parameters(orientationOnRobot));
+//
+//        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
+////        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+////        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+////        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+////        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+//        HSVDetection pipeline = new HSVDetection(webcam, telemetry);
+//        webcam.setPipeline(pipeline);
+//        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//            @Override
+//            public void onOpened() {
+//                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode) {
+//            }
+//        });
+//
+//        // Wait for the game to start (Display Gyro value while waiting)
+//        while (opModeInInit()) {
+//
+//            telemetry.addData("postion", pipeline.getPosition());
+//
+//
+//
+//            telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
+//            telemetry.addData("","");
+//            telemetry.update();
+//        }
+//
+//        // Set the encoders for closed loop speed control, and reset the heading.
+//
+////        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+////        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        imu.resetYaw();
+//
+//        // Step through each leg of the path,
+//        // Notes:   Reverse movement is obtained by setting a negative distance (not speed)
+//        //          holdHeading() is used after turns to let the heading stabilize
+//        //          Add a sleep(2000) after any step to keep the telemetry data visible for review
+//
+//       driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
+//        sleep(1000);
+//
+//        if (pipeline.().equals(HSVDetection.ParkingPosition.LEFT)){
 //            turnToHeading( TURN_SPEED, 45.0);
 //            holdHeading(turnSpeed,45,1);
 //        }
-//        else if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.RIGHT)){
+//        else if (pipeline.getPosition().equals(HSVDetection.ParkingPosition.RIGHT)){
 //            turnToHeading(TURN_SPEED,-45.0);
 //            holdHeading(turnSpeed,-45,1);
 //        }
@@ -302,25 +291,25 @@ public class Autotest extends LinearOpMode {
 //            turnToHeading(TURN_SPEED,-45);
 //            holdHeading(turnSpeed,-45,1);
 //        }
-
-
-        sleep (1000);
-        //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
-///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
-//        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
-//        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
-//        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 //
-//        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
-//        turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
-//        holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
 //
-//        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
-
-        telemetry.addData("Path", "Complete");
-
-        telemetry.update();
-        sleep(1000);  // Pause to display last telemetry message.
+//        sleep (1000);
+// //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
+/////   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
+////        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
+////        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
+////        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
+////
+////        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
+////        turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
+////        holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
+////
+////        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
+//
+//        telemetry.addData("Path", "Complete");
+//
+//        telemetry.update();
+//        sleep(1000);  // Pause to display last telemetry message.
     }
 
     /*
@@ -508,11 +497,8 @@ public class Autotest extends LinearOpMode {
         while (headingError > 180)  headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
-        double controlsig = pidControl.PIDValue(desiredHeading,getHeading());
-
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        //return Range.clip(headingError * proportionalGain, -1, 1);
-        return Range.clip(controlsig, -1, 1);
+        return Range.clip(headingError * proportionalGain, -1, 1);
     }
 
     /**
@@ -531,13 +517,13 @@ public class Autotest extends LinearOpMode {
 
         flspeed = drive - turn;
         frspeed = drive + turn;
-        blspeed = drive - turn;
-        brspeed = drive + turn;
-// was commented out i dont remember if the minus and plus are right
+//        blspeed = drive - turn;
+//        brspeed = drive + turn;
+
 
         // Scale speeds down if either one exceeds +/- 1.0;
         double max = Math.max(Math.abs(flspeed), Math.abs(frspeed));
-// did not max both back motors
+
         if (max > 1.0)
         {
             flspeed /= max;
@@ -585,67 +571,11 @@ public class Autotest extends LinearOpMode {
         return orientation.getYaw(AngleUnit.DEGREES);
     }
 
-    public void turnByDegrees(double degrees, double speed)
-    {
-        double factor = 3.0;
-        // save old runmode and restore later
-        DcMotor.RunMode oldMode = FrontLeft.getMode();
-
-        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        int turnCounts = (int)(degrees * factor);
-
-        flTarget = FrontLeft.getCurrentPosition() + turnCounts;
-        frTarget = FrontRight.getCurrentPosition() - turnCounts;
-        blTarget = BackLeft.getCurrentPosition() + turnCounts;
-        brTarget = BackRight.getCurrentPosition() - turnCounts;
+// camera detection methods
 
 
-        FrontLeft.setTargetPosition(flTarget);
-        FrontRight.setTargetPosition(frTarget);
-        BackLeft.setTargetPosition(blTarget);
-        BackRight.setTargetPosition(brTarget);
 
-        FrontLeft.setPower(speed);
-        FrontRight.setPower(speed);
-        BackLeft.setPower(speed);
-        BackRight.setPower(speed);
 
-        while (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())
-        {
-            telemetry.addData("Left Front:", FrontLeft.getCurrentPosition());
-            telemetry.addData("Left Back:", BackLeft.getCurrentPosition());
-            telemetry.addData("Right Front:", FrontRight.getCurrentPosition());
-            telemetry.addData("Right Back:", BackRight.getCurrentPosition());
 
-            telemetry.update();
-
-        }
-
-        stopRobot();
-
-        // restore old mode
-        FrontLeft.setMode(oldMode);
-        BackLeft.setMode(oldMode);
-        FrontRight.setMode(oldMode);
-        BackLeft.setMode(oldMode);
-    }
-
-    public void stopRobot() {
-        FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        FrontLeft.setPower(0);
-        FrontRight.setPower(0);
-        BackLeft.setPower(0);
-        BackRight.setPower(0);
-
-    }
 
 }
-
