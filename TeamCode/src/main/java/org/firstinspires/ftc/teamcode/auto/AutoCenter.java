@@ -582,12 +582,12 @@ public class AutoCenter extends LinearOpMode {
 
     //CLAW
     private void clawOpen() {
-        claw.setPosition(0);
+        claw.setPosition(1.0);
         sleep(1200);
     }
 
     private void clawClose() {
-        claw.setPosition(0.095);
+        claw.setPosition(0.785);
         sleep(1200);
     }
 

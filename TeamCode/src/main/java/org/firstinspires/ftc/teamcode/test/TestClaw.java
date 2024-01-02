@@ -31,10 +31,12 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.common.Claw;
 
 /*
  *  This OpMode illustrates the concept of driving an autonomous path based on Gyro (IMU) heading and encoder counts.
@@ -85,41 +87,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  */
 
 @Autonomous(name="testclaw")
-
 public class TestClaw extends LinearOpMode {
-
     /* Declare OpMode members. */
-    private Servo claw = null;
 
     @Override
     public void runOpMode() {
-
-        claw = hardwareMap.servo.get("claw");
+        Claw claw = new Claw(hardwareMap);
 
         while (opModeInInit()) {
-            telemetry.addData("claw", Double.toString(claw.getPosition()));
+            //telemetry.addData("claw", Double.toString(claw.getPosition()));
             telemetry.update();
         }
 
-        clawClose();
+        claw.clawClose();
         sleep(3000);
 
-        clawOpen();
+        claw.clawOpen();
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
 
         telemetry.update();
         sleep(10000);  // Pause to display last telemetry message.
-    }
-
-    private void clawOpen() {
-        claw.setPosition(0);
-        sleep(1200);
-    }
-
-    private void clawClose() {
-        claw.setPosition(0.095);
-        sleep(1200);
     }
 }

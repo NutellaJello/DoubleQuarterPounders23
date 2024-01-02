@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.common.Arm;
 
 /*
  *  This OpMode illustrates the concept of driving an autonomous path based on Gyro (IMU) heading and encoder counts.
@@ -90,26 +91,21 @@ public class TestArm extends LinearOpMode {
 
     /* Declare OpMode members. */
 
-    private Servo rightarm = null;
-    private Servo leftarm = null;
-
     @Override
     public void runOpMode() {
 
-        leftarm = hardwareMap.servo.get("leftarm");
-        rightarm = hardwareMap.servo.get("rightarm");
-        rightarm.setDirection(Servo.Direction.REVERSE);
+        Arm arm = new Arm(hardwareMap);
 
         while (opModeInInit()) {
-            telemetry.addData("leftarm", Double.toString(leftarm.getPosition()));
-            telemetry.addData("rightarm", Double.toString(rightarm.getPosition()));
+            //telemetry.addData("leftarm", Double.toString(leftarm.getPosition()));
+            //telemetry.addData("rightarm", Double.toString(rightarm.getPosition()));
             telemetry.update();
         }
 
-        armUp();
+        arm.armUp();
         sleep(3000);
 
-        armDown();
+        arm.armDown();
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
@@ -119,15 +115,5 @@ public class TestArm extends LinearOpMode {
     }
 
 
-    private void armUp() {
-        leftarm.setPosition(0.95);
-        rightarm.setPosition(0.95);
-        sleep(1200);
-    }
 
-    private void armDown() {
-        leftarm.setPosition(0.023);
-        rightarm.setPosition(0.023);
-        sleep(1200);
-    }
 }

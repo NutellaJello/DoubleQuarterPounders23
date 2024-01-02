@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.common.Flopper;
 
 /*
  *  This OpMode illustrates the concept of driving an autonomous path based on Gyro (IMU) heading and encoder counts.
@@ -89,22 +90,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class TestFlopper extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private Servo flopper = null;
 
     @Override
     public void runOpMode() {
 
-        flopper = hardwareMap.servo.get("flopper");
+        Flopper flopper = new Flopper(hardwareMap);
 
         while (opModeInInit()) {
-            telemetry.addData("flopper", Double.toString(flopper.getPosition()));
+            //telemetry.addData("flopper", Double.toString(flopper.getPosition()));
             telemetry.update();
         }
 
-        flopperDump();
+        flopper.flopperDump();
         sleep(3000);
 
-        flopperRest();
+        flopper.flopperRest();
         sleep(3000);
 
         telemetry.addData("Path", "Complete");
@@ -113,13 +113,5 @@ public class TestFlopper extends LinearOpMode {
         sleep(10000);  // Pause to display last telemetry message.
     }
 
-    private void flopperRest() {
-        flopper.setPosition(0.95);
-        sleep(1200);
-    }
 
-    private void flopperDump() {
-        flopper.setPosition(0.638);
-        sleep(1200);
-    }
 }

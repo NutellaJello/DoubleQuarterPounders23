@@ -13,10 +13,20 @@ public class Arm {
     public Servo leftarm = null;
 
 
-    public void init(HardwareMap hardwareMap) {
-
+    public Arm(HardwareMap hardwareMap) {
         leftarm = hardwareMap.servo.get("leftarm");
         rightarm = hardwareMap.servo.get("rightarm");
+        rightarm.setDirection(Servo.Direction.REVERSE);
+    }
+
+    public void armUp() {
+        leftarm.setPosition(0.95);
+        rightarm.setPosition(0.95);
+    }
+
+    public void armDown() {
+        leftarm.setPosition(0.023);
+        rightarm.setPosition(0.023);
     }
 
 }

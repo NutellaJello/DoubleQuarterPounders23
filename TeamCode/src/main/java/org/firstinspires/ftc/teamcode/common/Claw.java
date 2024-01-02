@@ -11,10 +11,17 @@ public class Claw {
     /* Declare OpMode members. */
     public Servo claw = null;
 
-    public void init(HardwareMap hardwareMap) {
+    public Claw(HardwareMap hardwareMap) {
         claw = hardwareMap.servo.get("claw");
     }
 
+    public void clawOpen() {
+        claw.setPosition(0);
+    }
+
+    public void clawClose() {
+        claw.setPosition(0.095);
+    }
 
 
 }
