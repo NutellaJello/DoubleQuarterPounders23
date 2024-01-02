@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
@@ -149,6 +151,15 @@ public class TestWheel extends LinearOpMode {
 //
 //        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 //        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        PIDFCoefficients pidFL = FrontLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+//        PIDFCoefficients pidBL = BackLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+//        PIDFCoefficients pidFR = FrontRight.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+//        PIDFCoefficients pidBR = BackRight.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        PIDFCoefficients pidFL = FrontLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
+        PIDFCoefficients pidBL = BackLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
+        PIDFCoefficients pidFR = FrontRight.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
+        PIDFCoefficients pidBR = BackRight.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (opModeInInit()) {
             telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
@@ -158,28 +169,63 @@ public class TestWheel extends LinearOpMode {
             telemetry.update();
         }
 
+        waitForStart();
+        while (opModeIsActive()) {
+            telemetry.addData("PIDFL", "%.4f, %.4f, %.4f", pidFL.p, pidFL.i, pidFL.d);
+            telemetry.addData("PIDBL", "%.4f, %.4f, %.4f", pidBL.p, pidBL.i, pidBL.d);
+            telemetry.addData("PIDFR", "%.4f, %.4f, %.4f", pidFR.p, pidFR.i, pidFR.d);
+            telemetry.addData("PIDBR", "%.4f, %.4f, %.4f", pidBR.p, pidBR.i, pidBR.d);
+            telemetry.update();
 
-        moveFrontLeft(1000, 0.3);
-        sleep(10000);
+            sleep(2000);
 
-        moveFrontRight(1000, 0.3);
-        sleep(10000);
+            telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
+            telemetry.addData("BackLeft", Double.toString(BackLeft.getCurrentPosition()));
+            telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
+            telemetry.addData("BackRight", Double.toString(BackRight.getCurrentPosition()));
+            telemetry.update();
 
-        moveBackLeft(1000, 0.3);
-        sleep(10000);
+            sleep(2000);
 
-        moveBackRight(1000, 0.3);
-        sleep(10000);
 
-        telemetry.addData("Path", "Complete");
+            FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
-        telemetry.addData("BackLeft", Double.toString(BackLeft.getCurrentPosition()));
-        telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
-        telemetry.addData("BackRight", Double.toString(BackRight.getCurrentPosition()));
-        telemetry.update();
+            FrontRight.setTargetPosition((int)(FrontRight.getCurrentPosition() + 1000));
+            FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            FrontRight.setPower(.1);
 
-        sleep(10000);  // Pause to display last telemetry message.
+
+            while (FrontRight.isBusy()){
+                telemetry.addData("FrontRight Position: ", FrontRight.getCurrentPosition());
+                telemetry.update();
+                sleep(1000);
+            }
+
+            FrontLeft.setPower(0);
+            sleep(3000);
+            telemetry.addData("FrontRight Position: ", FrontRight.getCurrentPosition());
+            telemetry.update();
+            sleep(10000);
+//
+//            moveFrontRight(1000, 0.3);
+//            sleep(10000);
+//
+//            moveBackLeft(1000, 0.3);
+//            sleep(10000);
+//
+//            moveBackRight(1000, 0.3);
+//            sleep(10000);
+
+            telemetry.addData("Path", "Complete");
+//
+//            telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
+//            telemetry.addData("BackLeft", Double.toString(BackLeft.getCurrentPosition()));
+//            telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
+//            telemetry.addData("BackRight", Double.toString(BackRight.getCurrentPosition()));
+//            telemetry.update();
+
+            sleep(10000);  // Pause to display last telemetry message.
+        }
 
     }
 
@@ -190,6 +236,8 @@ public class TestWheel extends LinearOpMode {
         FrontLeft.setTargetPosition(cycle);
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontLeft.setPower(velocity);
+        telemetry.addData("FrontLeft", Double.toString(FrontLeft.getCurrentPosition()));
+        telemetry.update();
     }
 
     private void moveFrontRight(int cycle, double velocity) {
@@ -197,6 +245,8 @@ public class TestWheel extends LinearOpMode {
         FrontRight.setTargetPosition(cycle);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setPower(velocity);
+        telemetry.addData("FrontRight", Double.toString(FrontRight.getCurrentPosition()));
+        telemetry.update();
     }
 
     private void moveBackLeft(int cycle, double velocity) {
