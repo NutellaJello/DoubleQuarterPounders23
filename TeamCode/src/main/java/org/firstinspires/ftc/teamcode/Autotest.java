@@ -333,74 +333,7 @@ public class Autotest extends LinearOpMode {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from the current robotHeading.
      */
-    public void driveStraight(double maxDriveSpeed,
-                              double distance,
-                              double heading) {
 
-        // Ensure that the OpMode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            int moveCounts = (int)(distance * COUNTS_PER_INCH);
-//            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
-//            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
-
-            flTarget = FrontLeft.getCurrentPosition() + moveCounts;
-            frTarget = FrontRight.getCurrentPosition() + moveCounts;
-            blTarget = BackLeft.getCurrentPosition() + moveCounts;
-            brTarget = BackRight.getCurrentPosition() + moveCounts;
-
-            // Set Target FIRST, then turn on RUN_TO_POSITION
-//            leftDrive.setTargetPosition(leftTarget);
-//            rightDrive.setTargetPosition(rightTarget);
-
-            FrontLeft.setTargetPosition(flTarget);
-            FrontRight.setTargetPosition(frTarget);
-            BackLeft.setTargetPosition(blTarget);
-            BackRight.setTargetPosition(brTarget);
-
-//            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Set the required driving speed  (must be positive for RUN_TO_POSITION)
-            // Start driving straight, and then enter the control loop
-            maxDriveSpeed = Math.abs(maxDriveSpeed);
-            moveRobot(maxDriveSpeed, 0);
-
-            // keep looping while we are still active, and BOTH motors are running.
-            while (opModeIsActive() &&
-                    (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy())) {
-
-                // Determine required steering to keep on heading
-                turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
-
-                // if driving in reverse, the motor correction also needs to be reversed
-                if (distance < 0)
-                    turnSpeed *= -1.0;
-
-                // Apply the turning correction to the current driving speed.
-                moveRobot(driveSpeed, turnSpeed);
-
-                // Display drive status for the driver.
-                sendTelemetry(true);
-            }
-
-            // Stop all motion & Turn off RUN_TO_POSITION
-            moveRobot(0, 0);
-//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
 
     /**
      *  Spin on the central axis to point in a new direction.
