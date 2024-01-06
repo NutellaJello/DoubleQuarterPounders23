@@ -63,8 +63,11 @@ public class Vehicle {
         this.BackRight = hardwareMap.get(DcMotorEx.class,"BackRight"); //3
         this.motorsDrive = new DcMotorEx[] {FrontLeft, BackLeft, FrontRight, BackRight};
 
-        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -180,6 +183,7 @@ public class Vehicle {
         while (headingError > 180)  headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
+        //headingError = Math.signum(headingError)*Math.sqrt(Math.abs(headingError));
         double controlSig = pidControl.PIDValue(desiredHeading, getHeading());
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
         //return Range.clip(headingError * proportionalGain, -1, 1);

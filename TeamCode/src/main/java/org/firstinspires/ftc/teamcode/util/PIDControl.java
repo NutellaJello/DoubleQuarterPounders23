@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PIDControl{
     double intergralSum =0;
-    double Kp = 0.15;
+    double Kp = 0.1;
     double Ki= 0.0;
-    double Kd =0.03;
+    double Kd =0.0;
 
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
@@ -17,11 +17,12 @@ public class PIDControl{
 
     public double PIDValue(double reference, double state){
         double error = reference-state;
+        while (error > 180)  error -= 360;
+        while (error <= -180) error += 360;
+
         intergralSum +=error *timer.seconds();
         double derivative = (error-lastError) / timer.seconds();
 
-        while (error > 180)  error -= 360;
-        while (error <= -180) error += 360;
         lastError = error;
 
         timer.reset();
