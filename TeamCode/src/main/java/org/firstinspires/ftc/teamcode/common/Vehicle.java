@@ -60,8 +60,8 @@ public class Vehicle {
         this.BackRight = hardwareMap.get(DcMotorEx.class,"BackRight"); //3
         this.motorsDrive = new DcMotorEx[] {FrontLeft, BackLeft, FrontRight, BackRight};
 
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

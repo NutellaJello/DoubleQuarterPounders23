@@ -207,14 +207,14 @@ public class TestWheel extends LinearOpMode {
             telemetry.update();
             sleep(10000);
 //
-//            moveFrontRight(1000, 0.3);
-//            sleep(10000);
+            moveFrontRight(1000, 0.3);
+            sleep(10000);
 //
-//            moveBackLeft(1000, 0.3);
-//            sleep(10000);
-//
-//            moveBackRight(1000, 0.3);
-//            sleep(10000);
+            moveBackLeft(1000, 0.3);
+            sleep(10000);
+
+            moveBackRight(1000, 0.3);
+            sleep(10000);
 
             telemetry.addData("Path", "Complete");
 //

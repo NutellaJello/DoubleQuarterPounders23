@@ -29,20 +29,10 @@
 
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.common.Arm;
 import org.firstinspires.ftc.teamcode.common.Claw;
 import org.firstinspires.ftc.teamcode.common.Constants;
@@ -102,9 +92,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="bluefarauto")
+@Autonomous(name="rednearauto")
 
-public class BlueFarAuto extends LinearOpMode {
+public class RedNearAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -119,8 +109,8 @@ public class BlueFarAuto extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvWebcam webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        HSVDetectionBlue detectionBlue = new HSVDetectionBlue(webcam, telemetry);
-        webcam.setPipeline(detectionBlue);
+        HSVDetectionRed detectionRed = new HSVDetectionRed(webcam, telemetry);
+        webcam.setPipeline(detectionRed);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -144,11 +134,12 @@ public class BlueFarAuto extends LinearOpMode {
         waitForStart();
 
 
-        if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.CENTER) {
+        if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
             claw.clawClose();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Claw forward 27"
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
             sleep(500);
 
             arm.armDown();
@@ -160,9 +151,9 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.turn(90, Constants.TURN_SPEED);
+            vehicle.turn(-90, Constants.TURN_SPEED);
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
@@ -178,12 +169,13 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Right 24" to park!
             sleep(1000);
+
 
         }
 
-        else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
+        else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
             claw.clawClose();
             sleep(500);
 
@@ -199,9 +191,11 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right blue strip thing
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
+            sleep(500);
+            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left red strip thing
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
@@ -217,14 +211,14 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive Right 6" to blue alliance right thing
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive right 6" to red alliance right thing
             sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive Left 30" to park!
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
             sleep(1000);
 
         }
 
-        else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.LEFT) {
+        else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
 
             claw.clawClose();
             sleep(500);
@@ -241,11 +235,9 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left blue strip thing
+            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
             sleep(1000);
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so flopper faces board thing
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
@@ -261,11 +253,10 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive Left 6" to blue alliance left thing
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive left 6" to red alliance left thing
             sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Left 18" to park!
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive right 30" to park!
             sleep(1000);
-
         }
 
         telemetry.addData("Path", "Complete");

@@ -102,9 +102,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="bluefarauto")
+@Autonomous(name="TestMovementBlueFarCenter")
 
-public class BlueFarAuto extends LinearOpMode {
+public class TestMovementBlueFarCenter extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -112,165 +112,17 @@ public class BlueFarAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Vehicle vehicle = new Vehicle(hardwareMap, telemetry);
-        Claw claw = new Claw(hardwareMap);
-        Flopper flopper = new Flopper(hardwareMap);
-        Arm arm = new Arm(hardwareMap);
-        Slides slides = new Slides(hardwareMap);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        OpenCvWebcam webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        HSVDetectionBlue detectionBlue = new HSVDetectionBlue(webcam, telemetry);
-        webcam.setPipeline(detectionBlue);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
-            }
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+        sleep(500);
 
-            @Override
-            public void onError(int errorCode) {
+        vehicle.turn(90, Constants.TURN_SPEED);
+        sleep(1000);
 
-            }
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
+        sleep(500);
 
-        });
-
-
-        while (opModeInInit()) {
-            telemetry.addData(">", "Robot Heading = %4.0f");
-            telemetry.addData("","");
-            telemetry.update();
-        }
-
-        waitForStart();
-
-
-        if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.CENTER) {
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Claw forward 27"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            claw.clawOpen();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(90, Constants.TURN_SPEED);
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
-            sleep(1000);
-
-        }
-
-        else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            claw.clawOpen();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right blue strip thing
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive Right 6" to blue alliance right thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive Left 30" to park!
-            sleep(1000);
-
-        }
-
-        else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.LEFT) {
-
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            claw.clawOpen();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left blue strip thing
-            sleep(1000);
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so flopper faces board thing
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive Left 6" to blue alliance left thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Left 18" to park!
-            sleep(1000);
-
-        }
-
-        telemetry.addData("Path", "Complete");
-
-        telemetry.update();
-        sleep(100000);  // Pause to display last telemetry message.
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+        sleep(1000);
     }
 }

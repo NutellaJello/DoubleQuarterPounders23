@@ -29,20 +29,10 @@
 
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.common.Arm;
 import org.firstinspires.ftc.teamcode.common.Claw;
 import org.firstinspires.ftc.teamcode.common.Constants;
@@ -102,9 +92,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="bluefarauto")
+@Autonomous(name="bluenearauto")
 
-public class BlueFarAuto extends LinearOpMode {
+public class BlueNearAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -153,16 +143,20 @@ public class BlueFarAuto extends LinearOpMode {
 
             arm.armDown();
             sleep(500);
+
             claw.clawOpen();
             sleep(500);
+
             arm.armUp();
             sleep(500);
+
             claw.clawClose();
             sleep(500);
 
-            vehicle.turn(90, Constants.TURN_SPEED);
+            vehicle.turn(-90, Constants.TURN_SPEED);
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
@@ -199,9 +193,9 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right blue strip thing
+            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces right blue strip thing
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, 90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
@@ -245,7 +239,7 @@ public class BlueFarAuto extends LinearOpMode {
             sleep(1000);
             vehicle.turn(90, Constants.TURN_SPEED); //turn so flopper faces board thing
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, 90.0);    // Drive Forward 84"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, 90.0);    // Drive Forward 36"
             sleep(500);
 
             arm.armDown();
