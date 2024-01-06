@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.util.PIDControl;
 
 public class Vehicle {
 
@@ -50,6 +51,7 @@ public class Vehicle {
     private double blspeed = 0;
 
     private double brspeed = 0;
+    private PIDControl pidControl = new PIDControl();
 
     private double          headingError  = 0;
 
@@ -178,8 +180,10 @@ public class Vehicle {
         while (headingError > 180)  headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
+        double controlSig = pidControl.PIDValue(desiredHeading, getHeading());
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        return Range.clip(headingError * proportionalGain, -1, 1);
+        //return Range.clip(headingError * proportionalGain, -1, 1);
+        return Range.clip(controlSig, -1, 1);
     }
 
     public void turn(double angle, double speed) {

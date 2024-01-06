@@ -43,7 +43,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 //import org.firstinspires.ftc.teamcode.auto.HSVDetection;
-import org.firstinspires.ftc.teamcode.common.Constants;
+import org.firstinspires.ftc.teamcode.auto.HSVDetectionRed;
+import org.firstinspires.ftc.teamcode.util.PIDControl;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -151,6 +152,8 @@ public class Autotest extends LinearOpMode {
 
     private double brspeed = 0;
 
+    private PIDControl pidControl = new PIDControl();
+
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
     // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
@@ -165,7 +168,7 @@ public class Autotest extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // They can/should be tweaked to suit the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
+    static final double     DRIVE_SPEED             = 0.2;     // Max driving speed for better distance accuracy.
     static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate 0.2
     static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
     // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
@@ -232,8 +235,8 @@ public class Autotest extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-//        HSVDetection pipeline = new HSVDetection(webcam, telemetry);
-//        webcam.setPipeline(pipeline);
+        HSVDetectionRed pipeline = new HSVDetectionRed(webcam, telemetry);
+        webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -248,7 +251,7 @@ public class Autotest extends LinearOpMode {
         // Wait for the game to start (Display Gyro value while waiting)
         while (opModeInInit()) {
 
-            //telemetry.addData("postion", pipeline.getPosition());
+            telemetry.addData("postion", pipeline.getPosition());
 
 
 
@@ -275,13 +278,16 @@ public class Autotest extends LinearOpMode {
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
        driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
-//        sleep(1000);
+        turnToHeading(TURN_SPEED,90);
+        sleep(1000);
+        turnToHeading(TURN_SPEED,0);
+        driveStraight(DRIVE_SPEED,24,0.0);
 //
-//        if (pipeline.().equals(HSVDetection.ParkingPosition.LEFT)){
+//        if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.LEFT)){
 //            turnToHeading( TURN_SPEED, 45.0);
 //            holdHeading(turnSpeed,45,1);
 //        }
-//        else if (pipeline.getPosition().equals(HSVDetection.ParkingPosition.RIGHT)){
+//        else if (pipeline.getPosition().equals(HSVDetectionRed.ParkingPosition.RIGHT)){
 //            turnToHeading(TURN_SPEED,-45.0);
 //            holdHeading(turnSpeed,-45,1);
 //        }
@@ -334,7 +340,74 @@ public class Autotest extends LinearOpMode {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from the current robotHeading.
      */
+    public void driveStraight(double maxDriveSpeed,
+                              double distance,
+                              double heading) {
 
+        // Ensure that the OpMode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            int moveCounts = (int)(distance * COUNTS_PER_INCH);
+//            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
+//            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
+
+            flTarget = FrontLeft.getCurrentPosition() + moveCounts;
+            frTarget = FrontRight.getCurrentPosition() + moveCounts;
+            blTarget = BackLeft.getCurrentPosition() + moveCounts;
+            brTarget = BackRight.getCurrentPosition() + moveCounts;
+
+            // Set Target FIRST, then turn on RUN_TO_POSITION
+//            leftDrive.setTargetPosition(leftTarget);
+//            rightDrive.setTargetPosition(rightTarget);
+
+            FrontLeft.setTargetPosition(flTarget);
+            FrontRight.setTargetPosition(frTarget);
+            BackLeft.setTargetPosition(blTarget);
+            BackRight.setTargetPosition(brTarget);
+
+//            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // Set the required driving speed  (must be positive for RUN_TO_POSITION)
+            // Start driving straight, and then enter the control loop
+            maxDriveSpeed = Math.abs(maxDriveSpeed);
+            moveRobot(maxDriveSpeed, 0);
+
+            // keep looping while we are still active, and BOTH motors are running.
+            while (opModeIsActive() &&
+                    (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy())) {
+
+                // Determine required steering to keep on heading
+                turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (distance < 0)
+                    turnSpeed *= -1.0;
+
+                // Apply the turning correction to the current driving speed.
+                moveRobot(driveSpeed, turnSpeed);
+
+                // Display drive status for the driver.
+                sendTelemetry(true);
+            }
+
+            // Stop all motion & Turn off RUN_TO_POSITION
+            moveRobot(0, 0);
+//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
 
     /**
      *  Spin on the central axis to point in a new direction.
@@ -388,71 +461,6 @@ public class Autotest extends LinearOpMode {
      *                   If a relative angle is required, add/subtract from current heading.
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
-    public void driveStraight(double maxDriveSpeed,
-                              double distance,
-                              double heading) {
-
-        // Ensure that the OpMode is still active
-
-        // Determine new target position, and pass to motor controller
-        int moveCounts = (int)(distance * Constants.COUNTS_PER_INCH);
-//            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
-//            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
-
-        flTarget = FrontLeft.getCurrentPosition() + moveCounts;
-        frTarget = FrontRight.getCurrentPosition() + moveCounts;
-        blTarget = BackLeft.getCurrentPosition() + moveCounts;
-        brTarget = BackRight.getCurrentPosition() + moveCounts;
-
-        // Set Target FIRST, then turn on RUN_TO_POSITION
-//            leftDrive.setTargetPosition(leftTarget);
-//            rightDrive.setTargetPosition(rightTarget);
-
-        FrontLeft.setTargetPosition(flTarget);
-        FrontRight.setTargetPosition(frTarget);
-        BackLeft.setTargetPosition(blTarget);
-        BackRight.setTargetPosition(brTarget);
-
-//            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Set the required driving speed  (must be positive for RUN_TO_POSITION)
-        // Start driving straight, and then enter the control loop
-        maxDriveSpeed = Math.abs(maxDriveSpeed);
-        moveRobot(maxDriveSpeed, 0);
-
-        // keep looping while we are still active, and BOTH motors are running.
-        while (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy()) {
-
-            // Determine required steering to keep on heading
-            double turnSpeed = getSteeringCorrection(heading, Constants.P_DRIVE_GAIN);
-
-            // if driving in reverse, the motor correction also needs to be reversed
-            if (distance < 0)
-                turnSpeed *= -1.0;
-
-            // Apply the turning correction to the current driving speed.
-            moveRobot(driveSpeed, turnSpeed);
-
-            // Display drive status for the driver.
-            sendTelemetry(true);
-        }
-
-        // Stop all motion & Turn off RUN_TO_POSITION
-        moveRobot(0, 0);
-//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
     public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
 
         ElapsedTime holdTimer = new ElapsedTime();
@@ -496,8 +504,10 @@ public class Autotest extends LinearOpMode {
         while (headingError > 180)  headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
+        double controlSig = pidControl.PIDValue(desiredHeading, getHeading());
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        return Range.clip(headingError * proportionalGain, -1, 1);
+        //return Range.clip(headingError * proportionalGain, -1, 1);
+        return Range.clip(controlSig, -1, 1);
     }
 
     /**

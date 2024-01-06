@@ -40,12 +40,13 @@ public class TeleopRhino extends LinearOpMode {
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        slides.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        airplane.setPosition (0.63);
+        airplane.setPosition (0.85);
         //wait for button click
         waitForStart();
         // stop the program if button click
@@ -111,7 +112,7 @@ public class TeleopRhino extends LinearOpMode {
                 airplane.setPosition (0.3);
             }
             else {
-                airplane.setPosition(0.63);
+                airplane.setPosition(0.85);
             }
 
 //            if (gamepad2.left_stick_y > 0 ){
