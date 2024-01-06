@@ -43,6 +43,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 //import org.firstinspires.ftc.teamcode.auto.HSVDetection;
+import org.firstinspires.ftc.teamcode.common.Constants;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -178,102 +179,102 @@ public class Autotest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-//
-//        // Initialize the drive system variables.
-////        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-////        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-//
-//        // Our motors
-//        FrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
-//        BackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
-//        FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
-//        BackRight = hardwareMap.dcMotor.get("BackRight"); //3
-//
-//        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-//        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-//        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-////        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-////        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-//
-//        // reversing our motors
-//        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//
-//        /* The next two lines define Hub orientation.
-//         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-//         *
-//         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-//         */
-//        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
-//        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-//        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-//
-//        // Now initialize the IMU with this mounting orientation
-//        // This sample expects the IMU to be in a REV Hub and named "imu".
-//        imu = hardwareMap.get(IMU.class, "imu");
-//        imu.initialize(new IMU.Parameters(orientationOnRobot));
-//
-//        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-////        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-////        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+        // Initialize the drive system variables.
+//        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+//        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+
+        // Our motors
+        FrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
+        BackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
+        FrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
+        BackRight = hardwareMap.dcMotor.get("BackRight"); //3
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+//        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        // reversing our motors
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        /* The next two lines define Hub orientation.
+         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
+         *
+         * To Do:  EDIT these two lines to match YOUR mounting configuration.
+         */
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        // Now initialize the IMU with this mounting orientation
+        // This sample expects the IMU to be in a REV Hub and named "imu".
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+
+        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
+//        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 //        HSVDetection pipeline = new HSVDetection(webcam, telemetry);
 //        webcam.setPipeline(pipeline);
-//        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-//            @Override
-//            public void onOpened() {
-//                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-//            }
-//
-//            @Override
-//            public void onError(int errorCode) {
-//            }
-//        });
-//
-//        // Wait for the game to start (Display Gyro value while waiting)
-//        while (opModeInInit()) {
-//
-//            telemetry.addData("postion", pipeline.getPosition());
-//
-//
-//
-//            telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
-//            telemetry.addData("","");
-//            telemetry.update();
-//        }
-//
-//        // Set the encoders for closed loop speed control, and reset the heading.
-//
-////        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-////        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        imu.resetYaw();
-//
-//        // Step through each leg of the path,
-//        // Notes:   Reverse movement is obtained by setting a negative distance (not speed)
-//        //          holdHeading() is used after turns to let the heading stabilize
-//        //          Add a sleep(2000) after any step to keep the telemetry data visible for review
-//
-//       driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+            }
+        });
+
+        // Wait for the game to start (Display Gyro value while waiting)
+        while (opModeInInit()) {
+
+            //telemetry.addData("postion", pipeline.getPosition());
+
+
+
+            telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
+            telemetry.addData("","");
+            telemetry.update();
+        }
+
+        // Set the encoders for closed loop speed control, and reset the heading.
+
+//        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        imu.resetYaw();
+
+        // Step through each leg of the path,
+        // Notes:   Reverse movement is obtained by setting a negative distance (not speed)
+        //          holdHeading() is used after turns to let the heading stabilize
+        //          Add a sleep(2000) after any step to keep the telemetry data visible for review
+
+       driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive backwards 24"
 //        sleep(1000);
 //
 //        if (pipeline.().equals(HSVDetection.ParkingPosition.LEFT)){
@@ -291,25 +292,25 @@ public class Autotest extends LinearOpMode {
 //            turnToHeading(TURN_SPEED,-45);
 //            holdHeading(turnSpeed,-45,1);
 //        }
+
+
+        sleep (1000);
+ //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
+///   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
+//        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
+//        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
+//        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 //
+//        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
+//        turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
+//        holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
 //
-//        sleep (1000);
-// //       driveStraight(DRIVE_SPEED, 48.0, 0.0);
-/////   holdHeading( TURN_SPEED, -45.0, 2);   // Hold -45 Deg heading for a 1/2 second
-////        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
-////        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
-////        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-////
-////        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
-////        turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
-////        holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
-////
-////        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
-//
-//        telemetry.addData("Path", "Complete");
-//
-//        telemetry.update();
-//        sleep(1000);  // Pause to display last telemetry message.
+//        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
+
+        telemetry.addData("Path", "Complete");
+
+        telemetry.update();
+        sleep(1000);  // Pause to display last telemetry message.
     }
 
     /*
@@ -387,6 +388,71 @@ public class Autotest extends LinearOpMode {
      *                   If a relative angle is required, add/subtract from current heading.
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
+    public void driveStraight(double maxDriveSpeed,
+                              double distance,
+                              double heading) {
+
+        // Ensure that the OpMode is still active
+
+        // Determine new target position, and pass to motor controller
+        int moveCounts = (int)(distance * Constants.COUNTS_PER_INCH);
+//            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
+//            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
+
+        flTarget = FrontLeft.getCurrentPosition() + moveCounts;
+        frTarget = FrontRight.getCurrentPosition() + moveCounts;
+        blTarget = BackLeft.getCurrentPosition() + moveCounts;
+        brTarget = BackRight.getCurrentPosition() + moveCounts;
+
+        // Set Target FIRST, then turn on RUN_TO_POSITION
+//            leftDrive.setTargetPosition(leftTarget);
+//            rightDrive.setTargetPosition(rightTarget);
+
+        FrontLeft.setTargetPosition(flTarget);
+        FrontRight.setTargetPosition(frTarget);
+        BackLeft.setTargetPosition(blTarget);
+        BackRight.setTargetPosition(brTarget);
+
+//            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set the required driving speed  (must be positive for RUN_TO_POSITION)
+        // Start driving straight, and then enter the control loop
+        maxDriveSpeed = Math.abs(maxDriveSpeed);
+        moveRobot(maxDriveSpeed, 0);
+
+        // keep looping while we are still active, and BOTH motors are running.
+        while (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy()) {
+
+            // Determine required steering to keep on heading
+            double turnSpeed = getSteeringCorrection(heading, Constants.P_DRIVE_GAIN);
+
+            // if driving in reverse, the motor correction also needs to be reversed
+            if (distance < 0)
+                turnSpeed *= -1.0;
+
+            // Apply the turning correction to the current driving speed.
+            moveRobot(driveSpeed, turnSpeed);
+
+            // Display drive status for the driver.
+            sendTelemetry(true);
+        }
+
+        // Stop all motion & Turn off RUN_TO_POSITION
+        moveRobot(0, 0);
+//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
 
         ElapsedTime holdTimer = new ElapsedTime();
