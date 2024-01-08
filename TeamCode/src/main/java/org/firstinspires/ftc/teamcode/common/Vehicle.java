@@ -312,8 +312,8 @@ public class Vehicle {
     }
 
     public void moveRobot(double drive, double turn) {
-        double driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
-        double turnSpeed  = turn;      // save this value as a class member so it can be used by telemetry.
+        driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
+        turnSpeed  = turn;      // save this value as a class member so it can be used by telemetry.
 
 //        leftSpeed  = drive - turn;
 //        rightSpeed = drive + turn;
