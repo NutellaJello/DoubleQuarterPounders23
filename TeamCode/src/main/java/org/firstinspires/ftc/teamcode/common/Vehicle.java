@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -27,6 +28,7 @@ public class Vehicle {
     public IMU imu         = null;
     public DcMotorEx[]       motorsDrive;
     public Telemetry         telemetry;
+    public LinearOpMode      linearOpMode;
 
     private double  targetHeading = 0;
     private double  driveSpeed    = 0;
@@ -87,6 +89,41 @@ public class Vehicle {
         imu.resetYaw();
 
         this.telemetry = telemetry;
+
+    }
+    public Vehicle(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode linearOpMode) {
+
+        this.FrontLeft = hardwareMap.get(DcMotorEx.class,"FrontLeft"); //0
+        this.BackLeft = hardwareMap.get(DcMotorEx.class,"BackLeft"); //1
+        this.FrontRight = hardwareMap.get(DcMotorEx.class,"FrontRight"); //2
+        this.BackRight = hardwareMap.get(DcMotorEx.class,"BackRight"); //3
+        this.motorsDrive = new DcMotorEx[] {FrontLeft, BackLeft, FrontRight, BackRight};
+
+//        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+        this.imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.resetYaw();
+
+        this.telemetry = telemetry;
+        this.linearOpMode = linearOpMode;
     }
 
 
@@ -95,9 +132,8 @@ public class Vehicle {
                               double heading) {
 
         // Ensure that the OpMode is still active
-
             // Determine new target position, and pass to motor controller
-            int moveCounts = (int)(distance * Constants.COUNTS_PER_INCH);
+            int moveCounts = (int) (distance * Constants.COUNTS_PER_INCH);
 //            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
 //            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
 
@@ -129,7 +165,7 @@ public class Vehicle {
             moveRobot(maxDriveSpeed, 0);
 
             // keep looping while we are still active, and BOTH motors are running.
-            while (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy()&& BackLeft.isBusy()) {
+            while (FrontLeft.isBusy() && BackRight.isBusy() && FrontRight.isBusy() && BackLeft.isBusy()) {
 
                 // Determine required steering to keep on heading
                 double turnSpeed = getSteeringCorrection(heading, Constants.P_DRIVE_GAIN);
@@ -154,6 +190,7 @@ public class Vehicle {
             FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     private void sendTelemetry(boolean straight) {
@@ -189,10 +226,10 @@ public class Vehicle {
         while (headingError <= -180) headingError += 360;
 
         //headingError = Math.signum(headingError)*Math.sqrt(Math.abs(headingError));
-        double controlSig = pidControl.PIDValue(desiredHeading, getHeading());
+        //double controlSig = pidControl.PIDValue(desiredHeading, getHeading());
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        //return Range.clip(headingError * proportionalGain, -1, 1);
-        return Range.clip(controlSig, -1, 1);
+        return Range.clip(headingError * proportionalGain, -1, 1);
+       // return Range.clip(controlSig, -1, 1);
     }
 
     public void turn(double angle, double speed) {

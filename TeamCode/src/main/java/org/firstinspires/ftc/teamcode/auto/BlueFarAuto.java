@@ -148,7 +148,7 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Claw forward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -27.0, 0.0);    // Claw forward 27"
             sleep(500);
 
             arm.armDown();
@@ -187,7 +187,7 @@ public class BlueFarAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -27.0, 0.0);    // Drive Backward 27"
             sleep(500);
 
             arm.armDown();
@@ -217,7 +217,7 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive Right 6" to blue alliance right thing
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -6, 0.0);    // Drive Right 6" to blue alliance right thing
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive Left 30" to park!
             sleep(1000);
