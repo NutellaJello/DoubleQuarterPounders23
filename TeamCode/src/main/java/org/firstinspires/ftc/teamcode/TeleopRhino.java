@@ -26,7 +26,7 @@ public class TeleopRhino extends LinearOpMode {
 
         Servo flopper = hardwareMap.servo.get("flopper"); //0
         Servo claw = hardwareMap.servo.get("claw"); //1
-        Servo airplane = hardwareMap.servo.get("airplane");
+        Servo airplane = hardwareMap.servo.get("airplane");//expansion 2
         //flopper.setDirection(Servo.Direction.REVERSE);
 //        //expansion
         Servo leftarm = hardwareMap.servo.get("leftarm"); //port 0 lswing
@@ -36,6 +36,7 @@ public class TeleopRhino extends LinearOpMode {
         double sPosiL = 0.8;
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
+        DcMotor pullup = hardwareMap.dcMotor.get("lifter"); //1
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -68,7 +69,7 @@ public class TeleopRhino extends LinearOpMode {
             leftarm.setPosition(sPosiL);
             rightarm.setPosition(sPosiL);
 
-            // airplane
+
             double upPosi = 0.967;
 
             if(sPosiL > upPosi){
@@ -113,6 +114,14 @@ public class TeleopRhino extends LinearOpMode {
             }
             else {
                 airplane.setPosition(0.85);
+            }
+
+            if(gamepad1.dpad_up){
+                pullup.setPower(1.0);
+            }else if(gamepad1.dpad_down){
+                pullup.setPower(-1.0);
+            }else{
+                pullup.setPower(0.0);
             }
 
 //            if (gamepad2.left_stick_y > 0 ){
