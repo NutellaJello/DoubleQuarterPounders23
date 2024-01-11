@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -36,7 +37,7 @@ public class TeleopRhino extends LinearOpMode {
         double sPosiL = 0.8;
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
-        DcMotor pullup = hardwareMap.dcMotor.get("lifter"); //1
+        DcMotorEx pullup = hardwareMap.get(DcMotorEx.class, "lifter"); //1
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -61,8 +62,8 @@ public class TeleopRhino extends LinearOpMode {
             telemetry.addData("flopper", Double.toString(flopper.getPosition()));
             telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
             telemetry.addData("airplane", Double.toString(airplane.getPosition()));
-
-
+            telemetry.addData("pullup", Double.toString(pullup.getCurrentPosition()));
+            telemetry.addData("pullup-v", Double.toString(pullup.getVelocity()));
 
 
             ////////////////arm
@@ -117,11 +118,15 @@ public class TeleopRhino extends LinearOpMode {
             }
 
             if(gamepad1.dpad_up){
-                pullup.setPower(1.0);
+                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                pullup.setTargetPosition(-3800);
+                pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                pullup.setVelocity(900);
             }else if(gamepad1.dpad_down){
-                pullup.setPower(-1.0);
-            }else{
-                pullup.setPower(0.0);
+                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                pullup.setTargetPosition(2300);
+                pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                pullup.setVelocity(300);
             }
 
 //            if (gamepad2.left_stick_y > 0 ){
