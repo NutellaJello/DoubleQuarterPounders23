@@ -43,9 +43,9 @@ public class TeleopRhino extends LinearOpMode {
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
-        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
 
         airplane.setPosition (0.85);
