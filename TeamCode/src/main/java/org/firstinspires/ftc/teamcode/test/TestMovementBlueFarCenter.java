@@ -113,16 +113,21 @@ public class TestMovementBlueFarCenter extends LinearOpMode {
     public void runOpMode() {
         Vehicle vehicle = new Vehicle(hardwareMap, telemetry);
 
-        vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);
+        // Drive Backward 27"
         sleep(500);
 
         vehicle.turn(90, Constants.TURN_SPEED);
+        // Turn 90º
         sleep(1000);
 
-        vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, 90.0);    // Drive Forward 84"
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, 90.0);
+        // Drive Forward 84"
         sleep(500);
 
-        vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);
+        // Drive Left 24" to park!
         sleep(1000);
     }
 }
+
