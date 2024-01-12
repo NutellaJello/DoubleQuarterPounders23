@@ -233,19 +233,7 @@ public class BlueFarAuto extends LinearOpMode {
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-            //vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
 
-            //vehicle.strafeByInches(0.2, 2.0);
-            //sleep(1000);
-//            arm.armDown();
-//            sleep(1000);
-//            claw.clawOpen();
-//            sleep(2000);
-//            arm.armUp();
-//            sleep(1000);
-            //vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
-            //vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
 
