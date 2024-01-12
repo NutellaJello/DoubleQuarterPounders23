@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -26,7 +27,7 @@ public class TeleopRhino extends LinearOpMode {
 
         Servo flopper = hardwareMap.servo.get("flopper"); //0
         Servo claw = hardwareMap.servo.get("claw"); //1
-        Servo airplane = hardwareMap.servo.get("airplane");
+        Servo airplane = hardwareMap.servo.get("airplane");//expansion 2
         //flopper.setDirection(Servo.Direction.REVERSE);
 //        //expansion
         Servo leftarm = hardwareMap.servo.get("leftarm"); //port 0 lswing
@@ -36,14 +37,15 @@ public class TeleopRhino extends LinearOpMode {
         double sPosiL = 0.8;
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
+        DcMotorEx pullup = hardwareMap.get(DcMotorEx.class, "lifter"); //1
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
-        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
 
         airplane.setPosition (0.85);
@@ -60,15 +62,15 @@ public class TeleopRhino extends LinearOpMode {
             telemetry.addData("flopper", Double.toString(flopper.getPosition()));
             telemetry.addData("slides", Double.toString(slides.getCurrentPosition()));
             telemetry.addData("airplane", Double.toString(airplane.getPosition()));
-
-
+            telemetry.addData("pullup", Double.toString(pullup.getCurrentPosition()));
+            telemetry.addData("pullup-v", Double.toString(pullup.getVelocity()));
 
 
             ////////////////arm
             leftarm.setPosition(sPosiL);
             rightarm.setPosition(sPosiL);
 
-            // airplane
+
             double upPosi = 0.967;
 
             if(sPosiL > upPosi){
@@ -113,6 +115,18 @@ public class TeleopRhino extends LinearOpMode {
             }
             else {
                 airplane.setPosition(0.85);
+            }
+
+            if(gamepad1.dpad_up){
+                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                pullup.setTargetPosition(-3800);
+                pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                pullup.setVelocity(900);
+            }else if(gamepad1.dpad_down){
+                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                pullup.setTargetPosition(2300);
+                pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                pullup.setVelocity(300);
             }
 
 //            if (gamepad2.left_stick_y > 0 ){

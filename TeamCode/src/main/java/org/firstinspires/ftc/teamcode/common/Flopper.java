@@ -10,10 +10,10 @@ public class Flopper {
     public Flopper(HardwareMap hardwareMap) {
         flopper = hardwareMap.servo.get("flopper");
     }
+
     public void flopperRest() {
         flopper.setPosition(0.95);
     }
-
     public void flopperDump() {
         flopper.setPosition(0.638);
     }

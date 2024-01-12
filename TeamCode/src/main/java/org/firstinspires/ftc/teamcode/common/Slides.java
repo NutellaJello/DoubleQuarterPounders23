@@ -11,7 +11,7 @@ public class Slides {
     public DcMotorEx slides = null;
 
     public Slides(HardwareMap hardwareMap) {
-        this.slides = hardwareMap.get(DcMotorEx.class,"slides"); //0
+        this.slides = hardwareMap.get(DcMotorEx.class,"slides");
     }
 
     public void slidesUp(){
@@ -30,3 +30,5 @@ public class Slides {
 
 
 }
+
+
