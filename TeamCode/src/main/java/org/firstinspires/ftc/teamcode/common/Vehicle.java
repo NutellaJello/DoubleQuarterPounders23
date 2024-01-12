@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -134,8 +135,6 @@ public class Vehicle {
         // Ensure that the OpMode is still active
             // Determine new target position, and pass to motor controller
             int moveCounts = (int) (distance * Constants.COUNTS_PER_INCH);
-//            leftTarget = leftDrive.getCurrentPosition() + moveCounts;
-//            rightTarget = rightDrive.getCurrentPosition() + moveCounts;
 
             flTarget = FrontLeft.getCurrentPosition() + moveCounts;
             frTarget = FrontRight.getCurrentPosition() + moveCounts;
@@ -143,8 +142,6 @@ public class Vehicle {
             brTarget = BackRight.getCurrentPosition() + moveCounts;
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-//            leftDrive.setTargetPosition(leftTarget);
-//            rightDrive.setTargetPosition(rightTarget);
 
             FrontLeft.setTargetPosition(flTarget);
             FrontRight.setTargetPosition(frTarget);
@@ -183,8 +180,6 @@ public class Vehicle {
 
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
-//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -430,5 +425,61 @@ public class Vehicle {
         // Stop all motion;
         moveRobot(0, 0);
     }
+
+    //region $strafe related functions
+    private void setMotorRunMode(DcMotor.RunMode mode) {
+        FrontLeft.setMode(mode);
+        FrontRight.setMode(mode);
+        BackLeft.setMode(mode);
+        BackRight.setMode(mode);
+    }
+
+    private void strafeByInches(double power, double distanceInInches) {
+        int targetPosition = (int) (distanceInInches * Constants.COUNTS_PER_INCH);
+
+        setMotorRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FrontLeft.setTargetPosition(targetPosition);
+        FrontRight.setTargetPosition(-targetPosition);
+        BackLeft.setTargetPosition(-targetPosition);
+        BackRight.setTargetPosition(targetPosition);
+
+        setMotorRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FrontLeft.isBusy() && FrontRight.isBusy() &&
+                BackLeft.isBusy() && BackRight.isBusy()) {
+            double correction = getCorrection();
+            FrontLeft.setPower(Range.clip(-power - correction, -1.0, 1.0));
+            FrontRight.setPower(Range.clip(power - correction, -1.0, 1.0));
+            BackLeft.setPower(Range.clip(power - correction, -1.0, 1.0));
+            BackRight.setPower(Range.clip(-power - correction, -1.0, 1.0));
+
+            telemetry.addData("Correction", correction);
+            telemetry.addData("Target Position", targetPosition);
+            telemetry.addData("Current Position", FrontLeft.getCurrentPosition());
+            telemetry.update();
+        }
+
+        // Stop the motors after reaching the target position
+        stopMotors();
+    }
+
+    private double getCorrection() {
+        // Use gyro data for more precise turns (if using gyro)
+        if (imu != null) {
+            //return -imu.getAngularOrientation().firstAngle * 0.02;
+            return getHeading();
+        } else {
+            return 0.0;
+        }
+    }
+
+    private void stopMotors() {
+        FrontLeft.setPower(0.0);
+        FrontRight.setPower(0.0);
+        BackLeft.setPower(0.0);
+        BackRight.setPower(0.0);
+    }
+    //endregion
 
 }

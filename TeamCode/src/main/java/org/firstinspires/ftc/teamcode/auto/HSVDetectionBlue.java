@@ -32,42 +32,34 @@ public class HSVDetectionBlue extends OpenCvPipeline {
     // Width and height for the bounding box
 
     static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,85);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,80);
-    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,90);
-    static final int REGION_WIDTH = 20;
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(120,80);
+    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(280,90);
+    static final int REGION_WIDTH = 40;
     static final int REGION_HEIGHT = 40;
 
     // Lower and upper boundaries for colors
     private static final Scalar
 
 
-    lower_blue_bounds = new Scalar(100,50,50),
+// two types of red in hsv color scale the lower red and upper red
+            lower_blue_bounds = new Scalar(90,50,50),
 
-    upper_blue_bounds = new Scalar(130,255,255);
+    upper_blue_bounds = new Scalar(125,255,255);
 
-
-    // old colors from 2021-2022s game
-//            lower_green_bounds  = new Scalar(42, 50, 50),
-//            upper_green_bounds  = new Scalar(76, 255, 255),
-//            lower_orange_bounds    = new Scalar(13, 50,50),
-//            upper_orange_bounds    = new Scalar(20, 255, 255),
-//            lower_purple_bounds = new Scalar(138, 50, 50),
-//            upper_purple_bounds = new Scalar(155, 255, 255);
 
 
     // Color definitions
 //    public final Scalar BLUE = new Scalar(0, 0, 255);
 //    public final Scalar GREEN = new Scalar(0, 255, 0);
     private final Scalar
-            GREEN  = new Scalar(255, 255, 0),
-            ORANGE    = new Scalar(0, 255, 255),
-            PURPLE = new Scalar(255, 0, 255);
+            GREEN  = new Scalar(255, 255, 0);
 
 
 
     // Percent and mat definitions
-    private double grePercent, oraPercent, purPercent;
+    private double grePercent, oraPercent,  purPercent;
     private Mat leftMat = new Mat(), rightMat = new Mat(), centerMat = new Mat();
+
     private Mat leftBlurredMat = new Mat(), centerBlurredMat = new Mat(), rightBlurredMat = new Mat();
     private Mat leftKernel = new Mat(), centerKernel = new Mat(), rightKernel = new Mat();
     Point left_region_pointA = new Point(
@@ -108,7 +100,7 @@ public class HSVDetectionBlue extends OpenCvPipeline {
                 input, // Buffer to draw on
                 left_region_pointA, // First point which defines the rectangle
                 left_region1_pointB, // Second point which defines the rectangle
-                PURPLE, // The color the rectangle is drawn in
+                GREEN, // The color the rectangle is drawn in
                 4); // Thickness of the rectangle lines
 
         /*
@@ -119,7 +111,7 @@ public class HSVDetectionBlue extends OpenCvPipeline {
                 input, // Buffer to draw on
                 center_region_pointA, // First point which defines the rectangle
                 center_region_pointB, // Second point which defines the rectangle
-                PURPLE, // The color the rectangle is drawn in
+                GREEN, // The color the rectangle is drawn in
                 4); // Thickness of the rectangle lines
 
         /*
@@ -130,7 +122,7 @@ public class HSVDetectionBlue extends OpenCvPipeline {
                 input, // Buffer to draw on
                 right_region_pointA, // First point which defines the rectangle
                 right_region_pointB, // Second point which defines the rectangle
-                PURPLE, // The color the rectangle is drawn in
+                GREEN, // The color the rectangle is drawn in
                 4); // Thickness of the rectangle lines
         // Noise reduction
         Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
@@ -166,8 +158,8 @@ public class HSVDetectionBlue extends OpenCvPipeline {
 
         // Gets channels from given source mat
         Core.inRange(leftBlurredMat, lower_blue_bounds, upper_blue_bounds, leftMat);
-        Core.inRange(centerBlurredMat, lower_blue_bounds, lower_blue_bounds, centerMat);
-        Core.inRange(rightBlurredMat, lower_blue_bounds, lower_blue_bounds, rightMat);
+        Core.inRange(centerBlurredMat, lower_blue_bounds, upper_blue_bounds, centerMat);
+        Core.inRange(rightBlurredMat, lower_blue_bounds, upper_blue_bounds, rightMat);
 
         // Gets color specific values
         int leftPercent = Core.countNonZero(leftMat);
