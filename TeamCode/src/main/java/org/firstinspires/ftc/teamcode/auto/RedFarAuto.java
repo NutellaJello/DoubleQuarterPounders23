@@ -175,61 +175,79 @@ public class RedFarAuto extends LinearOpMode {
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
             arm.armHover();
+            sleep(500);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -22, 0.0);    // Claw forward 27"
-            sleep(2000);
-            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
             sleep(1000);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 29, 90);    // Claw forward 27"
+            sleep(1000);
+
+
+            // put the first pixel
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             claw.clawOpen();
             sleep(2000);
             arm.armUp();
+            sleep(500);
+            //
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 62, 90.0);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(3000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
             sleep(1000);
 
+            //parking to the corner
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
-
             claw.clawClose();
             sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+            arm.armHover();
             sleep(500);
 
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
+            sleep(1000);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 4, 90.0);    // Claw forward 27"
+            sleep(1000);
+
+
+            // put the first pixel
             arm.armDown();
             sleep(500);
             claw.clawOpen();
-            sleep(500);
+            sleep(2000);
             arm.armUp();
             sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
+            //
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 87, 90.0);
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, -90.0);    // Drive Forward 84"
-            sleep(500);
-
             arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive left 6" to red alliance left thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive right 30" to park!
             sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(3000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
+            sleep(1000);
+
         }
 
         telemetry.addData("Path", "Complete");

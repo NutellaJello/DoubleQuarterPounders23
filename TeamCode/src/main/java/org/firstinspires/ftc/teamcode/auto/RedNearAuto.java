@@ -156,7 +156,7 @@ public class RedNearAuto extends LinearOpMode {
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 43, -90.0);
             sleep(1000);
             arm.armDown();
             sleep(1000);
@@ -170,10 +170,48 @@ public class RedNearAuto extends LinearOpMode {
             sleep(1000);
 
             //parking to the corner
-            parkToCorner(vehicle);
+            vehicle.strafeByInches(0.3, 24);
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
+
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
+
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+
+            sleep(2000);
+            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            //sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 43, -90.0);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(5000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
+            sleep(1000);
+
+            //parking to the corner
+            vehicle.strafeByInches(0.3, 24);
+
             claw.clawClose();
             sleep(500);
 
