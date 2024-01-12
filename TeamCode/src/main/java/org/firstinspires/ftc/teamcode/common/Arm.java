@@ -28,5 +28,9 @@ public class Arm {
         leftarm.setPosition(0.023);
         rightarm.setPosition(0.023);
     }
+    public void initArm(){
+        leftarm.setPosition(0.8);
+        rightarm.setPosition(0.8);
+    }
 
 }

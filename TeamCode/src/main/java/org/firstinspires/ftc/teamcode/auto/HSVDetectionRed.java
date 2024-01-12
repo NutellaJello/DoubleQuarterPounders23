@@ -31,20 +31,24 @@ public class HSVDetectionRed extends OpenCvPipeline {
 
     // Width and height for the bounding box
 
-    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,98);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,98);
-    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,98);
-    static final int REGION_WIDTH = 20;
-    static final int REGION_HEIGHT = 40;
+    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,150);
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,150);
+    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(280,150);
+    static final int REGION_WIDTH = 40;
+    static final int REGION_HEIGHT = 80;
 
     // Lower and upper boundaries for colors
     private static final Scalar
 
 
-
+// two types of red in hsv color scale the lower red and upper red
             lower_red_bounds = new Scalar(0,50,50),
 
-            upper_red_bounds = new Scalar(15,255,255);
+            upper_red_bounds = new Scalar(15,255,255),
+
+            lower_red_bounds_second = new Scalar(160,50,50),
+
+            upper_red_bounds_second = new Scalar(165,255,255);
 
 
             // old colors from 2021-2022s game
@@ -60,15 +64,16 @@ public class HSVDetectionRed extends OpenCvPipeline {
 //    public final Scalar BLUE = new Scalar(0, 0, 255);
 //    public final Scalar GREEN = new Scalar(0, 255, 0);
     private final Scalar
-            GREEN  = new Scalar(255, 255, 0),
-            ORANGE    = new Scalar(0, 255, 255),
-            PURPLE = new Scalar(255, 0, 255);
+            GREEN  = new Scalar(255, 255, 0);
 
 
 
     // Percent and mat definitions
     private double grePercent, oraPercent, purPercent;
     private Mat leftMat = new Mat(), rightMat = new Mat(), centerMat = new Mat();
+
+    private Mat leftMatTwo = new Mat(), rightMatTwo = new Mat(), centerMatTwo = new Mat();
+
     private Mat leftBlurredMat = new Mat(), centerBlurredMat = new Mat(), rightBlurredMat = new Mat();
     private Mat leftKernel = new Mat(), centerKernel = new Mat(), rightKernel = new Mat();
     Point left_region_pointA = new Point(
@@ -141,6 +146,15 @@ public class HSVDetectionRed extends OpenCvPipeline {
         Core.inRange(centerBlurredMat, lower_red_bounds, upper_red_bounds, centerMat);
         Core.inRange(rightBlurredMat, lower_red_bounds, upper_red_bounds, rightMat);
 
+        Core.inRange(leftBlurredMat, lower_red_bounds_second, upper_red_bounds_second, leftMatTwo);
+        Core.inRange(centerBlurredMat, lower_red_bounds_second, upper_red_bounds_second, centerMatTwo);
+        Core.inRange(rightBlurredMat, lower_red_bounds_second, upper_red_bounds_second, rightMatTwo);
+
+        Core.bitwise_or(leftMat, leftMatTwo, leftMat);
+        Core.bitwise_or(centerMat, centerMatTwo, centerMat);
+        Core.bitwise_or(rightMat, rightMatTwo, rightMat);
+
+
         // Gets color specific values
         int leftPercent = Core.countNonZero(leftMat);
         int centerPercent = Core.countNonZero(centerMat);
@@ -190,6 +204,10 @@ public class HSVDetectionRed extends OpenCvPipeline {
         leftKernel.release();
         centerKernel.release();
         rightKernel.release();
+        leftMatTwo.release();
+        centerMatTwo.release();
+        rightMatTwo.release();
+
 
         return input;
     }
