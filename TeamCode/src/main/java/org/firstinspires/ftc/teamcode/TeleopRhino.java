@@ -41,6 +41,7 @@ public class TeleopRhino extends LinearOpMode {
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        pullup.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
         /*slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -119,12 +120,12 @@ public class TeleopRhino extends LinearOpMode {
 
             if(gamepad1.dpad_up){
                 pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                pullup.setTargetPosition(-3800);
+                pullup.setTargetPosition(3950);
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(900);
             }else if(gamepad1.dpad_down){
                 pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                pullup.setTargetPosition(2300);
+                pullup.setTargetPosition(1500);
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(300);
             }
