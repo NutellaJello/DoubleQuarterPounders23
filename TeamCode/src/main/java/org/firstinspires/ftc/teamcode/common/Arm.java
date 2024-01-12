@@ -34,8 +34,8 @@ public class Arm {
     }
 
     public void armHover() {
-        leftarm.setPosition(0.23);
-        rightarm.setPosition(0.23);
+        leftarm.setPosition(0.18);
+        rightarm.setPosition(0.18);
     }
 
 }

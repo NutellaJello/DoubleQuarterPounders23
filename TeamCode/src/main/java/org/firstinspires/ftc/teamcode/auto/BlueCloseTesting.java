@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="blue close test using red detection")
+@Autonomous(name="AUTO blue far")
 
 public class BlueCloseTesting extends LinearOpMode {
 
@@ -106,6 +106,7 @@ public class BlueCloseTesting extends LinearOpMode {
         Flopper flopper = new Flopper(hardwareMap);
         Arm arm = new Arm(hardwareMap);
         Slides slides = new Slides(hardwareMap);
+        claw.clawClose();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvWebcam webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -136,28 +137,50 @@ public class BlueCloseTesting extends LinearOpMode {
 
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
-            claw.clawClose();
-            sleep(500);
-
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -27.0, 0.0);    // Claw forward 27"
-            sleep(500);
-
+//            claw.clawClose();
+//            sleep(1000);
+//            arm.armHover();
+//            sleep(1000);
+//
+//
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
+//
+//            sleep(2000);
+//            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+//            //sleep(1000);
+//            arm.armDown();
+//            sleep(1000);
+//            claw.clawOpen();
+//            sleep(2000);
+//            arm.armUp();
+//            sleep(1000);
+//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+//            sleep(2000);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, -90.0);
+//            sleep(1000);
             arm.armDown();
-            sleep(500);
-
-            claw.clawOpen();
-            sleep(500);
-
-            arm.armUp();
-            sleep(500);
-
-            claw.clawClose();
-            sleep(500);
-
-            //use turn to heading
-            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(5000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
+
+
+            //claw.clawOpen();
+//            sleep(500);
+//
+//            arm.armUp();
+//            sleep(500);
+//
+//            claw.clawClose();
+//            sleep(500);
+//
+//            //use turn to heading
+//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+//            sleep(1000);
 
 //            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, -90.0);    // Drive Forward 36"
 //            sleep(500);

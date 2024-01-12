@@ -8,6 +8,7 @@ public class Flopper {
     public Servo flopper = null;
 
     public Flopper(HardwareMap hardwareMap) {
+
         flopper = hardwareMap.servo.get("flopper");
     }
 

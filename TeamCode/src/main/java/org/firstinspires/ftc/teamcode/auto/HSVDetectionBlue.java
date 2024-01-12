@@ -31,9 +31,9 @@ public class HSVDetectionBlue extends OpenCvPipeline {
 
     // Width and height for the bounding box
 
-    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,98);
-    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,98);
-    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,98);
+    static final Point LEFT_REGION_TOPLEFT_POINT = new Point(0,85);
+    static final Point CENTER_REGION_TOPLEFT_POINT = new Point(140,80);
+    static final Point RIGHT_REGION_TOPLEFT_POINT = new Point(300,90);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 40;
 
