@@ -85,7 +85,7 @@ import org.firstinspires.ftc.teamcode.common.Vehicle;
  */
 
 @Autonomous(name="TETMOVE")
-@Disabled
+
 public class TESTMOVE extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -94,20 +94,21 @@ public class TESTMOVE extends LinearOpMode {
     @Override
     public void runOpMode() {
         Vehicle vehicle = new Vehicle(hardwareMap, telemetry);
-        //vehicle.wheelSetMode(1);
 
-        //vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-        vehicle.driveStraight(Constants.DRIVE_SPEED, -27.0, 0.0);
-        sleep(1000);
-
-        vehicle.turnToHeading(Constants.TURN_SPEED, 90);
-        vehicle.holdHeading(Constants.TURN_SPEED, 90, 1.0);
-        sleep(1000);
-
-        vehicle.driveStraight(Constants.DRIVE_SPEED, -12.0, 90.0);    // Drive Forward 84"
-        sleep(1000);
-
-       // vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
-        sleep(1000);
+        vehicle.strafeByInches(0.3, 5.0);
+        sleep(2000);
+        vehicle.strafeByInches(0.3, -5.0);
+//        vehicle.driveStraight(Constants.DRIVE_SPEED, -27.0, 0.0);
+//        sleep(1000);
+//
+//        vehicle.turnToHeading(Constants.TURN_SPEED, 90);
+//        vehicle.holdHeading(Constants.TURN_SPEED, 90, 1.0);
+//        sleep(1000);
+//
+//        vehicle.driveStraight(Constants.DRIVE_SPEED, -12.0, 90.0);    // Drive Forward 84"
+//        sleep(1000);
+//
+//       // vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
+//        sleep(1000);
     }
 }

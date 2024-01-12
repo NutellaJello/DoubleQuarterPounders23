@@ -176,7 +176,7 @@ public class BlueFarAuto extends LinearOpMode {
             slides.slidesUp();
             sleep(2000);
             flopper.flopperDump();
-            sleep(5000);
+            sleep(2000);
             flopper.flopperRest();
             sleep(2000);
             slides.slidesDown();
@@ -185,14 +185,83 @@ public class BlueFarAuto extends LinearOpMode {
         }
 
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
+            webcam.stopStreaming();
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
 
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            //sleep(2000);
+            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            //sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(5000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
+            sleep(1000);
 
         }
 
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.LEFT) {
+            webcam.stopStreaming();
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
 
 
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -23.0, 0.0);    // Claw forward 27"
 
+            //sleep(2000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+
+            vehicle.strafeByInches(0.2, 2.0);
+            //sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
+            //vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            //vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 90.0, -90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            arm.armDown();
+            sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(2000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
+            sleep(1000);
         }
 
         telemetry.addData("Path", "Complete");

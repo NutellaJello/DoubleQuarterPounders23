@@ -434,8 +434,10 @@ public class Vehicle {
         BackRight.setMode(mode);
     }
 
-    private void strafeByInches(double power, double distanceInInches) {
+    // if the robot camera facing forward, positive distance is to move to the left
+    public void strafeByInches(double power, double distanceInInches) {
         int targetPosition = (int) (distanceInInches * Constants.COUNTS_PER_INCH);
+        double desiredHeading = getHeading();
 
         setMotorRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -448,7 +450,7 @@ public class Vehicle {
 
         while (FrontLeft.isBusy() && FrontRight.isBusy() &&
                 BackLeft.isBusy() && BackRight.isBusy()) {
-            double correction = getCorrection();
+            double correction = getCorrection(desiredHeading);
             FrontLeft.setPower(Range.clip(-power - correction, -1.0, 1.0));
             FrontRight.setPower(Range.clip(power - correction, -1.0, 1.0));
             BackLeft.setPower(Range.clip(power - correction, -1.0, 1.0));
@@ -464,11 +466,11 @@ public class Vehicle {
         stopMotors();
     }
 
-    private double getCorrection() {
+    private double getCorrection(double desiredHeading) {
         // Use gyro data for more precise turns (if using gyro)
         if (imu != null) {
             //return -imu.getAngularOrientation().firstAngle * 0.02;
-            return getHeading();
+            return (desiredHeading-getHeading())*0.02;
         } else {
             return 0.0;
         }
