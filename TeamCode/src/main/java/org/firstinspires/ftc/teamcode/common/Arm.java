@@ -34,8 +34,13 @@ public class Arm {
     }
 
     public void armHover() {
-        leftarm.setPosition(0.18);
-        rightarm.setPosition(0.18);
+        leftarm.setPosition(0.15);
+        rightarm.setPosition(0.15);
+    }
+
+    public void putPixel() {
+        leftarm.setPosition(0.15);
+        rightarm.setPosition(0.15);
     }
 
 }

@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="rednearauto")
+@Autonomous(name="AUTO_RED_NEAR_CORNER_PARK")
 
 public class RedNearAuto extends LinearOpMode {
 
@@ -114,7 +114,7 @@ public class RedNearAuto extends LinearOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -136,43 +136,41 @@ public class RedNearAuto extends LinearOpMode {
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
             claw.clawClose();
-            sleep(500);
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
 
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
 
+            sleep(2000);
+            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            //sleep(1000);
             arm.armDown();
-            sleep(500);
+            sleep(1000);
             claw.clawOpen();
-            sleep(500);
+            sleep(2000);
             arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(-90, Constants.TURN_SPEED);
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
-            sleep(500);
-
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
+            sleep(1000);
             arm.armDown();
-            sleep(500);
+            sleep(1000);
             slides.slidesUp();
-            sleep(500);
+            sleep(2000);
             flopper.flopperDump();
-            sleep(500);
+            sleep(5000);
             flopper.flopperRest();
-            sleep(500);
+            sleep(2000);
             slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Right 24" to park!
             sleep(1000);
 
-
+            //parking to the corner
+            parkToCorner(vehicle);
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
@@ -215,6 +213,10 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
             sleep(1000);
+
+
+            //parking to the corner
+            parkToCorner(vehicle);
 
         }
 
@@ -259,9 +261,21 @@ public class RedNearAuto extends LinearOpMode {
             sleep(1000);
         }
 
+
+        //parking to the corner
+        parkToCorner(vehicle);
+
         telemetry.addData("Path", "Complete");
 
         telemetry.update();
         sleep(100000);  // Pause to display last telemetry message.
+    }
+
+    private void parkToCorner(Vehicle vehicle) {
+        vehicle.turnToHeading(Constants.TURN_SPEED,0);
+        vehicle.holdHeading(Constants.TURN_SPEED, 0, 0.5);
+        sleep(1000);
+        vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);
+        sleep(1000000);
     }
 }
