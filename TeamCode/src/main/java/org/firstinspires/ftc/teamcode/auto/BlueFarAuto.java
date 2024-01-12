@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
@@ -107,7 +108,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class BlueFarAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-
+    private HSVDetectionBlue.ParkingPosition detectedPosition;
 
     @Override
     public void runOpMode() {
@@ -143,8 +144,9 @@ public class BlueFarAuto extends LinearOpMode {
 
         waitForStart();
 
-
+        sleep(1000);
         if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.CENTER) {
+            webcam.stopStreaming();
             claw.clawClose();
             sleep(1000);
             arm.armHover();
@@ -152,8 +154,8 @@ public class BlueFarAuto extends LinearOpMode {
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
-
-            sleep(2000);
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            //sleep(2000);
             //vehicle.turnToHeading(Constants.TURN_SPEED,30);
             //sleep(1000);
             arm.armDown();
@@ -165,7 +167,8 @@ public class BlueFarAuto extends LinearOpMode {
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-            sleep(2000);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            //sleep(2000);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
             sleep(1000);
             arm.armDown();
