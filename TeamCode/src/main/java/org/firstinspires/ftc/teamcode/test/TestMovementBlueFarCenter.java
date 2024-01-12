@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -103,7 +104,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  */
 
 @Autonomous(name="TestMovementBlueFarCenter")
-
+@Disabled
 public class TestMovementBlueFarCenter extends LinearOpMode {
 
     /* Declare OpMode members. */

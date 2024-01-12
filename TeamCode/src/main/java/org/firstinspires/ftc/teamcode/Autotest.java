@@ -107,8 +107,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  */
 
 @Autonomous(name="leftFar", group="Robot")
-
-
+@Disabled
 public class Autotest extends LinearOpMode {
 
 

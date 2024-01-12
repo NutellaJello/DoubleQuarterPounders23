@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.Constants;
@@ -84,7 +85,7 @@ import org.firstinspires.ftc.teamcode.common.Vehicle;
  */
 
 @Autonomous(name="TestMovementBlueNearRight")
-
+@Disabled
 public class TestMovementBlueNearRight extends LinearOpMode {
 
     /* Declare OpMode members. */
