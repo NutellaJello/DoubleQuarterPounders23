@@ -103,6 +103,35 @@ public class HSVDetectionBlue extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                left_region_pointA, // First point which defines the rectangle
+                left_region1_pointB, // Second point which defines the rectangle
+                PURPLE, // The color the rectangle is drawn in
+                4); // Thickness of the rectangle lines
+
+        /*
+         * Draw a rectangle showing sample region 2 on the screen.
+         * Simply a visual aid. Serves no functional purpose.
+         */
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                center_region_pointA, // First point which defines the rectangle
+                center_region_pointB, // Second point which defines the rectangle
+                PURPLE, // The color the rectangle is drawn in
+                4); // Thickness of the rectangle lines
+
+        /*
+         * Draw a rectangle showing sample region 3 on the screen.
+         * Simply a visual aid. Serves no functional purpose.
+         */
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                right_region_pointA, // First point which defines the rectangle
+                right_region_pointB, // Second point which defines the rectangle
+                PURPLE, // The color the rectangle is drawn in
+                4); // Thickness of the rectangle lines
         // Noise reduction
         Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
         // left
