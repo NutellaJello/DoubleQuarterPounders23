@@ -69,7 +69,7 @@ public class HSVDetectionRed extends OpenCvPipeline {
 
 
     // Percent and mat definitions
-    private double grePercent, oraPercent, purPercent;
+    private double grePercent, oraPercent,  purPercent;
     private Mat leftMat = new Mat(), rightMat = new Mat(), centerMat = new Mat();
 
     private Mat leftMatTwo = new Mat(), rightMatTwo = new Mat(), centerMatTwo = new Mat();
