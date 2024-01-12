@@ -38,6 +38,8 @@ public class TeleopRhino extends LinearOpMode {
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
         DcMotorEx pullup = hardwareMap.get(DcMotorEx.class, "lifter"); //1
+        pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         double floposi = 0.305;
 
@@ -125,12 +127,12 @@ public class TeleopRhino extends LinearOpMode {
             }
 
             if(gamepad1.dpad_up){
-                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pullup.setTargetPosition(3950);
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(900);
             }else if(gamepad1.dpad_down){
-                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+               // pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pullup.setTargetPosition(1500);
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(300);

@@ -114,7 +114,7 @@ public class RedFarAuto extends LinearOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -136,40 +136,37 @@ public class RedFarAuto extends LinearOpMode {
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
             claw.clawClose();
-            sleep(500);
-
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            claw.clawOpen();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(-90, Constants.TURN_SPEED);
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, -90.0);    // Drive Forward 84"
-            sleep(500);
+            arm.armHover();
+            sleep(1000);
 
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+
+            sleep(2000);
+            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            //sleep(1000);
             arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
             arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Right 24" to park!
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
+            sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, 90.0);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            slides.slidesUp();
+            sleep(2000);
+            flopper.flopperDump();
+            sleep(5000);
+            flopper.flopperRest();
+            sleep(2000);
+            slides.slidesDown();
             sleep(1000);
 
 
@@ -177,43 +174,18 @@ public class RedFarAuto extends LinearOpMode {
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
             claw.clawClose();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
-
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -22, 0.0);    // Claw forward 27"
+            sleep(2000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            sleep(1000);
             arm.armDown();
-            sleep(500);
+            sleep(1000);
             claw.clawOpen();
-            sleep(500);
+            sleep(2000);
             arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
-            sleep(500);
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left red strip thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, -90.0);    // Drive Forward 84"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive right 6" to red alliance right thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
             sleep(1000);
 
         }

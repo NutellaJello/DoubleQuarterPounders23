@@ -106,7 +106,6 @@ public class BlueCloseTesting extends LinearOpMode {
         Flopper flopper = new Flopper(hardwareMap);
         Arm arm = new Arm(hardwareMap);
         Slides slides = new Slides(hardwareMap);
-        claw.clawClose();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvWebcam webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -137,27 +136,29 @@ public class BlueCloseTesting extends LinearOpMode {
 
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
-//            claw.clawClose();
-//            sleep(1000);
-//            arm.armHover();
-//            sleep(1000);
-//
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
-//
-//            sleep(2000);
-//            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-//            //sleep(1000);
-//            arm.armDown();
-//            sleep(1000);
-//            claw.clawOpen();
-//            sleep(2000);
-//            arm.armUp();
-//            sleep(1000);
-//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-//            sleep(2000);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, -90.0);
-//            sleep(1000);
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
+
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+
+            sleep(2000);
+            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
+            //sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
+            sleep(1000);
             arm.armDown();
             sleep(1000);
             slides.slidesUp();
@@ -167,124 +168,76 @@ public class BlueCloseTesting extends LinearOpMode {
             flopper.flopperRest();
             sleep(2000);
             slides.slidesDown();
-
-
-            //claw.clawOpen();
-//            sleep(500);
-//
-//            arm.armUp();
-//            sleep(500);
-//
-//            claw.clawClose();
-//            sleep(500);
-//
-//            //use turn to heading
-//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-//            sleep(1000);
-
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 84, -90.0);    // Drive Forward 36"
-//            sleep(500);
-//
-//            arm.armDown();
-//            sleep(500);
-//            slides.slidesUp();
-//            sleep(500);
-//            flopper.flopperDump();
-//            sleep(500);
-//            flopper.flopperRest();
-//            sleep(500);
-//            slides.slidesDown();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-
-           // vehicle.driveStraight(Constants.DRIVE_SPEED, 24, 0.0);     // Drive Left 24" to park!
             sleep(1000);
 
         }
 
        else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
-           vehicle.driveStraight(Constants.DRIVE_SPEED, -24,0.0);
-//            claw.clawClose();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-//            sleep(500);
-//
-//            arm.armDown();
-//            sleep(500);
-//            claw.clawOpen();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//            claw.clawClose();
-//            sleep(500);
-//
-            vehicle.turnToHeading( Constants.TURN_SPEED,-45); //turn so claw faces right blue strip thing
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
+            sleep(2000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,-45);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
+
+            // moves to the center of the board and dumps, needs to strafe or move left to reach desired spot
+//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+//            sleep(2000);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
 //            sleep(1000);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, 90.0);    // Drive Forward 36"
-//            sleep(500);
-//
 //            arm.armDown();
-//            sleep(500);
+//            sleep(1000);
 //            slides.slidesUp();
-//            sleep(500);
+//            sleep(2000);
 //            flopper.flopperDump();
-//            sleep(500);
+//            sleep(5000);
 //            flopper.flopperRest();
-//            sleep(500);
+//            sleep(2000);
 //            slides.slidesDown();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive Right 6" to blue alliance right thing
-//            sleep(500);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive Left 30" to park!
 //            sleep(1000);
+
+
 
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
+            claw.clawClose();
+            sleep(1000);
+            arm.armHover();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
+            sleep(2000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,45);
+            sleep(1000);
+            arm.armDown();
+            sleep(1000);
+            claw.clawOpen();
+            sleep(2000);
+            arm.armUp();
+            sleep(1000);
 
-//            claw.clawClose();
-//            sleep(500);
-//
-          vehicle.driveStraight(Constants.DRIVE_SPEED, -24.0, 0.0);    // Drive Backward 27"
-//            sleep(500);
-//
-//            arm.armDown();
-//            sleep(500);
-//            claw.clawOpen();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//            claw.clawClose();
-//            sleep(500);
-//
-          vehicle.turnToHeading( Constants.TURN_SPEED, 45); //turn so claw faces left blue strip thing
+            // moves to the center of the board and dumps, needs to strafe or move left to reach desired spot
+            //           vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+//            sleep(2000);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
 //            sleep(1000);
-//            vehicle.turn(90, Constants.TURN_SPEED); //turn so flopper faces board thing
-//            sleep(1000);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, 90.0);    // Drive Forward 36"
-//            sleep(500);
-//
 //            arm.armDown();
-//            sleep(500);
+//            sleep(1000);
 //            slides.slidesUp();
-//            sleep(500);
+//            sleep(2000);
 //            flopper.flopperDump();
-//            sleep(500);
+//            sleep(5000);
 //            flopper.flopperRest();
-//            sleep(500);
+//            sleep(2000);
 //            slides.slidesDown();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive Left 6" to blue alliance left thing
-//            sleep(500);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Left 18" to park!
 //            sleep(1000);
 
         }
