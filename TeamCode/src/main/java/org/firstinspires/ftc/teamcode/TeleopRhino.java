@@ -102,9 +102,9 @@ public class TeleopRhino extends LinearOpMode {
 
             ////////////////claww
             if(gamepad2.right_bumper){
-                claw.setPosition(1.0);//open
+                claw.setPosition( 0.83);//open
             }else {
-                claw.setPosition(0.73);//close
+                claw.setPosition(0.63);//close
             }
 
 

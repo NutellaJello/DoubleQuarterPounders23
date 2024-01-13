@@ -137,8 +137,8 @@ public class RedNearAuto extends LinearOpMode {
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
             claw.clawClose();
             sleep(1000);
-            arm.armHover();
-            sleep(1000);
+//            arm.armHover();
+//            sleep(1000);
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
@@ -156,18 +156,19 @@ public class RedNearAuto extends LinearOpMode {
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 43, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -43, -90.0);
             sleep(1000);
-            arm.armDown();
-            sleep(1000);
-            slides.slidesUp();
-            sleep(2000);
-            flopper.flopperDump();
-            sleep(5000);
-            flopper.flopperRest();
-            sleep(2000);
-            slides.slidesDown();
-            sleep(1000);
+
+//            arm.armDown();
+//            sleep(1000);
+//            slides.slidesUp();
+//            sleep(2000);
+//            flopper.flopperDump();
+//            sleep(5000);
+//            flopper.flopperRest();
+//            sleep(2000);
+//            slides.slidesDown();
+//            sleep(1000);
 
             //parking to the corner
             vehicle.strafeByInches(0.3, 24);
@@ -177,8 +178,8 @@ public class RedNearAuto extends LinearOpMode {
 
             claw.clawClose();
             sleep(1000);
-            arm.armHover();
-            sleep(1000);
+           // arm.armHover();
+            //sleep(1000);
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
@@ -196,65 +197,67 @@ public class RedNearAuto extends LinearOpMode {
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 43, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -43, -90.0);
             sleep(1000);
-            arm.armDown();
-            sleep(1000);
-            slides.slidesUp();
-            sleep(2000);
-            flopper.flopperDump();
-            sleep(5000);
-            flopper.flopperRest();
-            sleep(2000);
-            slides.slidesDown();
-            sleep(1000);
+
+
+//            arm.armDown();
+//            sleep(1000);
+//            slides.slidesUp();
+//            sleep(2000);
+//            flopper.flopperDump();
+//            sleep(5000);
+//            flopper.flopperRest();
+//            sleep(2000);
+//            slides.slidesDown();
+//            sleep(1000);
 
             //parking to the corner
             vehicle.strafeByInches(0.3, 24);
 
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            claw.clawOpen();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            claw.clawClose();
-            sleep(500);
-
-            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
-            sleep(500);
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left red strip thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
-            sleep(500);
-
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive right 6" to red alliance right thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
-            sleep(1000);
+//            claw.clawClose();
+//            sleep(500);
+//
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+//            sleep(500);
+//
+//            arm.armDown();
+//            sleep(500);
+//            claw.clawOpen();
+//            sleep(500);
+//            arm.armUp();
+//            sleep(500);
+//            claw.clawClose();
+//            sleep(500);
+//
+//            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
+//            sleep(500);
+//            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left red strip thing
+//            sleep(500);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
+//            sleep(500);
+//
+//            arm.armDown();
+//            sleep(500);
+//            slides.slidesUp();
+//            sleep(500);
+//            flopper.flopperDump();
+//            sleep(500);
+//            flopper.flopperRest();
+//            sleep(500);
+//            slides.slidesDown();
+//            sleep(500);
+//            arm.armUp();
+//            sleep(500);
+//
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive right 6" to red alliance right thing
+//            sleep(500);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
+//            sleep(1000);
 
 
             //parking to the corner
-            parkToCorner(vehicle);
+        //    parkToCorner(vehicle);
 
         }
 
@@ -263,7 +266,7 @@ public class RedNearAuto extends LinearOpMode {
             claw.clawClose();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Drive Backward 27"
             sleep(500);
 
             arm.armDown();
@@ -280,23 +283,24 @@ public class RedNearAuto extends LinearOpMode {
             vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
             sleep(500);
 
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive left 6" to red alliance left thing
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive right 30" to park!
-            sleep(1000);
+//            arm.armDown();
+//            sleep(500);
+//            slides.slidesUp();
+//            sleep(500);
+//            flopper.flopperDump();
+//            sleep(500);
+//            flopper.flopperRest();
+//            sleep(500);
+//            slides.slidesDown();
+//            sleep(500);
+//            arm.armUp();
+//            sleep(500);
+//
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive left 6" to red alliance left thing
+//            sleep(500);
+//            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive right 30" to park!
+//            sleep(1000);
+            vehicle.strafeByInches(0.3, 24);
         }
 
 
