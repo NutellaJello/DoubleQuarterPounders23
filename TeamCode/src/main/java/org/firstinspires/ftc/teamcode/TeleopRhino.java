@@ -90,7 +90,7 @@ public class TeleopRhino extends LinearOpMode {
 
             }
             if (gamepad2.b){
-                sPosiL = 0.05;//down
+                sPosiL = 0.04;//down
 
             }
             if (gamepad2.dpad_right){
@@ -104,7 +104,7 @@ public class TeleopRhino extends LinearOpMode {
             if(gamepad2.right_bumper){
                 claw.setPosition(1.0);//open
             }else {
-                claw.setPosition(0.76);//close
+                claw.setPosition(0.73);//close
             }
 
 
@@ -115,6 +115,9 @@ public class TeleopRhino extends LinearOpMode {
             }
             else if (gamepad2.y) {
                 floposi = 0.305;//rest 0.6
+            }
+            else if (gamepad2.right_trigger > 0){
+                floposi = 0.5;
             }
             flopper.setPosition(floposi);
 
@@ -130,12 +133,12 @@ public class TeleopRhino extends LinearOpMode {
 //                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pullup.setTargetPosition(3950);//up
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pullup.setVelocity(900);
+                pullup.setVelocity(1200);
             }else if(gamepad1.right_trigger>0){
                // pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pullup.setTargetPosition(1500);//down
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pullup.setVelocity(300);
+                pullup.setVelocity(600);
             }
 
 //            if (gamepad2.left_stick_y > 0 ){
