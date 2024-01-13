@@ -16,11 +16,11 @@ public class Claw {
     }
 
     public void clawOpen() {
-        claw.setPosition(1);
+        claw.setPosition(0.95);
     }
 
     public void clawClose() {
-        claw.setPosition(0.785);
+        claw.setPosition(0.76);
     }
 
 

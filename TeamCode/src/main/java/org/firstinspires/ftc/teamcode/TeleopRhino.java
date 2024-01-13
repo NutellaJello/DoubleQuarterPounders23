@@ -90,7 +90,7 @@ public class TeleopRhino extends LinearOpMode {
 
             }
             if (gamepad2.b){
-                sPosiL = 0.03;//down
+                sPosiL = 0.05;//down
 
             }
             if (gamepad2.dpad_right){
@@ -104,17 +104,17 @@ public class TeleopRhino extends LinearOpMode {
             if(gamepad2.right_bumper){
                 claw.setPosition(1.0);//open
             }else {
-                claw.setPosition(0.785);//close
+                claw.setPosition(0.76);//close
             }
 
 
 
             ///////////////////////flopper
             if (gamepad2.x){
-                floposi = 0.7;//resting0.922
+                floposi = 0.65;//rdump0.922
             }
             else if (gamepad2.y) {
-                floposi = 0.305;//dumped 0.6
+                floposi = 0.305;//rest 0.6
             }
             flopper.setPosition(floposi);
 
@@ -126,14 +126,14 @@ public class TeleopRhino extends LinearOpMode {
                 airplane.setPosition(0.85);
             }
 
-            if(gamepad1.dpad_up){
+            if(gamepad1.left_trigger>0){
 //                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                pullup.setTargetPosition(3950);
+                pullup.setTargetPosition(3950);//up
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(900);
-            }else if(gamepad1.dpad_down){
+            }else if(gamepad1.right_trigger>0){
                // pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                pullup.setTargetPosition(1500);
+                pullup.setTargetPosition(1500);//down
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(300);
             }

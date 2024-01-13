@@ -16,7 +16,7 @@ public class Flopper {
         flopper.setPosition(0.305);
     }
     public void flopperDump() {
-        flopper.setPosition(0.7);
+        flopper.setPosition(0.65);
     }
 
 
