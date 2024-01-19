@@ -103,7 +103,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AutoBluefarauto")
+@Autonomous(name="AutoBluefarauto2")
 
 public class BlueFarAuto extends LinearOpMode {
 
@@ -161,9 +161,9 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
@@ -187,44 +187,47 @@ public class BlueFarAuto extends LinearOpMode {
         }
 
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
+
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
             arm.armHover();
-            sleep(1000);
+            sleep(500);
 
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
 
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90, 1.0);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 2.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 6.5, -90.0);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 89.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 79.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
-            // put on left side board
-//            sleep(1000);
-//            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
+            // put on right side board
+            sleep(1000);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 6);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(1000);
+            sleep(500);
+            flopper.flopperHold();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, -90);
+            sleep(500);
             flopper.flopperDump();
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, -90);
-            sleep(2000);
+            sleep(500);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
-            sleep(1000);
+            sleep(500);
 
         }
 
@@ -236,35 +239,37 @@ public class BlueFarAuto extends LinearOpMode {
             sleep(1000);
 
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
-            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.0);
 
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 29.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 28.0, -90.0);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 51.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 58.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             // put on left side board
-//            sleep(1000);
-//            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
+            sleep(500);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(1000);
+            sleep(500);
+            flopper.flopperHold();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, -90);
+            sleep(100);
             flopper.flopperDump();
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, -90);
-            sleep(2000);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
             sleep(1000);
         }

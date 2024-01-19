@@ -137,9 +137,9 @@ public class BlueNearAuto extends LinearOpMode {
         if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.CENTER) {
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
             arm.armHover();
-            sleep(1000);
+            sleep(500);
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
@@ -148,35 +148,35 @@ public class BlueNearAuto extends LinearOpMode {
             //vehicle.turnToHeading(Constants.TURN_SPEED,30);
             //sleep(1000);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
-            sleep(1000);
+            sleep(500);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             //sleep(2000);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 36.7, -90.0);
-            sleep(1000);
+            sleep(500);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(2000);
+            sleep(500);
             flopper.flopperDump();
-            sleep(2000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(2000);
+            sleep(500);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
-            sleep(1000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             // this moves the robot to the left side of the board and parks. if other team wants us
             //to park on the right side change it to 50;
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,-50);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-35);
             sleep(1000);
            // vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
         }
@@ -184,7 +184,7 @@ public class BlueNearAuto extends LinearOpMode {
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
 //            arm.armHover();
 //            sleep(1000);
 
@@ -194,39 +194,39 @@ public class BlueNearAuto extends LinearOpMode {
             //sleep(2000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 5.0, -90.0);
+            sleep(500);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, -90.0);
-            sleep(1000);
+            sleep(500);
 //            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
 //            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 36.7, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 27, -90.0);
             //place on right side board
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, 10);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 6);
             //sleep(1000);
-            sleep(1000);
+            sleep(500);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(2000);
+            sleep(500);
             flopper.flopperDump();
-            sleep(2000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(2000);
+            sleep(500);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
-            sleep(1000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             // this moves the robot to the left side of the board and parks. if other team wants us
             //to park on the right side change it to 50;
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,-50);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-33);
             sleep(1000);
             //vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
 
@@ -235,7 +235,7 @@ public class BlueNearAuto extends LinearOpMode {
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.LEFT) {
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
             //arm.armHover();
             //sleep(1000);
 
@@ -246,37 +246,37 @@ public class BlueNearAuto extends LinearOpMode {
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 26.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 25.5, -90.0);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 7.5, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             //place on left side board
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
-            sleep(1000);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -8);
+            sleep(500);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(2000);
+            sleep(500);
             flopper.flopperDump();
-            sleep(2000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(2000);
+            sleep(500);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
-            sleep(1000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             // this moves the robot to the left side of the board and parks. if other team wants us
             //to park on the right side change it to 50;
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,-50);
-            sleep(1000);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-22);
+            sleep(500);
             //vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
         }
 
