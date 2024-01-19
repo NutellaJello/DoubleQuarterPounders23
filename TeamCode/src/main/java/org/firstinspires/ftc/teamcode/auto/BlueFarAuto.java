@@ -103,7 +103,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="bluefarauto")
+@Autonomous(name="AutoBluefarauto")
 
 public class BlueFarAuto extends LinearOpMode {
 
@@ -174,8 +174,10 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armDown();
             sleep(1000);
             slides.slidesUp();
-            sleep(2000);
+            sleep(1000);
             flopper.flopperDump();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, -90);
             sleep(2000);
             flopper.flopperRest();
             sleep(2000);
@@ -192,33 +194,33 @@ public class BlueFarAuto extends LinearOpMode {
             sleep(1000);
 
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
-            vehicle.turnToHeading(Constants.TURN_SPEED,-40);
-            vehicle.holdHeading(Constants.TURN_SPEED, -40, 0.5);
+
+            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 2.0, -90.0);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
             sleep(2000);
             arm.armUp();
             sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
-            sleep(1000);
-            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
-            sleep(1000);
-            //place on right side board
-//            vehicle.strafeByInches(Constants.DRIVE_SPEED, 10);
-            //sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 89.0, -90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
+            // put on left side board
+//            sleep(1000);
+//            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
             arm.armDown();
             sleep(1000);
             slides.slidesUp();
-            sleep(2000);
+            sleep(1000);
             flopper.flopperDump();
-            sleep(5000);
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, -90);
+            sleep(2000);
             flopper.flopperRest();
             sleep(2000);
             slides.slidesDown();
@@ -256,8 +258,10 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armDown();
             sleep(1000);
             slides.slidesUp();
-            sleep(2000);
+            sleep(1000);
             flopper.flopperDump();
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, -90);
             sleep(2000);
             flopper.flopperRest();
             sleep(2000);
