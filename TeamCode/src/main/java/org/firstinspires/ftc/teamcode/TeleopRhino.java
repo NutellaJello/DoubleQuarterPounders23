@@ -135,7 +135,7 @@ public class TeleopRhino extends LinearOpMode {
 
                 pullup.setTargetPosition(3950);//up
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pullup.setVelocity(1200);
+                pullup.setVelocity(1600);
             }else if(gamepad1.right_trigger>0){
 
                 pullup.setTargetPosition(1500);//down
