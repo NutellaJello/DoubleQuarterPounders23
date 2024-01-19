@@ -20,6 +20,8 @@ public class TeleopRhino extends LinearOpMode {
         //motors
         double dampSpeedRatio = 0.58;
         double dampTurnRatio = 0.4;
+
+        double flopSpeed = 0.000003;
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft"); //0
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("BackLeft"); //1
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FrontRight"); //2
@@ -85,11 +87,11 @@ public class TeleopRhino extends LinearOpMode {
                 sPosiL = upPosi;//setting minimmum so it dont go below the ground
             }
 
-            if (gamepad2.a){
+            if (gamepad2.b){
                 sPosiL = upPosi;//up
 
             }
-            if (gamepad2.b){
+            if (gamepad2.a){
                 sPosiL = 0.04;//down
 
             }
@@ -104,17 +106,17 @@ public class TeleopRhino extends LinearOpMode {
             if(gamepad2.right_bumper){
                 claw.setPosition( 0.83);//open
             }else {
-                claw.setPosition(0.63);//close
+                claw.setPosition(0.64);//close
             }
 
 
 
             ///////////////////////flopper
-            if (gamepad2.x){
-                floposi = 0.65;//rdump0.922
+            if (gamepad2.y){
+                floposi = 0.68;//dump
             }
-            else if (gamepad2.y) {
-                floposi = 0.305;//rest 0.6
+            else if (gamepad2.x) {
+                floposi = 0.305;//rest
             }
             else if (gamepad2.right_trigger > 0){
                 floposi = 0.5;
@@ -130,12 +132,12 @@ public class TeleopRhino extends LinearOpMode {
             }
 
             if(gamepad1.left_trigger>0){
-//                pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
                 pullup.setTargetPosition(3950);//up
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(1200);
             }else if(gamepad1.right_trigger>0){
-               // pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
                 pullup.setTargetPosition(1500);//down
                 pullup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pullup.setVelocity(600);
@@ -218,10 +220,10 @@ public class TeleopRhino extends LinearOpMode {
             if(gamepad1.right_bumper){
                 dampSpeedRatio = 0.18;
                 dampTurnRatio = 0.12;
-            }else if(gamepad1.a ){
-                dampSpeedRatio = 0.9;
+            }else if(gamepad1.left_bumper ){
+                dampSpeedRatio = 1.0;
             }else{
-                dampSpeedRatio = 0.58;
+                dampSpeedRatio = 0.6;
                 dampTurnRatio = 0.4;
             }
 
