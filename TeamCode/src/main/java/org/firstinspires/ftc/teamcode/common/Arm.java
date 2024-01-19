@@ -20,8 +20,8 @@ public class Arm {
     }
 
     public void armUp() {
-        leftarm.setPosition(0.95);
-        rightarm.setPosition(0.95);
+        leftarm.setPosition(0.967);
+        rightarm.setPosition(0.967);
     }
 
     public void armDown() {
