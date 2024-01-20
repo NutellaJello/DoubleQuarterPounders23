@@ -58,7 +58,7 @@ public class TeleopRhino extends LinearOpMode {
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
 
-        airplane.setPosition (0.85);
+        airplane.setPosition (0.7);
         //wait for button click
         waitForStart();
         // stop the program if button click
@@ -125,10 +125,10 @@ public class TeleopRhino extends LinearOpMode {
 
             /// airplane
             if (gamepad1.dpad_left){
-                airplane.setPosition (0.3);
+                airplane.setPosition (1);
             }
             else {
-                airplane.setPosition(0.85);
+                airplane.setPosition(0.7);
             }
 
             if(gamepad1.left_trigger>0){

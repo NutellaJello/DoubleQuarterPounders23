@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AUTO_RED_FAR")
+@Autonomous(name="AUTO_RED_FAR2")
 
 public class RedFarAuto extends LinearOpMode {
 
@@ -135,6 +135,7 @@ public class RedFarAuto extends LinearOpMode {
 
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
+            webcam.stopStreaming();
             claw.clawClose();
             sleep(1000);
             arm.armHover();
@@ -142,112 +143,123 @@ public class RedFarAuto extends LinearOpMode {
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
-
-            sleep(2000);
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            //sleep(2000);
             //vehicle.turnToHeading(Constants.TURN_SPEED,30);
             //sleep(1000);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(1000);
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
-            sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, 90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 93.0, 90.0);
             sleep(1000);
             arm.armDown();
             sleep(1000);
             slides.slidesUp();
-            sleep(2000);
+            sleep(1000);
             flopper.flopperDump();
-            sleep(5000);
+            sleep(1000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, 90);
+            sleep(2000);
             flopper.flopperRest();
             sleep(2000);
             slides.slidesDown();
             sleep(1000);
-
-            //parking to the corner
 
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
+            webcam.stopStreaming();
             claw.clawClose();
-            sleep(500);
+            sleep(1000);
             arm.armHover();
-            sleep(500);
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
             sleep(1000);
+
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.0);
+
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
-            sleep(1000);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 29, 90);    // Claw forward 27"
-            sleep(1000);
-
-
-            // put the first pixel
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 29.0, 90.0);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
             sleep(500);
-            //
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 62, 90.0);
-            sleep(1000);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, 90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
+            // put on right side board
+            sleep(500);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 8);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(2000);
+            sleep(500);
+            flopper.flopperHold();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, 90);
+            sleep(100);
             flopper.flopperDump();
-            sleep(3000);
+            sleep(1000);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
             sleep(1000);
-
-            //parking to the corner
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
+
+            webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
             arm.armHover();
             sleep(500);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -29, 0.0);    // Claw forward 27"
-            sleep(1000);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
-            sleep(1000);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 1.0);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 4, 90.0);    // Claw forward 27"
-            sleep(1000);
-
-
-            // put the first pixel
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 6.5, 90.0);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
             sleep(500);
-            //
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 87, 90.0);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 81.0, 90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
+            // put on left side board
             sleep(1000);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             slides.slidesUp();
-            sleep(2000);
+            sleep(500);
+            flopper.flopperHold();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, 90);
+            sleep(500);
             flopper.flopperDump();
-            sleep(3000);
+            sleep(500);
             flopper.flopperRest();
-            sleep(2000);
+            sleep(500);
             slides.slidesDown();
-            sleep(1000);
-
+            sleep(500);
         }
 
         telemetry.addData("Path", "Complete");

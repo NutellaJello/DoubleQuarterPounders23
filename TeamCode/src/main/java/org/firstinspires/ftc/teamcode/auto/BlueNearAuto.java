@@ -196,6 +196,7 @@ public class BlueNearAuto extends LinearOpMode {
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 5.0, -90.0);
             sleep(500);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,1);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
@@ -205,9 +206,9 @@ public class BlueNearAuto extends LinearOpMode {
 //            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
 //            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 27, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 34 , -90.0);
             //place on right side board
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, 6);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 5);
             //sleep(1000);
             sleep(500);
             arm.armDown();
@@ -227,8 +228,8 @@ public class BlueNearAuto extends LinearOpMode {
             // this moves the robot to the left side of the board and parks. if other team wants us
             //to park on the right side change it to 50;
             vehicle.strafeByInches(Constants.DRIVE_SPEED,-33);
-            sleep(1000);
-            //vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,3,-90);
 
         }
 
@@ -277,7 +278,7 @@ public class BlueNearAuto extends LinearOpMode {
             //to park on the right side change it to 50;
             vehicle.strafeByInches(Constants.DRIVE_SPEED,-22);
             sleep(500);
-            //vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,5,-90);
         }
 
         telemetry.addData("Path", "Complete");

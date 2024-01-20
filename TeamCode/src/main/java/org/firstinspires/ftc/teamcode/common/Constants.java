@@ -21,7 +21,7 @@ public class Constants {
     public static final double     P_DRIVE_GAIN           = 0.02;     // Larger is more responsive, but also less stable
 
     public static final int SLIDE_VELOCITY = 500;
-    public static final int SLIDE_HIGH_POSITION = -2200;
+    public static final int SLIDE_HIGH_POSITION = -1200;
 
     public static final int SLIDE_LOW_POSITION = -50;
 

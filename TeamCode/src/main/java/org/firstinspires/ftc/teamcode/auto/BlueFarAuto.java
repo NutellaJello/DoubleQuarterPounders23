@@ -169,7 +169,7 @@ public class BlueFarAuto extends LinearOpMode {
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 91.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 93.0, -90.0);
             sleep(1000);
             arm.armDown();
             sleep(1000);
@@ -209,7 +209,7 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 79.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 81.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             // put on right side board
             sleep(1000);
@@ -253,7 +253,7 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 58.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             // put on left side board
             sleep(500);

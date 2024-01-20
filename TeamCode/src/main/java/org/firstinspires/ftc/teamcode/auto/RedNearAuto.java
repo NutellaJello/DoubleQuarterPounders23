@@ -135,172 +135,151 @@ public class RedNearAuto extends LinearOpMode {
 
 
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
+            webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
-//            arm.armHover();
-//            sleep(1000);
+            sleep(500);
+            arm.armHover();
+            sleep(500);
 
 
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
-
-            sleep(2000);
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            //sleep(2000);
             //vehicle.turnToHeading(Constants.TURN_SPEED,30);
             //sleep(1000);
             arm.armDown();
-            sleep(1000);
+            sleep(500);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
+            sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
+            sleep(500);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36.7, 90.0);
+            sleep(500);
+            arm.armDown();
+            sleep(500);
+            slides.slidesUp();
+            sleep(500);
+            flopper.flopperDump();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
+            sleep(500);
+            flopper.flopperRest();
+            sleep(500);
+            slides.slidesDown();
+            sleep(500);
+            arm.armUp();
+            sleep(500);
+            // this moves the robot to the left side of the board and parks. if other team wants us
+            //to park on the right side change it to 50;
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,35);
             sleep(1000);
-            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-            sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -43, -90.0);
-            sleep(1000);
-
-//            arm.armDown();
-//            sleep(1000);
-//            slides.slidesUp();
-//            sleep(2000);
-//            flopper.flopperDump();
-//            sleep(5000);
-//            flopper.flopperRest();
-//            sleep(2000);
-//            slides.slidesDown();
-//            sleep(1000);
-
-            //parking to the corner
-            vehicle.strafeByInches(0.3, 24);
+            // vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
-
+            webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
-           // arm.armHover();
+            sleep(500);
+            //arm.armHover();
             //sleep(1000);
 
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
 
-            sleep(2000);
-            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-            //sleep(1000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 25.5, 90.0);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
-            sleep(2000);
+            sleep(500);
             arm.armUp();
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
-            sleep(1000);
-            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-            sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -43, -90.0);
-            sleep(1000);
-
-
-//            arm.armDown();
-//            sleep(1000);
-//            slides.slidesUp();
-//            sleep(2000);
-//            flopper.flopperDump();
-//            sleep(5000);
-//            flopper.flopperRest();
-//            sleep(2000);
-//            slides.slidesDown();
-//            sleep(1000);
-
-            //parking to the corner
-            vehicle.strafeByInches(0.3, 24);
-
-//            claw.clawClose();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 27.0, 180.0);    // Drive Backward 27"
-//            sleep(500);
-//
-//            arm.armDown();
-//            sleep(500);
-//            claw.clawOpen();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//            claw.clawClose();
-//            sleep(500);
-//
-//            vehicle.turn(90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
-//            sleep(500);
-//            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces left red strip thing
-//            sleep(500);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
-//            sleep(500);
-//
-//            arm.armDown();
-//            sleep(500);
-//            slides.slidesUp();
-//            sleep(500);
-//            flopper.flopperDump();
-//            sleep(500);
-//            flopper.flopperRest();
-//            sleep(500);
-//            slides.slidesDown();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 0.0);    // Drive right 6" to red alliance right thing
-//            sleep(500);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);     // Drive Right 18" to park!
-//            sleep(1000);
-
-
-            //parking to the corner
-        //    parkToCorner(vehicle);
+            sleep(500);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 7.5, 90.0);
+            vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
+            //place on left side board
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -8);
+            sleep(500);
+            arm.armDown();
+            sleep(500);
+            slides.slidesUp();
+            sleep(500);
+            flopper.flopperDump();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
+            sleep(500);
+            flopper.flopperRest();
+            sleep(500);
+            slides.slidesDown();
+            sleep(500);
+            arm.armUp();
+            sleep(500);
+            // this moves the robot to the left side of the board and parks. if other team wants us
+            //to park on the right side change it to 50;
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,15);
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,5,90);
 
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
-
+            webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
+//            arm.armHover();
+//            sleep(1000);
 
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Drive Backward 27"
+
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
+            vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
+            //sleep(2000);
+            vehicle.turnToHeading(Constants.TURN_SPEED,90);
+            vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 5.0, 90.0);
             sleep(500);
-
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-1);
             arm.armDown();
-            sleep(500);
+            sleep(1000);
             claw.clawOpen();
             sleep(500);
             arm.armUp();
             sleep(500);
-            claw.clawClose();
+//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
+//            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
+            //sleep(2000);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 34 , 90.0);
+            //place on right side board
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 5);
+            //sleep(1000);
             sleep(500);
-
-            vehicle.turn(-90, Constants.TURN_SPEED); //turn so claw faces right red strip thing
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 36, -90.0);    // Drive Forward 36"
+            arm.armDown();
             sleep(500);
+            slides.slidesUp();
+            sleep(500);
+            flopper.flopperDump();
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
+            sleep(500);
+            flopper.flopperRest();
+            sleep(500);
+            slides.slidesDown();
+            sleep(500);
+            arm.armUp();
+            sleep(500);
+            // this moves the robot to the left side of the board and parks. if other team wants us
+            //to park on the right side change it to 50;
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,33);
+            sleep(500);
+            vehicle.driveStraight(Constants.DRIVE_SPEED,3,90);
 
-//            arm.armDown();
-//            sleep(500);
-//            slides.slidesUp();
-//            sleep(500);
-//            flopper.flopperDump();
-//            sleep(500);
-//            flopper.flopperRest();
-//            sleep(500);
-//            slides.slidesDown();
-//            sleep(500);
-//            arm.armUp();
-//            sleep(500);
-//
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 6, 180.0);    // Drive left 6" to red alliance left thing
-//            sleep(500);
-//            vehicle.driveStraight(Constants.DRIVE_SPEED, 30, 0.0);     // Drive right 30" to park!
-//            sleep(1000);
-            vehicle.strafeByInches(0.3, 24);
         }
 
 
