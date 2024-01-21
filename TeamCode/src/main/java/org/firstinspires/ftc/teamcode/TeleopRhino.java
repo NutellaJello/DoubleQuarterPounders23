@@ -81,17 +81,17 @@ public class TeleopRhino extends LinearOpMode {
             rightarm.setPosition(sPosiL);
 
 
-            double upPosi = 0.967;
+            double upPosi = 0.94;
 
             if(sPosiL > upPosi){
                 sPosiL = upPosi;//setting minimmum so it dont go below the ground
             }
 
-            if (gamepad2.b){
+            if (gamepad2.dpad_up){
                 sPosiL = upPosi;//up
 
             }
-            if (gamepad2.a){
+            if (gamepad2.dpad_down){
                 sPosiL = 0.04;//down
 
             }
@@ -112,13 +112,13 @@ public class TeleopRhino extends LinearOpMode {
 
 
             ///////////////////////flopper
-            if (gamepad2.y){
-                floposi = 0.68;//dump
+            if (gamepad2.y && sPosiL < upPosi -0.05){
+                floposi = 0.72;//dump
             }
             else if (gamepad2.x) {
                 floposi = 0.305;//rest
             }
-            else if (gamepad2.right_trigger > 0){
+            else if (gamepad2.right_trigger > 0 && sPosiL < upPosi -0.05){
                 floposi = 0.5;
             }
             flopper.setPosition(floposi);
@@ -128,7 +128,7 @@ public class TeleopRhino extends LinearOpMode {
                 airplane.setPosition (1);
             }
             else {
-                airplane.setPosition(0.7);
+                airplane.setPosition(0.8);
             }
 
             if(gamepad1.left_trigger>0){
