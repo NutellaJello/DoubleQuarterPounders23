@@ -95,33 +95,42 @@ public class TeleopRhino extends LinearOpMode {
                 sPosiL = 0.04;//down
 
             }
+
             if (gamepad2.dpad_right){
-                sPosiL = 0.1;//tweaker
+                sPosiL = 0.12;//tweaker
             }
             if (gamepad2.dpad_left){
                 sPosiL = 0.6;//tweaker
+            }
+            if(gamepad2.left_bumper){
+                sPosiL = 0.08;
             }
 
             ////////////////claww
             if(gamepad2.right_bumper){
                 claw.setPosition( 0.83);//open
             }else {
-                claw.setPosition(0.64);//close
+                claw.setPosition(0.62);//close
             }
 
 
 
             ///////////////////////flopper
-            if (gamepad2.y && sPosiL < upPosi -0.05){
-                floposi = 0.72;//dump
+            if (gamepad2.right_trigger > 0 && sPosiL < upPosi -0.05){
+                //floposi = 0.72;//dump
+                floposi+= 0.0022 ;
             }
             else if (gamepad2.x) {
                 floposi = 0.305;//rest
             }
-            else if (gamepad2.right_trigger > 0 && sPosiL < upPosi -0.05){
+            else if (gamepad2.y  && sPosiL < upPosi -0.05){
                 floposi = 0.5;
             }
             flopper.setPosition(floposi);
+            if (floposi > 0.70){
+                floposi = 0.70;
+            }
+
 
             /// airplane
             if (gamepad1.dpad_left){
