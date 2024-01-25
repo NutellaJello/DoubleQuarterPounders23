@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="bluenearauto")
+@Autonomous(name="AUTO_BLUE_NEAR")
 
 public class BlueNearAuto extends LinearOpMode {
 
@@ -131,6 +131,7 @@ public class BlueNearAuto extends LinearOpMode {
             telemetry.update();
         }
 
+
         waitForStart();
 
         sleep(1000);
@@ -138,15 +139,11 @@ public class BlueNearAuto extends LinearOpMode {
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
+            // moves the arm down then places the pixel in the center
             arm.armHover();
             sleep(500);
-
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
-            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-            //sleep(1000);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
@@ -155,43 +152,24 @@ public class BlueNearAuto extends LinearOpMode {
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(500);
+            //turn to the backdrop and then place the pixel on
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 36.7, -90.0);
-            sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 41.5, -90.0);
+            placePixel(vehicle,arm,flopper,slides);
+            // strafes to the left side and parks in the corner
             vehicle.strafeByInches(Constants.DRIVE_SPEED,-35);
             sleep(1000);
-           // vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
+           vehicle.driveStraight(Constants.DRIVE_SPEED,8,-90);
         }
 
         else if (detectionBlue.getPosition() == HSVDetectionBlue.ParkingPosition.RIGHT) {
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
-//            arm.armHover();
-//            sleep(1000);
-
-
+            // drives forward then turns to the right to place the pixel.
             vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 5.0, -90.0);
@@ -203,31 +181,14 @@ public class BlueNearAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-//            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 34 , -90.0);
+            // drives to the backdrop
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 36.5 , -90.0);
             //place on right side board
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, 5);
-            //sleep(1000);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 8);
             sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,-33);
+            placePixel(vehicle,arm,flopper,slides);
+            // this moves the robot to the left corner and parks.
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-36);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,3,-90);
 
@@ -237,16 +198,11 @@ public class BlueNearAuto extends LinearOpMode {
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
-            //arm.armHover();
-            //sleep(1000);
-
-
+            // drives forward, turns, moves a bit forward then places down the pixel
             vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-
             vehicle.driveStraight(Constants.DRIVE_SPEED, 25.5, -90.0);
             arm.armDown();
             sleep(1000);
@@ -254,28 +210,14 @@ public class BlueNearAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-            //sleep(2000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 7.5, -90.0);
+            // drives to the backdrop
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 15.5, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             //place on left side board
             vehicle.strafeByInches(Constants.DRIVE_SPEED, -8);
             sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,-90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
+            placePixel(vehicle,arm,flopper,slides);
+            // this moves the robot to the left corner and parks.
             vehicle.strafeByInches(Constants.DRIVE_SPEED,-22);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,5,-90);
@@ -285,5 +227,28 @@ public class BlueNearAuto extends LinearOpMode {
 
         telemetry.update();
         sleep(100000);  // Pause to display last telemetry message.
+
+
+    }
+    //places the pixel on the board, retracts, and then moves back -3
+    public void placePixel(Vehicle vehicle,Arm arm, Flopper flopper, Slides slides){
+        arm.armDown();
+        sleep(500);
+        slides.slidesUp();
+        sleep(500);
+        flopper.flopperHold();
+        sleep(500);
+        slides.slidesHold();
+        sleep(500);
+        flopper.flopperDump();
+        sleep(500);
+        vehicle.driveStraight(Constants.DRIVE_SPEED,-3,-90);
+        sleep(500);
+        flopper.flopperRest();
+        sleep(500);
+        slides.slidesDown();
+        sleep(500);
+        arm.armUp();
+        sleep(500);
     }
 }

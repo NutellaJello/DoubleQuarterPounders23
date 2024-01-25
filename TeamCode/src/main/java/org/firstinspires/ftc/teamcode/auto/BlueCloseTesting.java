@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -93,7 +94,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  */
 
 @Autonomous(name="AUTO blue far")
-
+@Disabled
 public class BlueCloseTesting extends LinearOpMode {
 
     /* Declare OpMode members. */
