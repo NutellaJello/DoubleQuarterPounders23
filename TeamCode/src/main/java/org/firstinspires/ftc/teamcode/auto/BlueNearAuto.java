@@ -241,7 +241,7 @@ public class BlueNearAuto extends LinearOpMode {
         slides.slidesHold();
         sleep(500);
         flopper.flopperDump();
-        sleep(500);
+        sleep(1000);
         vehicle.driveStraight(Constants.DRIVE_SPEED,-3,-90);
         sleep(500);
         flopper.flopperRest();
