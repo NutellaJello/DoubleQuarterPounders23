@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -86,7 +87,7 @@ import org.firstinspires.ftc.teamcode.common.Flopper;
  */
 
 @Autonomous(name="testflopper")
-
+@Disabled
 public class TestFlopper extends LinearOpMode {
 
     /* Declare OpMode members. */
