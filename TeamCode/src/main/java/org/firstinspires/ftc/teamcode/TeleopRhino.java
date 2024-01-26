@@ -123,8 +123,10 @@ public class TeleopRhino extends LinearOpMode {
             else if (gamepad2.x) {
                 floposi = 0.305;//rest
             }
-            else if (gamepad2.y  && sPosiL < upPosi -0.05){
+            else if (gamepad2.b  && sPosiL < upPosi -0.05){
                 floposi = 0.5;
+            }else if(gamepad2.a){
+                floposi = 0.275;
             }
             flopper.setPosition(floposi);
             if (floposi > 0.70){
