@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AUTO_RED_NEAR_CORNER_PARK")
+@Autonomous(name="AUTO_RED_NEAR")
 
 public class RedNearAuto extends LinearOpMode {
 
@@ -140,13 +140,9 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             arm.armHover();
             sleep(500);
-
-
+            // drives forward and then places on the center
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
-            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-            //sleep(1000);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
@@ -155,46 +151,27 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(500);
+            // turns and then drives to the board then places pixel.
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
-            //sleep(2000);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 36.7, 90.0);
             sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
+            placePixel(vehicle,arm,flopper,slides);
+            // this moves the robot to the left side of the board and parks.
             vehicle.strafeByInches(Constants.DRIVE_SPEED,35);
             sleep(1000);
-            // vehicle.driveStraight(Constants.DRIVE_SPEED,10,-90);
+             vehicle.driveStraight(Constants.DRIVE_SPEED,5,90);
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
-            //arm.armHover();
-            //sleep(1000);
-
-
+            // drives forward, turns, moves forward to place the pixel on the right
             vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
-
             vehicle.driveStraight(Constants.DRIVE_SPEED, 25.5, 90.0);
             arm.armDown();
             sleep(1000);
@@ -202,28 +179,14 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-            //sleep(2000);
+            //drive to the board
             vehicle.driveStraight(Constants.DRIVE_SPEED, 7.5, 90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             //place on left side board
             vehicle.strafeByInches(Constants.DRIVE_SPEED, -8);
             sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
+            placePixel(vehicle,arm,flopper,slides);
+            // this moves the robot to the left side of the board and parks.
             vehicle.strafeByInches(Constants.DRIVE_SPEED,15);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,5,90);
@@ -234,13 +197,9 @@ public class RedNearAuto extends LinearOpMode {
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
-//            arm.armHover();
-//            sleep(1000);
-
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);    // Claw forward 27"
+            // drives forward, turns, moves slightly forward to place the pixel on the left
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -29.0, 0.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 5.0, 90.0);
@@ -252,30 +211,13 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-//            vehicle.turnToHeading(Constants.TURN_SPEED,-90);
-//            vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            //sleep(2000);
+            // drives to the backdrop
             vehicle.driveStraight(Constants.DRIVE_SPEED, 34 , 90.0);
             //place on right side board
             vehicle.strafeByInches(Constants.DRIVE_SPEED, 5);
-            //sleep(1000);
             sleep(500);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED,0.7,90);
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
-            arm.armUp();
-            sleep(500);
-            // this moves the robot to the left side of the board and parks. if other team wants us
-            //to park on the right side change it to 50;
+            placePixel(vehicle,arm,flopper,slides);
+            // this moves the robot to the left side of the board and parks.
             vehicle.strafeByInches(Constants.DRIVE_SPEED,33);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,3,90);
@@ -284,7 +226,7 @@ public class RedNearAuto extends LinearOpMode {
 
 
         //parking to the corner
-        parkToCorner(vehicle);
+       // parkToCorner(vehicle);
 
         telemetry.addData("Path", "Complete");
 
@@ -298,5 +240,25 @@ public class RedNearAuto extends LinearOpMode {
         sleep(1000);
         vehicle.driveStraight(Constants.DRIVE_SPEED, 18, 0.0);
         sleep(1000000);
+    }
+    public void placePixel(Vehicle vehicle,Arm arm, Flopper flopper, Slides slides){
+        arm.armDown();
+        sleep(500);
+        slides.slidesUp();
+        sleep(500);
+        flopper.flopperHold();
+        sleep(500);
+        slides.slidesHold();
+        sleep(500);
+        flopper.flopperDump();
+        sleep(500);
+        vehicle.driveStraight(Constants.DRIVE_SPEED,-3,90);
+        sleep(500);
+        flopper.flopperRest();
+        sleep(500);
+        slides.slidesDown();
+        sleep(500);
+        arm.armUp();
+        sleep(500);
     }
 }

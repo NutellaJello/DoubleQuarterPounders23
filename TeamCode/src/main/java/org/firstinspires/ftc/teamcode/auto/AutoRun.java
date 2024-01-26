@@ -20,6 +20,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous(name = "autorunL")
+@Disabled
 public class AutoRun extends LinearOpMode {
     /*
     private static double ServoLeft = 0.65;

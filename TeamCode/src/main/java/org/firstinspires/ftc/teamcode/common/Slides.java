@@ -42,6 +42,17 @@ public class Slides {
             sleep(10);
         }
     }
+    public void slidesHold(){
+        //slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setTargetPosition(Constants.SLIDE_MID_POSITION);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.setPower(0.5);
+
+        while(slides.isBusy())
+        {
+            sleep(10);
+        }
+    }
 
 
     public final void sleep(long milliseconds) {

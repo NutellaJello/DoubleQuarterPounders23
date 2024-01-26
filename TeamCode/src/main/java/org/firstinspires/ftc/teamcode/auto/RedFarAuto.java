@@ -92,7 +92,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AUTO_RED_FAR2")
+@Autonomous(name="AUTO_RED_FAR")
 
 public class RedFarAuto extends LinearOpMode {
 
@@ -137,16 +137,12 @@ public class RedFarAuto extends LinearOpMode {
         if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.CENTER) {
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
+            // drives forward and then places the pixel in the center.
             arm.armHover();
             sleep(1000);
-
-
             vehicle.driveStraight(Constants.DRIVE_SPEED, -24.5, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-            //sleep(2000);
-            //vehicle.turnToHeading(Constants.TURN_SPEED,30);
-            //sleep(1000);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
@@ -155,40 +151,27 @@ public class RedFarAuto extends LinearOpMode {
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED, -4.5, 0.0);
             sleep(1000);
+            // turns towards the backdrop and drives to it
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
-            //sleep(2000);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 93.0, 90.0);
             sleep(1000);
-            arm.armDown();
-            sleep(1000);
-            slides.slidesUp();
-            sleep(1000);
-            flopper.flopperDump();
-            sleep(1000);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 3, 90);
-            sleep(2000);
-            flopper.flopperRest();
-            sleep(2000);
-            slides.slidesDown();
-            sleep(1000);
+            // places pixel on the board
+            placePixel(vehicle,arm,flopper,slides);
 
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.RIGHT) {
             webcam.stopStreaming();
             claw.clawClose();
-            sleep(1000);
+            sleep(500);
             arm.armHover();
             sleep(1000);
-
-
-            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
+            // Drives forward, turns to the backdrop, moves a bit forward and finally places the pixel
+            vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.0);
-
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
-
             vehicle.driveStraight(Constants.DRIVE_SPEED, 29.0, 90.0);
             arm.armDown();
             sleep(500);
@@ -196,43 +179,26 @@ public class RedFarAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-            //sleep(2000);
+            //drives to the board
             vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, 90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
             // put on right side board
             sleep(500);
             vehicle.strafeByInches(Constants.DRIVE_SPEED, 8);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperHold();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, 90);
-            sleep(100);
-            flopper.flopperDump();
-            sleep(1000);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(1000);
+           placePixel(vehicle,arm,flopper,slides);
         }
 
         else if (detectionRed.getPosition() == HSVDetectionRed.ParkingPosition.LEFT) {
-
             webcam.stopStreaming();
             claw.clawClose();
             sleep(500);
             arm.armHover();
             sleep(500);
-
-
+            // drives forward, turns, moves a bit forward then places the pixel on the left side
             vehicle.driveStraight(Constants.DRIVE_SPEED, -30.0, 0.0);    // Claw forward 27"
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
-
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 1.0);
-
             vehicle.driveStraight(Constants.DRIVE_SPEED, 6.5, 90.0);
             arm.armDown();
             sleep(500);
@@ -240,31 +206,38 @@ public class RedFarAuto extends LinearOpMode {
             sleep(500);
             arm.armUp();
             sleep(500);
-            //sleep(2000);
+            //drives to the backdrop
             vehicle.driveStraight(Constants.DRIVE_SPEED, 81.0, 90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
             // put on left side board
             sleep(1000);
             vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
-            arm.armDown();
-            sleep(500);
-            slides.slidesUp();
-            sleep(500);
-            flopper.flopperHold();
-            sleep(500);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 2, 90);
-            sleep(500);
-            flopper.flopperDump();
-            sleep(500);
-            flopper.flopperRest();
-            sleep(500);
-            slides.slidesDown();
-            sleep(500);
+           placePixel(vehicle,arm,flopper,slides);
         }
 
         telemetry.addData("Path", "Complete");
 
         telemetry.update();
         sleep(100000);  // Pause to display last telemetry message.
+    }
+    public void placePixel(Vehicle vehicle,Arm arm, Flopper flopper, Slides slides){
+        arm.armDown();
+        sleep(500);
+        slides.slidesUp();
+        sleep(500);
+        flopper.flopperHold();
+        sleep(500);
+        slides.slidesHold();
+        sleep(500);
+        flopper.flopperDump();
+        sleep(500);
+        vehicle.driveStraight(Constants.DRIVE_SPEED,-3,90);
+        sleep(500);
+        flopper.flopperRest();
+        sleep(500);
+        slides.slidesDown();
+        sleep(500);
+        arm.armUp();
+        sleep(500);
     }
 }
