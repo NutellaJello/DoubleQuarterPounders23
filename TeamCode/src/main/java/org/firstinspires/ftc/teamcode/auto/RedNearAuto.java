@@ -187,7 +187,7 @@ public class RedNearAuto extends LinearOpMode {
             sleep(500);
             placePixel(vehicle,arm,flopper,slides);
             // this moves the robot to the left side of the board and parks.
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,15);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,13);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,5,90);
 
@@ -214,11 +214,11 @@ public class RedNearAuto extends LinearOpMode {
             // drives to the backdrop
             vehicle.driveStraight(Constants.DRIVE_SPEED, 39 , 90.0);
             //place on right side board
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, 5);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -7);
             sleep(500);
             placePixel(vehicle,arm,flopper,slides);
             // this moves the robot to the left side of the board and parks.
-            vehicle.strafeByInches(Constants.DRIVE_SPEED,33);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,30);
             sleep(500);
             vehicle.driveStraight(Constants.DRIVE_SPEED,3,90);
 

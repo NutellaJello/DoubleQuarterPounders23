@@ -166,7 +166,8 @@ public class BlueFarAuto extends LinearOpMode {
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
             vehicle.driveStraight(Constants.DRIVE_SPEED, 94.0, -90.0);
-            sleep(1000);
+            sleep(500);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-2);
             placePixel(vehicle, arm, flopper, slides);
 
         }

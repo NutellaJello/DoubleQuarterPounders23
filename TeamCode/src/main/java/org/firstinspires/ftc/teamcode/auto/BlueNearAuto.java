@@ -155,7 +155,7 @@ public class BlueNearAuto extends LinearOpMode {
             //turn to the backdrop and then place the pixel on
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 41.5, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 42, -90.0);
             placePixel(vehicle,arm,flopper,slides);
             // strafes to the left side and parks in the corner
             vehicle.strafeByInches(Constants.DRIVE_SPEED,-35);
@@ -203,7 +203,7 @@ public class BlueNearAuto extends LinearOpMode {
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 25.5, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 26.0, -90.0);
             arm.armDown();
             sleep(1000);
             claw.clawOpen();
@@ -211,7 +211,7 @@ public class BlueNearAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             // drives to the backdrop
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 15.5, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 15.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             //place on left side board
             vehicle.strafeByInches(Constants.DRIVE_SPEED, -8);
