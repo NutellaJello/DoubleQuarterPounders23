@@ -85,7 +85,7 @@ import org.firstinspires.ftc.teamcode.common.Vehicle;
  */
 
 @Autonomous(name="TETMOVE")
-
+@Disabled
 public class TESTMOVE extends LinearOpMode {
 
     /* Declare OpMode members. */

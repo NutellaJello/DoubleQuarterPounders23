@@ -165,8 +165,9 @@ public class BlueFarAuto extends LinearOpMode {
             // turns and then drive to the backdrop, placePixel places the pixel
             vehicle.turnToHeading(Constants.TURN_SPEED,-90);
             vehicle.holdHeading(Constants.TURN_SPEED, -90, 0.5);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 93.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 94.0, -90.0);
             sleep(500);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED,-2);
             placePixel(vehicle, arm, flopper, slides);
 
         }
@@ -190,11 +191,11 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             // drives to the backdrop
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 81.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 84.0, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             // put on right side board
             sleep(1000);
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, 6);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, 6.5);
             placePixel(vehicle, arm, flopper, slides);
 
         }
@@ -218,11 +219,11 @@ public class BlueFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             // drives to the backdrop
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, -90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 62.5, -90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, -90.0, 0.5);
             // put on left side board
             sleep(500);
-            vehicle.strafeByInches(Constants.DRIVE_SPEED, -10);
+            vehicle.strafeByInches(Constants.DRIVE_SPEED, -11);
             placePixel(vehicle, arm, flopper, slides);
         }
 
@@ -241,11 +242,11 @@ public class BlueFarAuto extends LinearOpMode {
         slides.slidesHold();
         sleep(500);
         flopper.flopperDump();
-        sleep(500);
+        sleep(1000);
         vehicle.driveStraight(Constants.DRIVE_SPEED,-3,-90);
         sleep(500);
         flopper.flopperRest();
-        sleep(500);
+        sleep(1000);
         slides.slidesDown();
         sleep(500);
         arm.armUp();
