@@ -74,6 +74,7 @@ public class TeleopRhino extends LinearOpMode {
             telemetry.addData("airplane", Double.toString(airplane.getPosition()));
             telemetry.addData("pullup", Double.toString(pullup.getCurrentPosition()));
             telemetry.addData("pullup-v", Double.toString(pullup.getVelocity()));
+            telemetry.addData("drift", Double.toString(gamepad2.left_stick_y));
 
 
             ////////////////arm
@@ -172,6 +173,12 @@ public class TeleopRhino extends LinearOpMode {
 //            else if (gamepad2.left_stick_y == 0){
 //                slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //            }
+            /*
+            if(gamepad2.left_stick_y > 0.4 || gamepad2.left_stick_y < -0.4){
+                slides.setPower(gamepad2.left_stick_y *0.5);
+            }else{
+                slides.setPower(0);
+            }*/
             slides.setPower(gamepad2.left_stick_y * 0.4);
 
             //9.0
@@ -228,10 +235,10 @@ public class TeleopRhino extends LinearOpMode {
             //sprint
 
 
-            if(gamepad1.right_bumper){
+            if(gamepad1.right_bumper || gamepad1.right_trigger > 0){
                 dampSpeedRatio = 0.18;
                 dampTurnRatio = 0.12;
-            }else if(gamepad1.left_bumper ){
+            }else if(gamepad1.left_bumper || gamepad1.left_trigger > 0){
                 dampSpeedRatio = 1.0;
             }else{
                 dampSpeedRatio = 0.6;
