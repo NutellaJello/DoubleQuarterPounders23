@@ -233,7 +233,7 @@ public class TeleopRhino extends LinearOpMode {
             motorBackRight.setPower(brPower);
 
             //sprint
-
+//
 
             if(gamepad1.right_bumper || gamepad1.right_trigger > 0){
                 dampSpeedRatio = 0.18;
