@@ -172,7 +172,7 @@ public class RedFarAuto extends LinearOpMode {
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.0);
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 0.5);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 29.0, 90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 28.0, 90.0);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
@@ -180,7 +180,7 @@ public class RedFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             //drives to the board
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 60.0, 90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 63.0, 90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
             // put on right side board
             sleep(500);
@@ -199,7 +199,7 @@ public class RedFarAuto extends LinearOpMode {
             vehicle.holdHeading(Constants.TURN_SPEED, 0.0, 0.5);
             vehicle.turnToHeading(Constants.TURN_SPEED,90);
             vehicle.holdHeading(Constants.TURN_SPEED, 90, 1.0);
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 6.5, 90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 5.5, 90.0);
             arm.armDown();
             sleep(500);
             claw.clawOpen();
@@ -207,7 +207,7 @@ public class RedFarAuto extends LinearOpMode {
             arm.armUp();
             sleep(500);
             //drives to the backdrop
-            vehicle.driveStraight(Constants.DRIVE_SPEED, 81.0, 90.0);
+            vehicle.driveStraight(Constants.DRIVE_SPEED, 89.0, 90.0);
             vehicle.holdHeading(Constants.TURN_SPEED, 90.0, 0.5);
             // put on left side board
             sleep(1000);
