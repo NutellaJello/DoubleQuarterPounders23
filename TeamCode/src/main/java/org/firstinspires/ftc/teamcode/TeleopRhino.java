@@ -40,6 +40,7 @@ public class TeleopRhino extends LinearOpMode {
 
         DcMotor slides = hardwareMap.dcMotor.get("slides"); //0
         DcMotorEx pullup = hardwareMap.get(DcMotorEx.class, "lifter"); //1
+
         pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -47,7 +48,7 @@ public class TeleopRhino extends LinearOpMode {
 
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        pullup.setDirection(DcMotorSimple.Direction.REVERSE);
+        //pullup.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //slides.setDirection(DcMotorSimple.Direction.REVERSE);
 //        pullup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
